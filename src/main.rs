@@ -5,7 +5,7 @@ use web_view::*;
 fn main() {
     let html_content = format!(include_str!("template/index.html"),
         styles = inline_style(include_str!("template/style.css")),
-        // scripts = inline_script(include_str!("template/app.js")),
+        scripts = inline_script(include_str!("template/line-numbers.js")),
     );
     
     let mut fullscreen_state = false;
@@ -37,6 +37,6 @@ fn inline_style(s: &str) -> String {
     format!(r#"<style type="text/css">{}</style>"#, s)
 }
 
-fn _inline_script(s: &str) -> String {
+fn inline_script(s: &str) -> String {
     format!(r#"<script type="text/javascript">{}</script>"#, s)
 }
