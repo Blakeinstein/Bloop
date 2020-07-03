@@ -17,11 +17,11 @@ body {
 .titlebar {
 	padding: 0;
 	position: fixed;
-    background-color: #000;
+    background-color: rgb(58, 58, 58);
     border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 	width: 100%;
-	height: 25px;
+	height: 32px;
 	z-index: 10;
 }
 
@@ -59,10 +59,10 @@ body {
 .titlebar-minimize,
 .titlebar-fullscreen {
 	float: left;
-	width: 10px;
-	height: 10px;
+	width: 16px;
+	height: 16px;
 	border-radius: 50%;
-	margin: 6px 4px;
+	margin: 8px 6px;
 	line-height: 0;
 }
 
@@ -84,8 +84,8 @@ body {
 }
 
 .titlebar-close svg {
-	width: 6px;
-	height: 6px;
+	width: 10px;
+	height: 10px;
 	margin-top: 2px;
 	margin-left: 2px;
 	opacity: 0;
@@ -102,8 +102,8 @@ body {
 }
 
 .titlebar-minimize svg {
-	width: 8px;
-	height: 8px;
+	width: 12px;
+	height: 12px;
 	margin-top: 1px;
 	margin-left: 1px;
 	opacity: 0;
@@ -121,8 +121,8 @@ body {
 }
 
 .titlebar-fullscreen svg.fullscreen-svg {
-	width: 6px;
-	height: 6px;
+	width: 10px;
+	height: 10px;
 	margin-top: 2px;
 	margin-left: 2px;
 	opacity: 0;
@@ -146,15 +146,16 @@ body {
 	display: flex;
 }
 
-
 .line-numbers {
     width: 5em;
-    padding: 0 0.8em;
+    padding: 0;
     height: 100%;
     word-break: break-all;
     overflow: hidden;
     display: inline-block;
-    counter-reset: line;
+	counter-reset: line;
+	background-color: rgb(25, 25, 25);
+	opacity: 0.8;
 }
 
 .line-num {
@@ -167,7 +168,7 @@ body {
     font-size: 2rem;
 	color: #fff;
 	opacity: 0.8;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 0 0.4em;
 }
 .line-num::before {
     counter-increment: line;
@@ -192,14 +193,13 @@ body {
     border:none;
     font-family:'CascadiaCode Nerd Font', monospace;
     font-size:2rem;
-    background:transparent;
+    background:rgb(30, 30, 30);
     white-space:pre-wrap;
     line-height:1.5em;
 	word-wrap: break-word;
 	font-feature-settings: common-ligatures; 
 	-ms-font-feature-settings: common-ligatures;
-    opacity:0.7;
-    color:#fff;
+    color:rgba(255, 255, 255, 0.7);
     resize:none;
 }
  
