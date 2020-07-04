@@ -5,10 +5,10 @@ use web_view::*;
 fn main() {
     let html_content = format!(include_str!("template/index.html"),
         styles = inline_style(include_str!("template/style.css")),
-        scripts = inline_script(include_str!("template/line-numbers.js")),
+        scripts = inline_script(include_str!("template/app.js")),
     );
     
-    let mut fullscreen_state = false;
+    let mut maximized_state = false;
     
     web_view::builder()
         .title("Bloop")
@@ -18,12 +18,18 @@ fn main() {
         .resizable(true)
         .debug(true)
         .user_data(())
-        .invoke_handler(|_webview, _arg|  {
-            match _arg {
-                "exit" => _webview.exit(),
+        .invoke_handler(|webview, arg|  {
+            match arg {
+                "exit" => webview.exit(),
                 "maximize" => {
-                    fullscreen_state = !fullscreen_state;
-                    _webview.set_fullscreen(fullscreen_state);
+                    maximized_state = !maximized_state;
+                    webview.set_maximized(maximized_state);
+                },
+                "minimize" => {
+                    webview.set_minimized();
+                },
+                "drag_intent" => {
+                    webview.drag_intent();
                 },
                 _ => (),
             }    

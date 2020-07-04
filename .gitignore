@@ -6,3 +6,5 @@
 node_modules
 cargo.lock
 bloop.code-workspace
+
+/webview
