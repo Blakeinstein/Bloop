@@ -177,7 +177,7 @@ body {
     user-select: none;
 }
 
-.code-input{
+.code-input, .height-test{
 	margin: 0;
 	border: 0;
 	padding: 0;
