@@ -58,3 +58,8 @@ const	editor = document.getElementsByClassName("code-input")[0];
 observer.observe(editor, config);
 
 lineEnum.init(editor);
+
+// add logic for movable window
+document.getElementsByClassName("titlebar")[0].addEventListener('mousedown', () => {
+  external.invoke('drag_intent');
+});
