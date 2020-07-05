@@ -12,6 +12,8 @@ body {
 	height: 100vh;
 	width: 100vw;
 	margin: 0px;
+	display: flex;
+	flex-direction: column;
 }
 
 .titlebar {
@@ -144,6 +146,8 @@ body {
 	top: 25px;
 	width: 100%;
 	display: flex;
+	flex-direction: row;
+	flex-grow: 1;
 }
 
 .line-numbers {
@@ -188,13 +192,13 @@ body {
 	flex-grow: 1;
 	height: 100%;
 	word-break: break-all;
-	overflow: hidden;
+	overflow-x: hidden;
 
     border:none;
     font-family:'CascadiaCode Nerd Font', monospace;
     font-size:2rem;
     background:rgb(30, 30, 30);
-    white-space:pre-wrap;
+    white-space:pre;
     line-height:1.5em;
 	word-wrap: break-word;
 	font-feature-settings: common-ligatures; 
