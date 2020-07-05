@@ -13,7 +13,7 @@ fn main() {
     web_view::builder()
         .title("Bloop")
         .content(Content::Html(html_content))
-        .size(750, 600)
+        .size(750, 400)
         .frameless(true)
         .resizable(true)
         .debug(true)
