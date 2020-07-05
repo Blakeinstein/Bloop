@@ -31,26 +31,26 @@ const lineEnum = {
 		if (lineEnum.state)	return;
 		lineEnum.state = true;
 		lineEnum.update(box || lineEnum.box);
-		lineNumberListener(box);
+
+		// * better to use event listeners on div
+		const __change_evts = [
+			"propertychange", "input", "keydown", "keyup"
+		];
+		
+		const __change_hdlr = function(editor) {
+			console.log(editor);
+			return (e) => lineEnum.update(editor);
+		}(editor);
+	
+		for(let i = __change_evts.length - 1; i >= 0; i--) {
+			editor.addEventListener(__change_evts[i], __change_hdlr);
+		};
 	},
 	remove:	(box) => {
 		if (!lineEnum.state ||!lineEnum.gutter.firstChild) return;
 		lineEnum.gutter.innerHtml =	"";
 		lineEnum.state = false;
 	},
-};
-
-// * better to use event listeners on div
-const lineNumberListener = (editor) => {
-	const __change_evts = [
-		"propertychange", "input", "keydown", "keyup"
-	];
-
-	for(let i = __change_evts.length - 1; i >= 0; i--) {
-		editor.addEventListener(__change_evts[i], () => {
-			lineEnum.update(editor);
-		});
-	}
 };
 	
 	
