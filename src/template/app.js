@@ -103,7 +103,7 @@ const spotlight = {
 				else
 					spotlight.hideSpotlight();
 			}
-			if (e.code === 'Escape') 
+			if (e.key === 'Escape') 
 				spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
