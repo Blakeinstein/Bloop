@@ -77,6 +77,7 @@ const spotlight = {
     spotlightWrapper: document.getElementById('spotlight-wrapper'),
 	spotlight: document.getElementById('spotlight'),
 	body: document.getElementsByClassName('window-body')[0],
+	savedRange: null,
 	
 	hideSpotlight: () => {
 		spotlight.spotlightWrapper.classList.toggle("hidden", !spotlight.visible);
@@ -84,14 +85,39 @@ const spotlight = {
 		spotlight.spotlight.value = '';
 		spotlight.visible = false;
 		window.setTimeout(() => editor.focus(), 0);
+		if (spotlight.savedRange != null) {
+			if (window.getSelection){
+				//non IE and there is already a selection
+				var s = window.getSelection();
+				if (s.rangeCount > 0) 
+					s.removeAllRanges();
+				s.addRange(spotlight.savedRange);
+			}
+			else if (document.createRange){
+				//non IE and no selection
+				window.getSelection().addRange(spotlight.savedRange);
+			}
+			else if (document.selection){
+				//IE
+				spotlight.savedRange.select();
+			}
+		}
 	},
 
 	showSpotlight: () => {
 		spotlight.spotlightWrapper.classList.toggle("hidden", spotlight.visible);
 		spotlight.body.classList.toggle("shaded", !spotlight.visible);
+		if (window.getSelection)
+			//non IE Browsers
+			spotlight.savedRange = window.getSelection().getRangeAt(0);
+		else if (document.selection)
+		//IE 
+			spotlight.savedRange = document.selection.createRange();
+		window.setTimeout(() => editor.blur(), 0);
 		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = false;
 	},
+	
 	init: () => {
 		// 17 -> ctrl / cmd
 		// 32 -> "⎵"
