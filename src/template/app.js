@@ -83,6 +83,7 @@ const spotlight = {
 		spotlight.body.classList.toggle("shaded", spotlight.visible);
 		spotlight.spotlight.value = '';
 		spotlight.visible = false;
+		window.setTimeout(() => editor.focus(), 0);
 	},
 
 	showSpotlight: () => {
