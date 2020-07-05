@@ -5,11 +5,9 @@ const lineEnum = {
 	count: 	0,
 	gutter:	document.getElementsByClassName("line-numbers")[0],
 	update: (box) => {
-		let count = box.childElementCount || (box.innerText.split("\n").length - 1);
+		let count = box.innerText.split("\n").length - 1;
 		console.log(count)
 		let	delta =	count - lineEnum.count;
-
-		console.log(box, box.childElementCount)
 
 		if (box.children.length	== 0) delta++;
 		if (delta === 0) return;
@@ -70,8 +68,55 @@ const lineEnum = {
 		lineEnum.state = false;
 	},
 };
+
+// * Spotlight
+const spotlight = {
+	firstChar: false,
+    visible: false,
+    pissed: false,
+    spotlightWrapper: document.getElementById('spotlight-wrapper'),
+	spotlight: document.getElementById('spotlight'),
 	
-	
+	hideSpotlight: () => {
+		spotlight.spotlightWrapper.classList.toggle("hidden", !spotlight.visible);
+		spotlight.spotlight.value = '';
+		spotlight.visible = false;
+	},
+
+	showSpotlight: () => {
+		spotlight.spotlightWrapper.classList.toggle("hidden", spotlight.visible);
+		spotlight.spotlight.focus();
+		spotlight.visible = false;
+	},
+	init: () => {
+		// 17 -> ctrl / cmd
+		// 32 -> "⎵"
+		// 13 -> enter
+		document.addEventListener('keydown', (e) => {
+			if (e.ctrlKey && e.key === 'b') {
+				e.preventDefault();
+				if (!spotlight.visible)
+					spotlight.showSpotlight();
+				else
+					spotlight.hideSpotlight();
+			}
+			if (e.code === 'Escape') 
+				spotlight.hideSpotlight();
+		});
+		spotlight.spotlight.addEventListener('keyup', (e) => {
+			if (e.which == 13) {
+				console.log("Implement spotlight functionality");
+			}
+		});
+		spotlight.spotlight.addEventListener('click', (e) => {
+			e.stopPropagation();
+		});
+		document.getElementsByClassName("window-body")[0].addEventListener('click', function () {
+			spotlight.hideSpotlight();
+		});
+	}
+};
+
 // * Declare Observer properties
 /* const	callback = (mutationList,	observer)	=> {
 	let	mutation =	mutationList[mutationList.length - 1];
@@ -89,6 +134,10 @@ observer.observe(editor, config); */
 const	editor = document.getElementsByClassName("code-input")[0];
 
 lineEnum.init(editor);
+
+spotlight.init();
+
+editor.focus();
 
 // add logic for movable window
 document.getElementsByClassName("titlebar")[0].addEventListener('mousedown', () => {

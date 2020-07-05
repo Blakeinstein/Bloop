@@ -219,3 +219,54 @@ body {
 .code-input::-webkit-scrollbar-thumb {
     background: #6649b8;
 }
+
+/* spotlight */
+.hidden {
+	display: none;
+}
+#spotlight-wrapper {
+	position: absolute;
+	top: 15%;
+	left: 0;
+	right: 0;
+	width: 100%;
+ }
+ 
+#spotlight {
+   display: block;
+   width: 628px;
+   height: 56px;
+   margin: auto;
+
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   border-radius: 5px;
+
+   -moz-appearance: none;
+   -webkit-appearance: none;
+
+   -moz-box-shadow: 0 25px 60px 10px rgba(0, 0, 0, 0.3);
+   -webkit-box-shadow: 0 25px 60px 10px rgba(0, 0, 0, 0.3);
+   box-shadow: 0 25px 60px 10px rgba(0, 0, 0, 0.3);
+
+   border: 1px solid rgba(0,0,0,0.2);
+   outline: none;
+   font-size: 1.3rem;
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   color: white;
+   background-color: rgb(15, 15, 15);
+   padding: 0 12px;
+}
+
+#spotlight:-moz-placeholder {
+	color: white;
+}
+#spotlight::-moz-placeholder {
+	color: white;
+}
+#spotlight:-ms-input-placeholder {
+	color: white;
+}
+#spotlight::-webkit-input-placeholder {
+	color: white;
+}
