@@ -111,7 +111,7 @@ const spotlight = {
 		spotlight.spotlight.addEventListener('click', (e) => {
 			e.stopPropagation();
 		});
-		document.getElementsByClassName("window-body")[0].addEventListener('click', function () {
+		document.addEventListener('click', function () {
 			spotlight.hideSpotlight();
 		});
 	}
