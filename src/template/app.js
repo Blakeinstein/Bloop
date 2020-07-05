@@ -76,16 +76,19 @@ const spotlight = {
     pissed: false,
     spotlightWrapper: document.getElementById('spotlight-wrapper'),
 	spotlight: document.getElementById('spotlight'),
+	body: document.getElementsByClassName('window-body')[0],
 	
 	hideSpotlight: () => {
 		spotlight.spotlightWrapper.classList.toggle("hidden", !spotlight.visible);
+		spotlight.body.classList.toggle("shaded", spotlight.visible);
 		spotlight.spotlight.value = '';
 		spotlight.visible = false;
 	},
 
 	showSpotlight: () => {
 		spotlight.spotlightWrapper.classList.toggle("hidden", spotlight.visible);
-		spotlight.spotlight.focus();
+		spotlight.body.classList.toggle("shaded", !spotlight.visible);
+		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = false;
 	},
 	init: () => {

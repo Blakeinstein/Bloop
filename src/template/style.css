@@ -224,6 +224,11 @@ body {
 .hidden {
 	display: none;
 }
+
+.shaded {
+	opacity: 0.66;
+}
+
 #spotlight-wrapper {
 	position: absolute;
 	top: 15%;
