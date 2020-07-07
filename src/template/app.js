@@ -1,17 +1,13 @@
 // * Implement line numbers
 const lineEnum = {
-	eventList: [],
 	state:  false,
 	count: 	0,
 	gutter:	document.getElementsByClassName("line-numbers")[0],
 	update: (box) => {
-		let count = box.innerText.split("\n").length - 1;
-		console.log(count)
+		let count = box.children.length || (box.innerText.split("\n").length - 1);
 		let	delta =	count - lineEnum.count;
-
 		if (box.children.length	== 0) delta++;
 		if (delta === 0) return;
-		console.log("Update called with ", delta);
 		if (delta > 0 && lineEnum.state)	{
 			const frag = document.createDocumentFragment();
 			while (delta > 0) {
@@ -36,10 +32,10 @@ const lineEnum = {
 		if (lineEnum.state)	return;
 		lineEnum.state = true;
 		lineEnum.update(box);
-		
+
 		// * better to use event listeners on div
 		const __change_evts = [
-			"change", "input", "keydown", "keyup"
+			"propertychange", "change", "input"
 		];
 		// Default handler for input events
 		const __change_hdlr = function(box) {
@@ -54,13 +50,8 @@ const lineEnum = {
 			}
 		}(box);	
 		for(let i = __change_evts.length - 1; i >= 0; i--) {
-				// box.addEventListener(__change_evts[i], __change_hdlr);
-				box.addEventListener(__change_evts[i], __change_hdlr);
-				lineEnum.eventList.push({
-					evt: __change_evts[i],
-					hdlr: __change_hdlr
-				});
-			}
+			box.addEventListener(__change_evts[i], __change_hdlr);
+		}
 	},
 	remove:	(box) => {
 		if (!lineEnum.state ||!lineEnum.gutter.firstChild) return;
@@ -69,7 +60,6 @@ const lineEnum = {
 	},
 };
 
-// * Spotlight
 const spotlight = {
 	firstChar: false,
     visible: false,
@@ -145,7 +135,7 @@ const spotlight = {
 			if (e.which == 13) {
 				console.log("Implement spotlight functionality");
 			}
-			else if (e.key === 'Escape') 
+			else if (e.code === 'Escape') 
 					spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keydown', (e) => {
@@ -194,31 +184,25 @@ const spotlight = {
 		});
 	}
 };
-
-
-// * Declare Observer properties
-/* const	callback = (mutationList,	observer)	=> {
-	let	mutation =	mutationList[mutationList.length - 1];
-	if	(mutation.type === "childList")	{
-		lineEnum.update(mutation.target);
-	}
-};
-
-const	observer = new MutationObserver(callback);
-const	config = { childList:	true };
-
-observer.observe(editor, config); */
-
+	
 // * Execute
 const	editor = document.getElementsByClassName("code-input")[0];
+
+document.execCommand("defaultParagraphSeparator", false, "div")
+
+editor.addEventListener("paste", function(e) {
+    // cancel paste
+    e.preventDefault();
+
+    // get text representation of clipboard
+    var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+    // insert text manually
+    document.execCommand("insertHTML", false, text);
+});
 
 lineEnum.init(editor);
 
 spotlight.init();
 
 editor.focus();
-
-// add logic for movable window
-document.getElementsByClassName("titlebar")[0].addEventListener('mousedown', () => {
-	external.invoke('drag_intent');
-});
