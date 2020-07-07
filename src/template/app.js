@@ -135,7 +135,7 @@ const spotlight = {
 			if (e.which == 13) {
 				console.log("Implement spotlight functionality");
 			}
-			else if (e.code === 'Escape') 
+			else if (e.key === 'Escape') 
 					spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keydown', (e) => {
