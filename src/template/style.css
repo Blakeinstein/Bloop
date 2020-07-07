@@ -154,50 +154,11 @@ body {
 .window-body{
 	flex-grow: 1;
 	width: 100%;
-	display: flex;
 	order: 2;
-	flex-direction: row;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background-image: linear-gradient(to right, #151515 0%, #151515 5em, #1e1e1e calc(5em + 4px), #1e1e1e 100%);
-}
-
-.webwindow-body::after {
-	content: '';
-	margin: auto;
-}
-
-.line-numbers {
-    min-width: 5em;
-    padding: 0;
-    word-break: break-all;
-    display: inline-block;
 	counter-reset: line;
-	order: 1;
-}
-
-.line-num {
-   	min-width: 100%;
-    display: block;
-    text-align: right;
-	line-height:1.5em;
-	border-bottom: thin;
-    font-family:'CascadiaCode Nerd Font', monospace;
-    font-size: 2rem;
-	color: #fff;
-	opacity: 0.8;
-	padding: 0 0.4em;
-}
-.line-num::before {
-    counter-increment: line;
-    content: counter(line);
-    font-size: 1em;
-    user-select: none;
-}
-
-.editor-wrapper {
-	flex: 1;
-	order: 2;
+	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 2px), #1e1e1e 5rem, #1e1e1e 100%);
 }
 
 .code-input{
@@ -220,6 +181,25 @@ body {
 	-ms-font-feature-settings: common-ligatures;
     color:rgba(255, 255, 255, 0.7);
 	resize:none;
+
+}
+
+.code-input div {
+	padding-left: 5rem;
+	position: relative;
+}
+
+.code-input div::before {
+	counter-increment: line;
+    content: counter(line);
+	font-size: 1em;
+	padding: 0 0.4em;
+	user-select: none;
+	width: 5rem;
+	text-align: right;
+	left: 0;
+
+	position: absolute;
 }
 
 /* spotlight */

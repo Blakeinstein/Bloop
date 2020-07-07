@@ -1,65 +1,3 @@
-// * Implement line numbers
-const lineEnum = {
-	state:  false,
-	count: 	0,
-	gutter:	document.getElementsByClassName("line-numbers")[0],
-	update: (box) => {
-		let count = box.children.length || (box.innerText.split("\n").length - 1);
-		let	delta =	count - lineEnum.count;
-		if (box.children.length	== 0) delta++;
-		if (delta === 0) return;
-		if (delta > 0 && lineEnum.state)	{
-			const frag = document.createDocumentFragment();
-			while (delta > 0) {
-				const line_number =	document.createElement("span");
-				line_number.className =	"line-num";
-				frag.appendChild(line_number);
-				lineEnum.count++;
-				delta--;
-			}
-			
-			lineEnum.gutter.appendChild(frag);
-		}	else {
-			if (lineEnum.count + delta === 0) delta++;
-			while (delta < 0 && lineEnum.gutter.lastChild) {
-				lineEnum.gutter.removeChild(lineEnum.gutter.lastChild);
-				lineEnum.count--;
-				delta++;
-			}
-		}
-	},
-	init:	(box) => {
-		if (lineEnum.state)	return;
-		lineEnum.state = true;
-		lineEnum.update(box);
-
-		// * better to use event listeners on div
-		const __change_evts = [
-			"propertychange", "change", "input"
-		];
-		// Default handler for input events
-		const __change_hdlr = function(box) {
-			return function(e) {
-				if((+box.scrollLeft==10 && (e.keyCode==37||e.which==37
-					||e.code=="ArrowLeft"||e.key=="ArrowLeft"))
-					|| e.keyCode==36||e.which==36||e.code=="Home"||e.key=="Home"
-					|| e.keyCode==13||e.which==13||e.code=="Enter"||e.key=="Enter"
-					|| e.code=="NumpadEnter")
-					box.scrollLeft = 0;
-				lineEnum.update(box);
-			}
-		}(box);	
-		for(let i = __change_evts.length - 1; i >= 0; i--) {
-			box.addEventListener(__change_evts[i], __change_hdlr);
-		}
-	},
-	remove:	(box) => {
-		if (!lineEnum.state ||!lineEnum.gutter.firstChild) return;
-		lineEnum.gutter.innerHtml =	"";
-		lineEnum.state = false;
-	},
-};
-
 const spotlight = {
 	firstChar: false,
     visible: false,
@@ -201,8 +139,19 @@ editor.addEventListener("paste", function(e) {
     document.execCommand("insertHTML", false, text);
 });
 
-lineEnum.init(editor);
+// * Dont remove line 1.
+editor.addEventListener("keydown", (e) => {
+	console.log(e.target.innerText);
+	if (e.key == "Backspace" && (e.target.innerText == "\n" || e.target.innerText == "")) {
+		console.log("yo ", e.target.innerText);
+		e.preventDefault();
+	}
+});
 
 spotlight.init();
 
-editor.focus();
+window.onload = () => editor.focus();
+
+document.getElementsByClassName("titlebar")[0].addEventListener('mousedown', () => {
+	external.invoke('drag_intent');
+});
