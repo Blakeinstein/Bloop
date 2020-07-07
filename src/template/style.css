@@ -221,19 +221,6 @@ body {
     color:rgba(255, 255, 255, 0.7);
 	resize:none;
 }
- 
-.code-input::-webkit-scrollbar {
-    width: 0.25rem;
-    padding-right: 5pxx;
-}
-
-.code-input::-webkit-scrollbar-track {
-    background: #1e1e24;
-}
-
-.code-input::-webkit-scrollbar-thumb {
-    background: #6649b8;
-}
 
 /* spotlight */
 .hidden {
