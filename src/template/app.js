@@ -1,3 +1,42 @@
+const titlebar = {
+	close: document.getElementsByClassName("titlebar-close")[0],
+	minimize: document.getElementsByClassName("titlebar-minimize")[0],
+	maximize: document.getElementsByClassName("titlebar-fullscreen")[0],
+	maximizeNodes: null,
+	titlebar: document.getElementsByClassName("titlebar")[0],
+	maximizeState: false,
+
+	maximizeEvent: () => {
+		if (titlebar.maximizeState) {
+			titlebar.maximizeNodes[0].classList.remove('hidden');
+			titlebar.maximizeNodes[1].classList.add('hidden');
+			titlebar.maximizeState = false;
+		}
+		else {
+			titlebar.maximizeNodes[1].classList.remove('hidden');
+			titlebar.maximizeNodes[0].classList.add('hidden');
+			titlebar.maximizeState = true;
+		}
+		external.invoke('maximize');
+	},
+
+	init: () => {
+		titlebar.maximizeNodes = titlebar.maximize.children;
+		titlebar.close.onclick = () => {
+			external.invoke('exit');
+		}
+		titlebar.minimize.onclick = () => {
+			external.invoke('maximize');
+		}
+		titlebar.maximize.onclick = () => titlebar.maximizeEvent();
+		titlebar.titlebar.addEventListener('mousedown', () => {
+			external.invoke('drag_intent');
+		});
+		titlebar.titlebar.ondblclick = () => titlebar.maximizeEvent();
+	}
+}
+
+
 const spotlight = {
 	firstChar: false,
     visible: false,
@@ -150,8 +189,6 @@ editor.addEventListener("keydown", (e) => {
 
 spotlight.init();
 
-window.onload = () => editor.focus();
+titlebar.init();
 
-document.getElementsByClassName("titlebar")[0].addEventListener('mousedown', () => {
-	external.invoke('drag_intent');
-});
+window.onload = () => editor.focus();
