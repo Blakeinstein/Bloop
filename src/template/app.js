@@ -211,13 +211,6 @@ editor.addEventListener("keydown", (e) => {
 		e.preventDefault();
 });
 
-editor.addEventListener("keyup", (e) => {
-	if ((e.key == "Backspace" || e.key == "Delete") 
-		&& (e.target.innerText == "\n" || e.target.innerText == "")){
-		e.target.innerHTML = "<div><br></div>";
-	}
-});
-
 spotlight.init();
 
 titlebar.init();
