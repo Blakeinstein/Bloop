@@ -173,8 +173,10 @@ editor.addEventListener("paste", function(e) {
 
     // get text representation of clipboard
     var text = (e.originalEvent || e).clipboardData.getData('text/plain');
-	if (text.split("\n").length == 1)
-		text = "<div>"+text+"</div>";
+	textList = text.split("\n");
+	text = "";
+	for (let i in textList)
+		text += "<div>"+textList[i].replace(/\s/g, '&nbsp;')+"</div>";
     // insert text manually
     document.execCommand("insertHTML", false, text);
 });
