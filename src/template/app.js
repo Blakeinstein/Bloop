@@ -180,10 +180,15 @@ editor.addEventListener("paste", function(e) {
 
 // * Dont remove line 1.
 editor.addEventListener("keydown", (e) => {
-	console.log(e.target.innerText);
 	if (e.key == "Backspace" && (e.target.innerText == "\n" || e.target.innerText == "")) {
-		console.log("yo ", e.target.innerText);
 		e.preventDefault();
+	}
+});
+
+editor.addEventListener("keyup", (e) => {
+	if ((e.key == "Backspace" || e.key == "Delete") 
+		&& (e.target.innerText == "\n" || e.target.innerText.trim == "")){
+		e.target.innerHTML = "<div><br></div>";
 	}
 });
 
