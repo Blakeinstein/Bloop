@@ -1,5 +1,6 @@
-#root {
-    font-weight: 10px;
+:root {
+	font-family:'CascadiaCode Nerd Font', monospace;
+    font-weight: 12px;
     --background-color: #000 ;
 }
 
@@ -31,15 +32,12 @@ body {
     border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 	width: 100%;
-	min-height: 32px;
+	height: 36px;
 	z-index: 10;
 	align-self: stretch;
 	flex: 0 1 auto;
 	order: 1;
-}
-
-.titlebar.webkit-draggable {
-	-webkit-app-region: drag;
+	user-select: none;
 }
 
 .titlebar-stoplight {
@@ -72,10 +70,10 @@ body {
 .titlebar-minimize,
 .titlebar-fullscreen {
 	float: left;
-	width: 16px;
-	height: 16px;
+	width: 14px;
+	height: 14px;
 	border-radius: 50%;
-	margin: 8px 6px;
+	margin: 11px 6px;
 	line-height: 0;
 }
 
@@ -115,8 +113,8 @@ body {
 }
 
 .titlebar-minimize svg {
-	width: 12px;
-	height: 12px;
+	width: 11px;
+	height: 11px;
 	margin-top: 1px;
 	margin-left: 1px;
 	opacity: 0;
@@ -134,19 +132,20 @@ body {
 }
 
 .titlebar-fullscreen svg.fullscreen-svg {
-	width: 10px;
-	height: 10px;
-	margin-top: 2px;
-	margin-left: 2px;
+	width: 11px;
+	height: 11px;
+	margin-top: 1px;
+	margin-left: 1px;
 	opacity: 0;
 }
 
 .titlebar-fullscreen svg.maximize-svg {
-	width: 10x;
-	height: 10px;
-	margin-top: 2px;
-	margin-left: 2px;
+	width: 11px;
+	height: 11px;
+	margin-top: 1px;
+	margin-left: 1px;
 	opacity: 0;
+	display: none;
 }
 
 /* code editor */
@@ -157,23 +156,19 @@ body {
 	overflow-x: hidden;
 	overflow-y: auto;
 	counter-reset: line;
-	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 2px), #1e1e1e 5rem, #1e1e1e 100%);
+	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 5.4px), #1e1e1e calc(5rem - 5.4px), #1e1e1e 100%);
 }
 
 .code-input{
 	margin: 0;
-	border: 0;
 	padding: 0;
-	outline: 0;
-	list-style: none;
+	padding-top: 5px;
 
 	height: 100%;
 	width: 100%;
 	word-wrap: break-word;
 	word-break: break-all;
 
-	font-family:'CascadiaCode Nerd Font', monospace;
-	font-style: oblique;
     font-size:2rem;
     line-height: 1.5em;
 	font-feature-settings: common-ligatures; 
@@ -197,7 +192,7 @@ body {
 	width: 5rem;
 	text-align: right;
 	left: 0;
-
+	user-select: none;
 	position: absolute;
 }
 
@@ -297,4 +292,43 @@ body {
 
 .selected {
 	background-color: #333;
+}
+
+.titlebar-spotlight {
+	margin: 8px auto;
+	width: 30%;
+	background: #1E1E1E;
+	color: #E0E0E0;
+	border-radius: 5px;
+	height: 20px;
+}
+
+.titlebar-spotlight .label {
+	text-align: center;
+	font-size: 10px;
+	width: 30%;
+	margin: 0 auto;
+	transition: visibility 0s, opacity 0.4s ease-in-out;
+	visibility: visible;
+	position: absolute;
+	z-index: 10;
+}
+
+.icon{
+	font-size: 14px;
+	font-style: normal;
+	display: inline-block;
+}
+
+.ctrl::before{
+	content: "\fb33";
+}
+
+.script::before{
+	content: "\f977";
+}
+
+.labelHidden {
+	visibility: hidden;
+	opacity: 0;
 }

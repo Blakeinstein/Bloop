@@ -22,13 +22,15 @@ const titlebar = {
 
 	init: () => {
 		titlebar.maximizeNodes = titlebar.maximize.children;
-		titlebar.close.onclick = () => {
+		titlebar.close.onclick = (e) => {
 			external.invoke('exit');
+			e.stopPropagation();
 		}
-		titlebar.minimize.onclick = () => {
+		titlebar.minimize.onclick = (e) => {
 			external.invoke('maximize');
+			e.stopPropagation();
 		}
-		titlebar.maximize.onclick = () => titlebar.maximizeEvent();
+		titlebar.maximize.onclick = (e) => titlebar.maximizeEvent();
 		titlebar.titlebar.addEventListener('mousedown', () => {
 			external.invoke('drag_intent');
 		});
@@ -36,7 +38,7 @@ const titlebar = {
 	}
 }
 
-
+// * Implement Spotlight
 const spotlight = {
 	firstChar: false,
     visible: false,
@@ -47,6 +49,8 @@ const spotlight = {
 	savedRange: null,
 	dataList: document.getElementsByClassName('action-list')[0].children,
 	alPlaceholder: document.getElementById('action-list-placeholder'),
+	label: document.getElementsByClassName('titlebar-spotlight')[0],
+	labelText: document.getElementsByClassName('label'),
 	alSelected: 0,
 
 	get selected() {
@@ -60,16 +64,15 @@ const spotlight = {
 	},
 	
 	hideSpotlight: () => {
-		spotlight.spotlightWrapper.classList.toggle("hidden");
-		spotlight.body.classList.toggle("shaded");
-		spotlight.visible = false;
+		spotlight.spotlightWrapper.classList.add("hidden");
+		spotlight.body.classList.remove("shaded");
 		window.setTimeout(() => editor.focus(), 0);
 		if (spotlight.savedRange != null) {
 			if (window.getSelection){
 				//non IE and there is already a selection
 				var s = window.getSelection();
 				if (s.rangeCount > 0) 
-					s.removeAllRanges();
+				s.removeAllRanges();
 				s.addRange(spotlight.savedRange);
 			}
 			else if (document.createRange){
@@ -81,11 +84,14 @@ const spotlight = {
 				spotlight.savedRange.select();
 			}
 		}
+		spotlight.visible = false;
+		spotlight.labelText[1].classList.add("labelHidden");
+		spotlight.labelText[0].classList.remove("labelHidden");
 	},
 
 	showSpotlight: () => {
-		spotlight.spotlightWrapper.classList.toggle("hidden");
-		spotlight.body.classList.toggle("shaded");
+		spotlight.spotlightWrapper.classList.remove("hidden");
+		spotlight.body.classList.add("shaded");
 		spotlight.spotlight.value = '';
 		if (window.getSelection)
 			//non IE Browsers
@@ -93,9 +99,13 @@ const spotlight = {
 		else if (document.selection)
 		//IE 
 			spotlight.savedRange = document.selection.createRange();
+		for (let i = 0; i < spotlight.dataList.length; i++)
+			spotlight.dataList[i].classList.add('hidden');
 		window.setTimeout(() => editor.blur(), 0);
 		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = true;
+		spotlight.labelText[1].classList.remove("labelHidden");
+		spotlight.labelText[0].classList.add("labelHidden");
 	},
 
 	init: () => {
@@ -135,6 +145,11 @@ const spotlight = {
 		})
 		spotlight.spotlight.addEventListener('input', () => {
 			var filter = spotlight.spotlight.value.toUpperCase();
+			if (filter == ""){
+				for (let i = 0; i < spotlight.dataList.length; i++)
+					spotlight.dataList[i].classList.add('hidden');
+				return;
+			}
 			var flag = 0;
 			for (var i = 0, flag2=true, name; i < spotlight.dataList.length - 1; i++) {
 				name = spotlight.dataList[i].innerText.toUpperCase();
@@ -148,9 +163,12 @@ const spotlight = {
 					flag ++;
 				}
 			}
-			if (flag == spotlight.dataList.length - 1 && flag != 0) {
+			if (flag >= spotlight.dataList.length - 1) {
 				spotlight.selected = 0;
+				spotlight.dataList[flag].classList.remove('hidden');
 			}
+			else 
+				spotlight.dataList[spotlight.dataList.length - 1].classList.add('hidden');
 		})
 		spotlight.spotlight.addEventListener('click', (e) => {
 			e.stopPropagation();
@@ -158,6 +176,12 @@ const spotlight = {
 		document.addEventListener('click', function () {
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
+		});
+		spotlight.label.addEventListener('click', (e) => {
+			if (!spotlight.visible){
+				spotlight.showSpotlight();
+				e.stopPropagation();
+			}
 		});
 	}
 };
@@ -172,7 +196,7 @@ editor.addEventListener("paste", function(e) {
     e.preventDefault();
 
     // get text representation of clipboard
-    var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+	var text = (e.originalEvent || e).clipboardData.getData('text/plain');
 	textList = text.split("\n");
 	text = "";
 	for (let i in textList)
@@ -183,14 +207,13 @@ editor.addEventListener("paste", function(e) {
 
 // * Dont remove line 1.
 editor.addEventListener("keydown", (e) => {
-	if (e.key == "Backspace" && (e.target.innerText == "\n" || e.target.innerText == "")) {
+	if (e.key == "Backspace" && e.target.innerText.trim() == "")
 		e.preventDefault();
-	}
 });
 
 editor.addEventListener("keyup", (e) => {
 	if ((e.key == "Backspace" || e.key == "Delete") 
-		&& (e.target.innerText == "\n" || e.target.innerText.trim == "")){
+		&& (e.target.innerText == "\n" || e.target.innerText == "")){
 		e.target.innerHTML = "<div><br></div>";
 	}
 });
