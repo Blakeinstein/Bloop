@@ -120,7 +120,7 @@ const spotlight = {
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
-				console.log("Implement spotlight functionality");
+				external.invoke("scBase64Decode.js");
 			}
 			else if (e.key === 'Escape') 
 					spotlight.hideSpotlight();
@@ -185,10 +185,47 @@ const spotlight = {
 		});
 	}
 };
-	
-// * Execute
+
 const	editor = document.getElementsByClassName("code-input")[0];
 
+const editorObj = {
+	// isSelection: false,
+	// fullText: editor.innerText,
+	// text: editor.innerText,
+	// script: 'base64decode',
+	// postError: (message) => alert(message),
+	// postInfo: (message) => alert(message)
+	script: "",
+	get isSelection() {
+		return false;
+	},
+	get fullText() {
+		return editor.innerText;
+	},
+	get text() {
+		return editorObj.isSelection? editorObj.selection : editorObj.fullText;
+	},
+	get selection() {
+		return editorObj.fullText;
+	},
+	set fullText(value) {
+		editor.innerHTML = "<div><br></div>";
+		textList = value.split("\n");
+		text = "";
+		for (let i in textList)
+			text += "<div>"+textList[i].replace(/\s/g, '&nbsp;')+"</div>";
+		// insert text manually
+		editor.innerHTML = text;
+	},
+	set text(value) {
+		if (editorObj.isSelection)
+			editorObj.selection = value
+		else
+			editorObj.fullText = value
+	}
+};
+
+// * Execute
 document.execCommand("defaultParagraphSeparator", false, "div")
 
 editor.addEventListener("paste", function(e) {

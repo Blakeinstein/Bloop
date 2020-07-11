@@ -8,3 +8,4 @@ cargo.lock
 bloop.code-workspace
 
 /webview
+/src/scripts

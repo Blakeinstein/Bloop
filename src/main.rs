@@ -1,5 +1,7 @@
 extern crate web_view;
 
+mod scripts;
+
 use web_view::*;
 
 fn main() {
@@ -8,9 +10,11 @@ fn main() {
         scripts = inline_script(include_str!("template/app.js")),
     );
     
+    let _scripts = scripts::Asset::iter();
+
     let mut maximized_state = false;
     
-    web_view::builder()
+    let webview = builder()
         .title("Bloop")
         .content(Content::Html(html_content))
         .size(750, 400)
@@ -31,12 +35,18 @@ fn main() {
                 "drag_intent" => {
                     webview.drag_intent();
                 },
-                _ => (),
+                _ => {
+                    if arg.starts_with("sc"){
+                        script_eval(&arg[2..], webview)?;
+                    }   
+                },
             }    
             Ok(())
         })
-        .run()
+        .build()
         .unwrap();
+
+        webview.run().unwrap();
 }
 
 fn inline_style(s: &str) -> String {
@@ -45,4 +55,19 @@ fn inline_style(s: &str) -> String {
 
 fn inline_script(s: &str) -> String {
     format!(r#"<script type="text/javascript">{}</script>"#, s)
+}
+
+fn script_eval(arg: &str, webview: &mut WebView<()>) -> WVResult {
+    let script_str: &str;
+    match scripts::Asset::get("test.txt") {
+        Some(content) => {
+            script_str = std::str::from_utf8(content.as_ref()).unwrap();
+            println!("{}", &script_str);
+            webview.eval(&format!("{:?}; {}.main(editorObj)", &script_str, &arg[2..]))
+        },
+        None => {
+            println!("Error: File Not Found");
+            webview.eval("Alert('Programmer made a fucky-wucky');")
+        }
+    }
 }

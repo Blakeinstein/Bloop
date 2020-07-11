@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 web-view = { git = "https://github.com/Blakeinstein/web-view/" , features = ["edge"]}
+rust-embed = "5.5.1"
