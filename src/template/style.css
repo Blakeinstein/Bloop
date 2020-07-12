@@ -178,12 +178,12 @@ body {
 
 }
 
-.code-input div {
+.code-input > div {
 	padding-left: 5rem;
 	position: relative;
 }
 
-.code-input div::before {
+.code-input > div::before {
 	counter-increment: line;
     content: counter(line);
 	font-size: 1em;

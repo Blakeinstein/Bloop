@@ -14,6 +14,8 @@ fn main() {
 
     let mut maximized_state = false;
     
+    let _script_list = scripts::Asset::iter();
+    
     let webview = builder()
         .title("Bloop")
         .content(Content::Html(html_content))
@@ -37,7 +39,7 @@ fn main() {
                 },
                 _ => {
                     if arg.starts_with("sc"){
-                        script_eval(&arg[2..], webview)?;
+                        scripts::script_eval(&arg[2..], webview)?;
                     }   
                 },
             }    
@@ -55,19 +57,4 @@ fn inline_style(s: &str) -> String {
 
 fn inline_script(s: &str) -> String {
     format!(r#"<script type="text/javascript">{}</script>"#, s)
-}
-
-fn script_eval(arg: &str, webview: &mut WebView<()>) -> WVResult {
-    let script_str: &str;
-    match scripts::Asset::get("test.txt") {
-        Some(content) => {
-            script_str = std::str::from_utf8(content.as_ref()).unwrap();
-            println!("{}", &script_str);
-            webview.eval(&format!("{:?}; {}.main(editorObj)", &script_str, &arg[2..]))
-        },
-        None => {
-            println!("Error: File Not Found");
-            webview.eval("Alert('Programmer made a fucky-wucky');")
-        }
-    }
 }

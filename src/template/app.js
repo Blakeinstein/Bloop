@@ -120,7 +120,9 @@ const spotlight = {
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
+				editorObj.script = "base64decode.js";
 				external.invoke("scBase64Decode.js");
+				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
 					spotlight.hideSpotlight();
