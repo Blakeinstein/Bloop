@@ -120,8 +120,8 @@ const spotlight = {
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
-				editorObj.script = "base64decode.js";
-				external.invoke("scBase64Decode.js");
+				editorObj.script = "Base64Decode.js";
+				external.invoke("sc"+editorObj.script);
 				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
@@ -211,6 +211,7 @@ const editorObj = {
 		return editorObj.fullText;
 	},
 	set fullText(value) {
+		console.log(value);
 		editor.innerHTML = "<div><br></div>";
 		textList = value.split("\n");
 		text = "";
@@ -224,7 +225,8 @@ const editorObj = {
 			editorObj.selection = value
 		else
 			editorObj.fullText = value
-	}
+	},
+	postInfo: (message) => console.log(message),
 };
 
 // * Execute
