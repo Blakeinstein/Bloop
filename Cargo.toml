@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 web-view = { git = "https://github.com/Blakeinstein/web-view/" , features = ["edge"]}
 rust-embed = "5.5.1"
+serde_json = "1.0.56"
+serde = { version = "1.0.114", features = ["derive"] }

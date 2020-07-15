@@ -4,6 +4,8 @@ mod scripts;
 
 use web_view::*;
 
+use std::collections::HashMap;
+
 fn main() {
     let html_content = format!(include_str!("template/index.html"),
         styles = inline_style(include_str!("template/style.css")),
@@ -14,16 +16,14 @@ fn main() {
 
     let mut maximized_state = false;
     
-    let _script_list = scripts::Asset::iter();
-    
-    let webview = builder()
+    let mut webview = builder()
         .title("Bloop")
         .content(Content::Html(html_content))
         .size(750, 400)
         .frameless(true)
         .resizable(true)
         .debug(true)
-        .user_data(())
+        .user_data(HashMap::new())
         .invoke_handler(|webview, arg|  {
             match arg {
                 "exit" => webview.exit(),
@@ -48,7 +48,8 @@ fn main() {
         .build()
         .unwrap();
 
-        webview.run().unwrap();
+    scripts::build_scripts(&mut webview);
+    webview.run().unwrap();
 }
 
 fn inline_style(s: &str) -> String {
