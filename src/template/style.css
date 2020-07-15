@@ -279,16 +279,42 @@ body {
  
 	overflow: auto;
 }
-.action-list li {
+
+.action-list > li {
 	width: 100%;
-	min-height: 56px;
+	height: 56px;
 	padding: 0 12px;
 	margin: auto 0;
 }
-.action-list li div {
-	height: 56px;
+.action-list > li > div {
+	height: 50px;
 	display: table-cell;
 	vertical-align: middle;
+}
+
+.action-list > li > div::before {
+	content: "";
+	width: 50px;
+	display: table-cell;
+}
+
+.action-list > li > div > div {
+	display: table-cell;
+}
+
+.action-list > li > div > div > name {
+	display: block;
+	height: 35px;
+	font-size: 30px;
+	color: #dadada;
+}
+
+.action-list > li > div > div > description {
+	height: 15px;
+	overflow: hidden;
+	display: block;
+	Font-size: 14px;
+	color: #606060;
 }
 
 .selected {
