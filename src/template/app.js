@@ -29,7 +29,7 @@ const titlebar = {
 			e.stopPropagation();
 		}
 		titlebar.minimize.onclick = (e) => {
-			external.invoke('maximize');
+			external.invoke('minimize');
 			e.stopPropagation();
 		}
 		titlebar.maximize.onclick = (e) => titlebar.maximizeEvent();
