@@ -1,3 +1,5 @@
+const	editor = document.getElementsByClassName("code-input")[0];
+
 const titlebar = {
 	close: document.getElementsByClassName("titlebar-close")[0],
 	minimize: document.getElementsByClassName("titlebar-minimize")[0],
@@ -49,9 +51,31 @@ const spotlight = {
 	savedRange: null,
 	dataList: document.getElementsByClassName('action-list')[0].children,
 	alPlaceholder: document.getElementById('action-list-placeholder'),
+	actionList: document.getElementsByClassName('action-list')[0],
 	label: document.getElementsByClassName('titlebar-spotlight')[0],
 	labelText: document.getElementsByClassName('label'),
 	alSelected: 0,
+	spotlightActions: {
+		count: 0,
+		addAction: (name, desc, icon, tags) => {
+			let listItem = document.createElement("li");
+			listItem.innerHTML = `<div class=${icon}><div>
+									<Name>${name}</Name>
+									<description>${desc}</description>
+								</div></div>`;
+			listItem.setAttribute("tags", tags);
+			spotlight.actionList.appendChild(listItem);
+			spotlight.spotlightActions.count++;
+			// if
+		},
+		finalize: () => {
+			let listItem = document.createElement("li");
+			listItem.innerHTML = "<div>No match found</div>";
+			listItem.setAttribute("id", "action-list-placeholder");
+			listItem.classList.add("hidden");
+			spotlight.actionList.appendChild(listItem);
+		}
+	},
 
 	get selected() {
 		return spotlight.alSelected;
@@ -121,7 +145,7 @@ const spotlight = {
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
 				editorObj.script = "Base64Decode.js";
-				external.invoke("sc"+editorObj.script);
+				external.invoke("#"+editorObj.script);
 				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
@@ -188,15 +212,7 @@ const spotlight = {
 	}
 };
 
-const	editor = document.getElementsByClassName("code-input")[0];
-
 const editorObj = {
-	// isSelection: false,
-	// fullText: editor.innerText,
-	// text: editor.innerText,
-	// script: 'base64decode',
-	// postError: (message) => alert(message),
-	// postInfo: (message) => alert(message)
 	script: "",
 	get isSelection() {
 		return false;
@@ -256,4 +272,7 @@ spotlight.init();
 
 titlebar.init();
 
-window.onload = () => editor.focus();
+window.onload = () => {
+	external.invoke("doc_ready");
+	editor.focus();
+}

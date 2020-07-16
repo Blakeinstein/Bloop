@@ -6,24 +6,30 @@ use web_view::*;
 
 use std::collections::HashMap;
 
-fn main() {
-    let html_content = format!(include_str!("template/index.html"),
-        styles = inline_style(include_str!("template/style.css")),
-        scripts = inline_script(include_str!("template/app.js")),
-    );
-    
-    let _scripts = scripts::Asset::iter();
+struct Bloop {
+    // html_content: String,
+    script_list: HashMap<String, scripts::Script>
+}
 
-    let mut maximized_state = false;
-    
-    let mut webview = builder()
+impl Bloop {
+    fn new() -> Bloop{    
+        Bloop {
+            script_list: HashMap::new()
+        }
+    }
+    fn exec(&mut self, html_content: &str) {
+        let mut maximized_state = false;
+
+        // let name_list = scripts::build_scripts(&mut self.script_list);
+
+        let view = builder()
         .title("Bloop")
-        .content(Content::Html(html_content))
-        .size(750, 400)
+        .content(Content::Html(&html_content))
+        .size(900, 400)
         .frameless(true)
         .resizable(true)
         .debug(true)
-        .user_data(HashMap::new())
+        .user_data(())
         .invoke_handler(|webview, arg|  {
             match arg {
                 "exit" => webview.exit(),
@@ -37,9 +43,12 @@ fn main() {
                 "drag_intent" => {
                     webview.drag_intent();
                 },
+                "doc_ready" => {
+                    scripts::build_scripts(webview, &mut self.script_list)?;
+                },
                 _ => {
-                    if arg.starts_with("sc"){
-                        scripts::script_eval(&arg[2..], webview)?;
+                    if arg.starts_with("#"){
+                        scripts::script_eval(&self.script_list.get(&arg[1..]).unwrap(), webview)?;
                     }   
                 },
             }    
@@ -48,8 +57,16 @@ fn main() {
         .build()
         .unwrap();
 
-    scripts::build_scripts(&mut webview);
-    webview.run().unwrap();
+        view.run().unwrap();
+    }
+}
+
+fn main() {
+    let html_content = format!(include_str!("template/index.html"),
+            styles = inline_style(include_str!("template/style.css")),
+            scripts = inline_script(include_str!("template/app.js")), );
+    let mut app = Bloop::new();
+    app.exec(&html_content);
 }
 
 fn inline_style(s: &str) -> String {

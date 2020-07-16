@@ -38,22 +38,28 @@ impl Script {
     }
 }
 
+// static mut script_list: HashMap<String, Script> = HashMap::new();
+
 fn parse_meta(string: &str) -> serde_json::Result<Metadata>{
     let value: Metadata = serde_json::from_str(&string)?;
     Ok(value)
 }
 
-pub fn build_scripts(webview: &mut WebView<HashMap<String, Script>>){
-    let script_list = webview.user_data_mut();
+pub fn build_scripts(webview: &mut WebView<()>, script_list: &mut HashMap<String, Script>) -> WVResult{
     for script in Asset::iter() {
         let file = &Asset::get(script.as_ref()).unwrap();
         let script_string: &str = std::str::from_utf8(file.as_ref()).unwrap();
         script_list.insert(script.as_ref().to_string(), Script::new(script_string));
+        let meta = &script_list[&script.as_ref().to_string()].metadata;
+        webview.eval(&format!("spotlight.spotlightActions.addAction({:?}, {:?}, {:?}, {:?})",
+            meta.name, meta.description, meta.icon, meta.tags))?;
     }
+    webview.eval("spotlight.spotlightActions.finalize()")?;
+    Ok(())
 }
 
-pub fn script_eval(arg: &str, webview: &mut WebView<HashMap<String, Script>>) -> WVResult {
-    let script_str: &str = &webview.user_data()[arg].string;
+pub fn script_eval(script_obj: &Script, webview: &mut WebView<()>) -> WVResult {
+    let script_str: &str = &script_obj.string;
     let js = format!("{}; main(editorObj);", &script_str);
     webview.eval(&js)
 }
