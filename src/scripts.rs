@@ -49,10 +49,12 @@ pub fn build_scripts(webview: &mut WebView<()>, script_list: &mut HashMap<String
     for script in Asset::iter() {
         let file = &Asset::get(script.as_ref()).unwrap();
         let script_string: &str = std::str::from_utf8(file.as_ref()).unwrap();
-        script_list.insert(script.as_ref().to_string(), Script::new(script_string));
-        let meta = &script_list[&script.as_ref().to_string()].metadata;
+        let script = Script::new(script_string);
+        let meta = &script.metadata;
+
         webview.eval(&format!("spotlight.spotlightActions.addAction({:?}, {:?}, {:?}, {:?})",
             meta.name, meta.description, meta.icon, meta.tags))?;
+        script_list.insert(script.metadata.name.to_string(), script);
     }
     webview.eval("spotlight.spotlightActions.finalize()")?;
     Ok(())

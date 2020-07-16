@@ -64,6 +64,7 @@ const spotlight = {
 									<description>${desc}</description>
 								</div></div>`;
 			listItem.setAttribute("tags", tags);
+			listItem.setAttribute("name", name);
 			spotlight.actionList.appendChild(listItem);
 			spotlight.spotlightActions.count++;
 			// if
@@ -144,7 +145,7 @@ const spotlight = {
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
-				editorObj.script = "Base64Decode.js";
+				editorObj.script = spotlight.dataList[spotlight.alSelected].getAttribute('name');
 				external.invoke("#"+editorObj.script);
 				spotlight.hideSpotlight();
 			}
