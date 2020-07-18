@@ -220,6 +220,7 @@ body {
    height: 56px;
    margin: auto;
 
+   border-radius: 5px;
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
    border-top-left-radius: 5px;

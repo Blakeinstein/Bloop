@@ -22,7 +22,7 @@ impl Bloop {
 
         // let name_list = scripts::build_scripts(&mut self.script_list);
 
-        let view = builder()
+        let mut view = builder()
         .title("Bloop")
         .content(Content::Html(&html_content))
         .size(900, 400)
@@ -57,6 +57,7 @@ impl Bloop {
         .build()
         .unwrap();
 
+        view.set_color((58, 58, 58));
         view.run().unwrap();
     }
 }
