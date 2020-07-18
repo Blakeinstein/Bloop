@@ -95,8 +95,8 @@ body {
 }
 
 .titlebar-close svg {
-	width: 10px;
-	height: 10px;
+	width: 8px;
+	height: 8px;
 	margin-top: 2px;
 	margin-left: 2px;
 	opacity: 0;
@@ -113,10 +113,10 @@ body {
 }
 
 .titlebar-minimize svg {
-	width: 11px;
-	height: 11px;
-	margin-top: 1px;
-	margin-left: 1px;
+	width: 8px;
+	height: 8px;
+	margin-top: 2px;
+	margin-left: 2px;
 	opacity: 0;
 }
 
@@ -132,20 +132,19 @@ body {
 }
 
 .titlebar-fullscreen svg.fullscreen-svg {
-	width: 11px;
-	height: 11px;
-	margin-top: 1px;
-	margin-left: 1px;
+	width: 8px;
+	height: 8px;
+	margin-top: 2px;
+	margin-left: 2px;
 	opacity: 0;
 }
 
 .titlebar-fullscreen svg.maximize-svg {
-	width: 11px;
-	height: 11px;
-	margin-top: 1px;
-	margin-left: 1px;
+	width: 8px;
+	height: 8px;
+	margin-top: 2px;
+	margin-left: 2px;
 	opacity: 0;
-	display: none;
 }
 
 /* code editor */
