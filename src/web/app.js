@@ -96,7 +96,16 @@ window.spotlight = {
 	set selected(value) {
 		spotlight.dataList[spotlight.alSelected].classList.remove('selected');
 		spotlight.alSelected = value > 0 && value < spotlight.dataList.length - 1 ? value : 0;
-		spotlight.dataList[spotlight.alSelected].classList.add('selected');
+		let currentElement = spotlight.dataList[spotlight.alSelected];
+		if (!currentElement.classList.contains('hiddens')) {
+			let y = currentElement.offsetTop;
+			let top = spotlight.actionList.scrollTop;
+			let viewport = top + spotlight.actionList.offsetHeight;
+			console.log(viewport, viewport-top, y)
+			if ((y - 56) < top || y > viewport)
+			spotlight.actionList.scrollTop = y-56;
+		}
+		currentElement.classList.add('selected');
 	},
 	
 	hideSpotlight: () => {
