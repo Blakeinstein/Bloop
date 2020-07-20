@@ -60,12 +60,15 @@ window.spotlight = {
 	spotlight: document.getElementById('spotlight'),
 	body: document.getElementsByClassName('window-body')[0],
 	savedRange: null,
+	// ** Spotlight actions
 	dataList: document.getElementsByClassName('action-list')[0].children,
-	alPlaceholder: document.getElementById('action-list-placeholder'),
+	alPlaceholder: null,
 	actionList: document.getElementsByClassName('action-list')[0],
 	label: document.getElementsByClassName('titlebar-spotlight')[0],
 	labelText: document.getElementsByClassName('label'),
-	alSelected: 0,
+	alSelected: null,
+	actionCollection: [],
+	fuse: null,
 	spotlightActions: {
 		count: 0,
 		addAction: (name, desc, icon, tags) => {
@@ -74,10 +77,16 @@ window.spotlight = {
 									<Name>${name}</Name>
 									<description>${desc}</description>
 									</div></div>`;
-			listItem.setAttribute("tags", tags);
-			listItem.setAttribute("name", name);
+			// listItem.setAttribute("tags", tags);
+			// listItem.setAttribute("name", name);
 			spotlight.actionList.appendChild(listItem);
 			spotlight.spotlightActions.count++;
+			spotlight.fuse.add({
+				'name': name,
+				'tags': tags.split(','),
+				'desc': desc,
+				'dom': listItem
+			});
 			// if
 		},
 		finalize: () => {
@@ -86,26 +95,28 @@ window.spotlight = {
 			listItem.setAttribute("id", "action-list-placeholder");
 			listItem.classList.add("hidden");
 			spotlight.actionList.appendChild(listItem);
+			spotlight.alPlaceholder = listItem;
 		}
 	},
 
 	get selected() {
-		return spotlight.alSelected;
+		return spotlight.actionCollection.indexOf(spotlight.alSelected);
 	},
 	
-	set selected(value) {
-		spotlight.dataList[spotlight.alSelected].classList.remove('selected');
-		spotlight.alSelected = value > 0 && value < spotlight.dataList.length - 1 ? value : 0;
-		let currentElement = spotlight.dataList[spotlight.alSelected];
-		if (!currentElement.classList.contains('hiddens')) {
-			let y = currentElement.offsetTop;
+	set selected(elem) {
+		if (spotlight.alSelected)
+			spotlight.alSelected.classList.remove('selected');
+		spotlight.alSelected = elem;
+		if (elem == null)
+			return;
+		if (!elem.classList.contains('hiddens')) {
+			let y = elem.offsetTop;
 			let top = spotlight.actionList.scrollTop;
 			let viewport = top + spotlight.actionList.offsetHeight;
-			console.log(viewport, viewport-top, y)
 			if ((y - 56) < top || y > viewport)
-			spotlight.actionList.scrollTop = y-56;
+				spotlight.actionList.scrollTop = y-56;
 		}
-		currentElement.classList.add('selected');
+		elem.classList.add('selected');
 	},
 	
 	hideSpotlight: () => {
@@ -133,7 +144,42 @@ window.spotlight = {
 		spotlight.labelText[0].classList.add("labelHidden");
 	},
 
+	search: () => {
+		let query = spotlight.spotlight.value;
+
+		if (query == "" || query.length > 20){
+			for (let i = 0; i < spotlight.dataList.length; i++)
+				spotlight.dataList[i].classList.add('hidden');
+			return;
+		};
+
+		const searchResult = spotlight.fuse.search(query);
+
+		let flag = 0, flag2 = true;
+		for (let i in searchResult) {
+			let action = searchResult[i];
+
+			if (action.score < 0.4) {
+				action.item.dom.classList.remove('hidden');
+				if (flag2^=1)
+					spotlight.selected = action.item.dom;
+			} else {
+				action.item.dom.classList.add('hidden');
+				flag++;
+			}
+		}
+
+		if (flag >= searchResult.length) {
+			spotlight.selected = null;
+			spotlight.alPlaceholder.classList.remove('hidden');
+		}
+		else 
+			spotlight.alPlaceholder.classList.add('hidden');
+
+	},
+
 	init: () => {
+		// Create event listeners
 		document.addEventListener('keydown', (e) => {
 			if (e.ctrlKey && e.key === 'b') {
 				e.preventDefault();
@@ -155,52 +201,26 @@ window.spotlight = {
 		spotlight.spotlight.addEventListener('keydown', (e) => {
 			if (e.key === 'ArrowDown') {
 				e.preventDefault();
-				if (spotlight.alSelected != spotlight.dataList.length - 2) {
+				if (spotlight.selected != spotlight.actionCollection.length - 1) {
 					var i = spotlight.selected;
-					while (++i < spotlight.dataList.length - 1 && spotlight.dataList[i].classList.contains('hidden'));
-					spotlight.selected = i;
+					while (++i < spotlight.actionCollection.length && spotlight.actionCollection[i].dom.classList.contains('hidden'));
+					spotlight.selected = spotlight.actionCollection[i].dom;
 				}
 			}
 			else if (e.key === 'ArrowUp') {
 				e.preventDefault();
-				if (spotlight.alSelected > 0) {
+				if (spotlight.selected > 0) {
 					var i = spotlight.selected;
-					while (--i >= 0 && spotlight.dataList[i].classList.contains('hidden'));
-					spotlight.selected = i;
+					while (--i >= 0 && spotlight.actionCollection[i].dom.classList.contains('hidden'));
+					spotlight.selected = spotlight.actionCollection[i].dom;
 				}
 			}
 		})
-		spotlight.spotlight.addEventListener('input', () => {
-			var filter = spotlight.spotlight.value.toUpperCase();
-			if (filter == ""){
-				for (let i = 0; i < spotlight.dataList.length; i++)
-					spotlight.dataList[i].classList.add('hidden');
-				return;
-			}
-			var flag = 0;
-			for (var i = 0, flag2=true, name; i < spotlight.dataList.length - 1; i++) {
-				name = spotlight.dataList[i].innerText.toUpperCase();
-				if (name.toUpperCase().indexOf(filter) >= 0) {
-					spotlight.dataList[i].classList.remove('hidden');
-					if (flag2 && flag2--)
-						spotlight.selected = i;			
-				}
-				else {
-					spotlight.dataList[i].classList.add('hidden');
-					flag ++;
-				}
-			}
-			if (flag >= spotlight.dataList.length - 1) {
-				spotlight.selected = 0;
-				spotlight.dataList[flag].classList.remove('hidden');
-			}
-			else 
-				spotlight.dataList[spotlight.dataList.length - 1].classList.add('hidden');
-		})
+		spotlight.spotlight.addEventListener('input', spotlight.search)
 		spotlight.spotlight.addEventListener('click', (e) => {
 			e.stopPropagation();
 		});
-		document.addEventListener('click', function () {
+		document.addEventListener('click', () => {
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
 			else 
@@ -212,6 +232,27 @@ window.spotlight = {
 				e.stopPropagation();
 			}
 		});
+		// build action list collection
+		spotlight.fuse = new Fuse(spotlight.actionCollection, {
+			includeScore: true,
+			findAllMatches: true,
+			threshold: 1,
+			shouldSort: false,
+			keys: [
+				{
+					name: 'name',
+					weight: 0.9,
+				},
+				{
+					name: 'tags',
+					weight: 0.6,
+				},
+				{
+					name: 'desc',
+					weight: 0.2,
+				}
+			]
+		})
 	}
 };
 
