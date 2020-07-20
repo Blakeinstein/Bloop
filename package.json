@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "serve": "parcel src/web/index.html --out-dir dist/",
-    "build": "parcel build src/web/index.html --target browser --out-dir dist/",
+    "build": "parcel build src/web/index.html --target browser --out-dir dist/ --no-content-hash",
     "run": "yarn build && cargo run",
     "release": "yarn build && cargo release"
   },
