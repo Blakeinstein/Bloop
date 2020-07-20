@@ -4,8 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "run": "parcel src/web/index.html",
-    "build": "parcel build src/web/index.html --target browser --out-dir dist/ --no-minify"
+    "serve": "parcel src/web/index.html",
+    "build": "parcel build src/web/index.html --target browser --out-dir dist/ --no-minify",
+    "run": "npm run build && cargo run",
+    "release": "npm run build && cargo release"
   },
   "dependencies": {
     "codemirror": "^5.55.0",
