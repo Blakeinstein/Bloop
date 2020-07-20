@@ -77,8 +77,7 @@ window.spotlight = {
 									<Name>${name}</Name>
 									<description>${desc}</description>
 									</div></div>`;
-			// listItem.setAttribute("tags", tags);
-			// listItem.setAttribute("name", name);
+			listItem.setAttribute("name", name);
 			spotlight.actionList.appendChild(listItem);
 			spotlight.spotlightActions.count++;
 			spotlight.fuse.add({
@@ -147,35 +146,29 @@ window.spotlight = {
 	search: () => {
 		let query = spotlight.spotlight.value;
 
+		for (let i = 0; i < spotlight.dataList.length; i++)
+		spotlight.dataList[i].classList.add('hidden');
 		if (query == "" || query.length > 20){
-			for (let i = 0; i < spotlight.dataList.length; i++)
-				spotlight.dataList[i].classList.add('hidden');
 			return;
 		};
 
-		const searchResult = spotlight.fuse.search(query);
+		const searchResult = spotlight.fuse.search(query).filter(
+			(e) => e.score<0.4
+		);
 
-		let flag = 0, flag2 = true;
 		for (let i in searchResult) {
-			let action = searchResult[i];
+			searchResult[i].item.dom.classList.remove('hidden');
+		};
 
-			if (action.score < 0.4) {
-				action.item.dom.classList.remove('hidden');
-				if (flag2^=1)
-					spotlight.selected = action.item.dom;
-			} else {
-				action.item.dom.classList.add('hidden');
-				flag++;
-			}
+		let first = document.querySelector('.action-list > li:not(.hidden)');
+		if (first) {
+			spotlight.selected = first;
+			spotlight.alPlaceholder.classList.add('hidden');
 		}
-
-		if (flag >= searchResult.length) {
+		else {
 			spotlight.selected = null;
 			spotlight.alPlaceholder.classList.remove('hidden');
 		}
-		else 
-			spotlight.alPlaceholder.classList.add('hidden');
-
 	},
 
 	init: () => {
@@ -191,7 +184,7 @@ window.spotlight = {
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
-				editorObj.script = spotlight.dataList[spotlight.alSelected].getAttribute('name');
+				editorObj.script = spotlight.alSelected.getAttribute('name');
 				external.invoke("#"+editorObj.script);
 				spotlight.hideSpotlight();
 			}
@@ -199,24 +192,24 @@ window.spotlight = {
 					spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keydown', (e) => {
+			let visibleActions = document.querySelectorAll('.action-list > li:not(.hidden)');
+			if (!visibleActions) return;
+			let i = Array.prototype.indexOf.call(visibleActions, spotlight.alSelected);
+
 			if (e.key === 'ArrowDown') {
 				e.preventDefault();
-				if (spotlight.selected != spotlight.actionCollection.length - 1) {
-					var i = spotlight.selected;
-					while (++i < spotlight.actionCollection.length && spotlight.actionCollection[i].dom.classList.contains('hidden'));
-					spotlight.selected = spotlight.actionCollection[i].dom;
+				if (i < visibleActions.length - 1) {
+					spotlight.selected = visibleActions[i+1];
 				}
 			}
 			else if (e.key === 'ArrowUp') {
 				e.preventDefault();
-				if (spotlight.selected > 0) {
-					var i = spotlight.selected;
-					while (--i >= 0 && spotlight.actionCollection[i].dom.classList.contains('hidden'));
-					spotlight.selected = spotlight.actionCollection[i].dom;
+				if (i > 0) {
+					spotlight.selected = visibleActions[i-1];
 				}
 			}
 		})
-		spotlight.spotlight.addEventListener('input', spotlight.search)
+		spotlight.spotlight.addEventListener('input', spotlight.search);
 		spotlight.spotlight.addEventListener('click', (e) => {
 			e.stopPropagation();
 		});
@@ -235,9 +228,6 @@ window.spotlight = {
 		// build action list collection
 		spotlight.fuse = new Fuse(spotlight.actionCollection, {
 			includeScore: true,
-			findAllMatches: true,
-			threshold: 1,
-			shouldSort: false,
 			keys: [
 				{
 					name: 'name',
