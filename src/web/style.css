@@ -154,11 +154,10 @@ body {
 	order: 2;
 	overflow-x: hidden;
 	overflow-y: auto;
-	counter-reset: line;
 	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 5.4px), #1e1e1e calc(5rem - 5.4px), #1e1e1e 100%);
 }
 
-.code-input{
+/* .CodeMirror{
 	margin: 0;
 	padding: 0;
 	padding-top: 5px;
@@ -176,14 +175,20 @@ body {
     color:rgba(255, 255, 255, 0.7);
 	resize:none;
 
-}
+} */
 
-.code-input > div {
+/* .CodeMirror textarea {
 	padding-left: 5rem;
 	position: relative;
-}
+	margin: 0;
+	
+	width: 100%;
+	word-wrap: break-word;
+	word-break: break-all;
+	white-space: initial;
+} */
 
-.code-input > div::before {
+/* .CodeMirror > div::before {
 	counter-increment: line;
     content: counter(line);
 	font-size: 1em;
@@ -194,7 +199,7 @@ body {
 	left: 0;
 	user-select: none;
 	position: absolute;
-}
+} */
 
 /* spotlight */
 .hidden {

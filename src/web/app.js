@@ -1,6 +1,18 @@
-const	editor = document.getElementsByClassName("code-input")[0];
+import CodeMirror from 'codemirror';
+import Fuse from 'fuse.js';
 
-const titlebar = {
+window.editor = CodeMirror(
+	document.getElementsByClassName('window-body')[0],
+	{
+		scrollbarStyle: null,
+		// autofocus: true,
+		theme: 'night',
+		lineWrapping: true,
+		mode: "text/javascript"
+	}
+);
+	
+window.titlebar = {
 	close: document.getElementsByClassName("titlebar-close")[0],
 	minimize: document.getElementsByClassName("titlebar-minimize")[0],
 	maximize: document.getElementsByClassName("titlebar-fullscreen")[0],
@@ -41,7 +53,7 @@ const titlebar = {
 }
 
 // * Implement Spotlight
-const spotlight = {
+window.spotlight = {
 	firstChar: false,
     visible: false,
     pissed: false,
@@ -93,21 +105,7 @@ const spotlight = {
 		spotlight.body.classList.remove("shaded");
 		window.setTimeout(() => editor.focus(), 0);
 		if (spotlight.savedRange != null) {
-			if (window.getSelection){
-				//non IE and there is already a selection
-				var s = window.getSelection();
-				if (s.rangeCount > 0) 
-				s.removeAllRanges();
-				s.addRange(spotlight.savedRange);
-			}
-			else if (document.createRange){
-				//non IE and no selection
-				window.getSelection().addRange(spotlight.savedRange);
-			}
-			else if (document.selection){
-				//IE
-				spotlight.savedRange.select();
-			}
+			editor.setCursor(spotlight.savedRange);
 		}
 		spotlight.visible = false;
 		spotlight.labelText[1].classList.add("labelHidden");
@@ -118,15 +116,9 @@ const spotlight = {
 		spotlight.spotlightWrapper.classList.remove("hidden");
 		spotlight.body.classList.add("shaded");
 		spotlight.spotlight.value = '';
-		if (window.getSelection)
-			//non IE Browsers
-			spotlight.savedRange = window.getSelection().getRangeAt(0);
-		else if (document.selection)
-		//IE 
-			spotlight.savedRange = document.selection.createRange();
+		spotlight.savedRange = editor.getCursor();
 		for (let i = 0; i < spotlight.dataList.length; i++)
 			spotlight.dataList[i].classList.add('hidden');
-		window.setTimeout(() => editor.blur(), 0);
 		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = true;
 		spotlight.labelText[1].classList.remove("labelHidden");
@@ -203,6 +195,8 @@ const spotlight = {
 		document.addEventListener('click', function () {
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
+			else 
+				editor.focus();
 		});
 		spotlight.label.addEventListener('click', (e) => {
 			if (!spotlight.visible){
@@ -213,29 +207,25 @@ const spotlight = {
 	}
 };
 
-const editorObj = {
+window.editorObj = {
 	script: "",
 	get isSelection() {
-		return false;
+		return editor.somethingSelected();
 	},
 	get fullText() {
-		return editor.innerText;
+		return editor.getValue();
 	},
 	get text() {
 		return editorObj.isSelection? editorObj.selection : editorObj.fullText;
 	},
 	get selection() {
-		return editorObj.fullText;
+		return editor.getSelection();
+	},
+	set selection(value) {
+		editor.replaceSelection(value);
 	},
 	set fullText(value) {
-		console.log(value);
-		editor.innerHTML = "<div><br></div>";
-		textList = value.split("\n");
-		text = "";
-		for (let i in textList)
-			text += "<div>"+textList[i].replace(/\s/g, '&nbsp;')+"</div>";
-		// insert text manually
-		editor.innerHTML = text;
+		editor.setValue(value);
 	},
 	set text(value) {
 		if (editorObj.isSelection)
@@ -246,34 +236,12 @@ const editorObj = {
 	postInfo: (message) => console.log(message),
 };
 
-// * Execute
-document.execCommand("defaultParagraphSeparator", false, "div")
+//* Execute
+window.spotlight.init();
 
-editor.addEventListener("paste", function(e) {
-    // cancel paste
-    e.preventDefault();
-
-    // get text representation of clipboard
-	var text = (e.originalEvent || e).clipboardData.getData('text/plain');
-	textList = text.split("\n");
-	text = "";
-	for (let i in textList)
-		text += "<div>"+textList[i].replace(/\s/g, '&nbsp;')+"</div>";
-    // insert text manually
-    document.execCommand("insertHTML", false, text);
-});
-
-// * Dont remove line 1.
-editor.addEventListener("keydown", (e) => {
-	if (e.key == "Backspace" && e.target.innerText.trim() == "")
-		e.preventDefault();
-});
-
-spotlight.init();
-
-titlebar.init();
+window.titlebar.init();
 
 window.onload = () => {
 	external.invoke("doc_ready");
-	editor.focus();
+	window.editor.focus();
 }
