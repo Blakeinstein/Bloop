@@ -7,5 +7,7 @@ node_modules
 cargo.lock
 bloop.code-workspace
 
-/webview
-/src/scripts
+webview
+src/scripts
+dist
+.cache
