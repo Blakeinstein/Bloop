@@ -5,7 +5,6 @@ window.editor = CodeMirror(
 	document.getElementsByClassName('window-body')[0],
 	{
 		scrollbarStyle: null,
-		// autofocus: true,
 		theme: 'night',
 		lineWrapping: true,
 		mode: "text/javascript"
@@ -71,10 +70,10 @@ window.spotlight = {
 		count: 0,
 		addAction: (name, desc, icon, tags) => {
 			let listItem = document.createElement("li");
-			listItem.innerHTML = `<div class=${icon}><div>
+			listItem.innerHTML = `<div><i class="${icon}-icon listIcon"></i><div>
 									<Name>${name}</Name>
 									<description>${desc}</description>
-								</div></div>`;
+									</div></div>`;
 			listItem.setAttribute("tags", tags);
 			listItem.setAttribute("name", name);
 			spotlight.actionList.appendChild(listItem);

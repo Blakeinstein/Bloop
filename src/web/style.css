@@ -1,5 +1,5 @@
 :root {
-	font-family:'CascadiaCode Nerd Font', monospace;
+	font-family:'SpaceMono Nerd Font';
     font-weight: 12px;
     --background-color: #000 ;
 }
@@ -157,50 +157,6 @@ body {
 	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 5.4px), #1e1e1e calc(5rem - 5.4px), #1e1e1e 100%);
 }
 
-/* .CodeMirror{
-	margin: 0;
-	padding: 0;
-	padding-top: 5px;
-
-	height: 100%;
-	width: 100%;
-	word-wrap: break-word;
-	word-break: break-all;
-	white-space: pre;
-
-    font-size:2rem;
-    line-height: 1.5em;
-	font-feature-settings: common-ligatures; 
-	-ms-font-feature-settings: common-ligatures;
-    color:rgba(255, 255, 255, 0.7);
-	resize:none;
-
-} */
-
-/* .CodeMirror textarea {
-	padding-left: 5rem;
-	position: relative;
-	margin: 0;
-	
-	width: 100%;
-	word-wrap: break-word;
-	word-break: break-all;
-	white-space: initial;
-} */
-
-/* .CodeMirror > div::before {
-	counter-increment: line;
-    content: counter(line);
-	font-size: 1em;
-	padding: 0 0.4em;
-	user-select: none;
-	width: 5rem;
-	text-align: right;
-	left: 0;
-	user-select: none;
-	position: absolute;
-} */
-
 /* spotlight */
 .hidden {
 	display: none;
@@ -264,7 +220,6 @@ body {
 	width: 628px;
 	outline: none;
 	font-size: 1.3rem;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 	color: white;
 	background-color: #0f0f0f;
 	padding: 0 12px;
@@ -297,12 +252,6 @@ body {
 	vertical-align: middle;
 }
 
-.action-list > li > div::before {
-	content: "";
-	width: 50px;
-	display: table-cell;
-}
-
 .action-list > li > div > div {
 	display: table-cell;
 }
@@ -310,6 +259,7 @@ body {
 .action-list > li > div > div > name {
 	display: block;
 	height: 35px;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 	font-size: 30px;
 	color: #dadada;
 }
@@ -317,6 +267,7 @@ body {
 .action-list > li > div > div > description {
 	height: 15px;
 	overflow: hidden;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 	display: block;
 	Font-size: 14px;
 	color: #606060;
@@ -350,14 +301,6 @@ body {
 	font-size: 14px;
 	font-style: normal;
 	display: inline-block;
-}
-
-.ctrl::before{
-	content: "\fb33";
-}
-
-.script::before{
-	content: "\f977";
 }
 
 .labelHidden {
