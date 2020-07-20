@@ -63,17 +63,19 @@ impl Bloop {
 }
 
 fn main() {
-    let html_content = format!(include_str!("template/index.html"),
-            styles = inline_style(include_str!("template/style.css")),
-            scripts = inline_script(include_str!("template/app.js")), );
+    // let html_content = format!(include_str!("template/index.html"),
+    //         styles = inline_style(include_str!("template/style.css")),
+    //         scripts = inline_script(include_str!("template/app.js")), );
+    let html_content = include_str!("../dist/index.html");
+    // println!("{}", &html_content);
     let mut app = Bloop::new();
     app.exec(&html_content);
 }
 
-fn inline_style(s: &str) -> String {
+fn _inline_style(s: &str) -> String {
     format!(r#"<style type="text/css">{}</style>"#, s)
 }
 
-fn inline_script(s: &str) -> String {
+fn _inline_script(s: &str) -> String {
     format!(r#"<script type="text/javascript">{}</script>"#, s)
 }
