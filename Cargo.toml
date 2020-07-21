@@ -3,7 +3,7 @@ name = "bloop"
 version = "0.1.0"
 authors = ["Blaine <rishi1998@gmail.com>"]
 edition = "2018"
-
+build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -11,3 +11,14 @@ web-view = { git = "https://github.com/Blakeinstein/web-view/" , features = ["ed
 rust-embed = "5.5.1"
 serde_json = "1.0.56"
 serde = { version = "1.0.114", features = ["derive"] }
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1.11"
+
+[package.metadata.winres]
+ProductName = "Bloop"
+FileDescription = "A light weight scratch pad for developers"
+OriginalFilename = "Bloop.EXE"
+ProductVersion = "0.1.0"
+LegalCopyright = "© 2020 Blaine"
+
