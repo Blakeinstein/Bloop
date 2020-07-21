@@ -95,6 +95,10 @@ window.spotlight = {
 			listItem.classList.add("hidden");
 			spotlight.actionList.appendChild(listItem);
 			spotlight.alPlaceholder = listItem;
+		},
+		Ok: () => {
+			// * Script has finished execution, return.
+			spotlight.hideSpotlight();
 		}
 	},
 
@@ -188,7 +192,6 @@ window.spotlight = {
 				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
 				external.invoke("#"+editorObj.script);
-				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
 					spotlight.hideSpotlight();
@@ -308,4 +311,6 @@ spotlight.spotlightActions.addAction(
 	"quote",
 	"test,test,one,two"
 );
+
+spotlight.spotlightActions.finalize();
 /// #endif
