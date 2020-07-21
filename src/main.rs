@@ -6,6 +6,12 @@ use web_view::*;
 
 use std::collections::HashMap;
 
+use rust_embed::RustEmbed;
+
+#[derive(RustEmbed)]
+#[folder = "src/web/fonts/"]
+struct Fonts;
+
 struct Bloop {
     // html_content: String,
     script_list: HashMap<String, scripts::Script>
@@ -45,6 +51,7 @@ impl Bloop {
                 },
                 "doc_ready" => {
                     scripts::build_scripts(webview, &mut self.script_list)?;
+                    println!("doc_ready!");
                 },
                 _ => {
                     if arg.starts_with("#"){
@@ -57,17 +64,26 @@ impl Bloop {
         .build()
         .unwrap();
 
-        view.set_color((58, 58, 58));
+        let mut fonts = Fonts::iter();
+        let font_path = fonts.next();
+        
+        let css = &format!(r#"
+        @font-face {{
+            font-family: "SMNF";
+            src: url("fonts/{}") format("truetype");
+        }}
+        "#, font_path.as_ref().unwrap());
+
+        println!("{}", &css);
+        
+        view.inject_css(&css).unwrap();
+        
         view.run().unwrap();
     }
 }
 
 fn main() {
-    // let html_content = format!(include_str!("template/index.html"),
-    //         styles = inline_style(include_str!("template/style.css")),
-    //         scripts = inline_script(include_str!("template/app.js")), );
     let html_content = include_str!("../dist/index.html");
-    // println!("{}", &html_content);
     let mut app = Bloop::new();
     app.exec(&html_content);
 }
