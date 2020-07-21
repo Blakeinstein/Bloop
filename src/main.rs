@@ -51,7 +51,6 @@ impl Bloop {
                 },
                 "doc_ready" => {
                     scripts::build_scripts(webview, &mut self.script_list)?;
-                    println!("doc_ready!");
                 },
                 _ => {
                     if arg.starts_with("#"){
