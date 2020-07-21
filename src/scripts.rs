@@ -61,7 +61,6 @@ pub fn build_scripts(webview: &mut WebView<()>, script_list: &mut HashMap<String
 }
 
 pub fn script_eval(script_obj: &Script, webview: &mut WebView<()>) -> WVResult {
-    let script_str: &str = &script_obj.string;
-    let js = format!("{}; main(editorObj);", &script_str);
+    let js = format!("{}; main(editorObj);", &script_obj.string);
     webview.eval(&js)
 }

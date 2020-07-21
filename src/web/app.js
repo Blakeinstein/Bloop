@@ -292,14 +292,20 @@ window.onload = () => {
 /// #if env == 'DEBUG'
 const external = {
 	invoke: (script) => {
-		window.editorObj.text = "did it work?";
+		console.log(script);
+		let fn = window[script.slice(1)]
+		if (typeof fn === "function") fn(window.editorObj);
 	}
-}
+};
+
+window.Test = (text) => {
+	text.text = "did it work?";
+};
 
 spotlight.spotlightActions.addAction(
-	"Test Script",
+	"Test",
 	"Testing script",
 	"quote",
 	"test,test,one,two"
-)
+);
 /// #endif
