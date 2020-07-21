@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve": "parcel src/web/index.html --out-dir dist/",
+    "serve": "cross-env env=DEBUG parcel src/web/index.html",
     "build": "parcel build src/web/index.html --target browser --out-dir dist/ --no-content-hash",
     "run": "yarn build && cargo run",
     "release": "yarn build && cargo release"
@@ -14,6 +14,8 @@
     "fuse.js": "^6.4.0"
   },
   "devDependencies": {
+    "@kenpb/parcel-plugin-ifdef": "^1.1.2",
+    "cross-env": "^7.0.2",
     "parcel": "^1.12.4",
     "parcel-plugin-inline-source": "^1.0.0"
   }

@@ -184,6 +184,8 @@ window.spotlight = {
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
+				e.preventDefault();
+				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
 				external.invoke("#"+editorObj.script);
 				spotlight.hideSpotlight();
@@ -249,28 +251,30 @@ window.spotlight = {
 window.editorObj = {
 	script: "",
 	get isSelection() {
-		return editor.somethingSelected();
+		return window.editor.somethingSelected();
 	},
 	get fullText() {
-		return editor.getValue();
+		return window.editor.getValue();
 	},
 	get text() {
-		return editorObj.isSelection? editorObj.selection : editorObj.fullText;
+		return window.editorObj.isSelection? 
+			window.editorObj.selection : window.editorObj.fullText;
 	},
 	get selection() {
-		return editor.getSelection();
+		return window.editor.getSelection();
 	},
 	set selection(value) {
-		editor.replaceSelection(value);
+		window.editor.replaceSelection(value);
 	},
 	set fullText(value) {
-		editor.setValue(value);
+		window.editor.setValue(value);
 	},
 	set text(value) {
-		if (editorObj.isSelection)
-			editorObj.selection = value
+		console.log(window.editorObj.isSelection)
+		if (window.editorObj.isSelection)
+			window.editorObj.selection = value
 		else
-			editorObj.fullText = value
+			window.editorObj.fullText = value
 	},
 	postInfo: (message) => console.log(message),
 };
@@ -284,3 +288,18 @@ window.onload = () => {
 	external.invoke("doc_ready");
 	window.editor.focus();
 }
+
+/// #if env == 'DEBUG'
+const external = {
+	invoke: (script) => {
+		window.editorObj.text = "did it work?";
+	}
+}
+
+spotlight.spotlightActions.addAction(
+	"Test Script",
+	"Testing script",
+	"quote",
+	"test,test,one,two"
+)
+/// #endif
