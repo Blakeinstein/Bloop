@@ -7,7 +7,7 @@
     "serve": "cross-env env=DEBUG parcel src/web/index.html",
     "build": "cross-env env=PROD parcel build src/web/index.html --target browser --out-dir dist/ --no-content-hash",
     "run": "yarn build && cargo run",
-    "release": "yarn build && cargo release"
+    "release": "yarn build && cargo build"
   },
   "dependencies": {
     "codemirror": "^5.55.0",
