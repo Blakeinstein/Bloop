@@ -11,3 +11,4 @@ webview
 src/scripts
 dist
 .cache
+*.ttf
