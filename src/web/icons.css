@@ -1,87 +1,107 @@
-.ctrl::before{
-	content: "\fb31";
+@font-face {
+    font-family: 'icons';
+    src:  url('fonts/icons.eot?nyqxuh');
+    src:  url('fonts/icons.eot?nyqxuh#iefix') format('embedded-opentype'),
+        url('fonts/icons.ttf?nyqxuh') format('truetype'),
+        url('fonts/icons.woff?nyqxuh') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
-.script::before{
-	content: "\f977";
+.icon{
+    font-size: 14px;
+    font-family: 'icons' !important;
+	font-style: normal;
+	display: inline-block;
 }
 
 .listIcon{
+    font-family: 'icons' !important;
     font-style: normal;
     display: table-cell;
-	font-size: 2em;
+    font-size: 2em;
     vertical-align: middle;
     width: 50px;    
 }
 
+.ctrl::before{
+	content: "\ea4f";
+}
+
+.script::before{
+	content: "\e918";
+}
+
+
 .HTML-icon::before {
-    content: "\e796";
+    content: "\e91b";
 }
 
 .broom-icon::before{
-    content: "\f5e1";
+    content: "\e902";
 }
 
 .collapse-icon::before{
-    content: "\f543";
+    content: "\e912";
 }
 
 .counter-icon::before{
-    content: "\f698";
+    content: "\e906";
 }
 
 .dice-icon::before{
-    content: "\f6cc";
+    content: "\e907";
 }
 
 .filtration-icon::before{
-    content: "\f0b0";
+    content: "\e908";
 }
 
 .fingerprint-icon::before{
-    content: "\f736";
+    content: "\e909";
 }
 
 .flip-icon::before{
-    content: "\fb21";
+    content: "\e90a";
 }
 
 .indentification-icon::before{
-    content: "\f2c3";
+    content: "\e90e";
 }
 
 .link-icon::before{
-    content: "\f838";
+    content: "\e910";
 }
 
 .metamorphose-icon::before{
-    content: "\fb3b";
+    content: "\e913";
 }
 
 .quote-icon::before{
-    content: "\f77d";
+    content: "\e90c";
 }
 
 .table-icon::before{
-    content: "\f9f3";
+    content: "\e911";
 }
 
 .term-icon::before{
-    content: "\e714";
+    content: "\e918";
 }
 
 .type-icon::before{
-    content: "\fbd4";
+    content: "\e901";
 }
 
 .unkown-icon::before{
-    content: "\f128";
+    content: "\e915";
 }
 
 .watch-icon::before{
-    content: "\e386";
+    content: "\e914";
 }
 
 .website-icon::before{
-    content: "\f9ac";
+    content: "\e91e";
 }

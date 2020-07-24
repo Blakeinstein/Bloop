@@ -1,5 +1,5 @@
 :root {
-	font-family:'SMNF', 'SpaceMono Nerd Font';
+	font-family: "SF mono", "Cascadia Code", "CascadiaCode Nerd Font", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 *, *:before, *:after{
@@ -295,18 +295,7 @@ body {
 	z-index: 10;
 }
 
-.icon{
-	font-size: 14px;
-	font-style: normal;
-	display: inline-block;
-}
-
 .labelHidden {
 	visibility: hidden;
 	opacity: 0;
-}
-
-@font-face{
-	font-family: "SMNF";
-	src: url("fonts/SM.ttf") format("truetype");
 }
