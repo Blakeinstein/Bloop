@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'icons';
-    src:  url('fonts/icons.eot?nyqxuh');
-    src:  url('fonts/icons.eot?nyqxuh#iefix') format('embedded-opentype'),
-        url('fonts/icons.ttf?nyqxuh') format('truetype'),
-        url('fonts/icons.woff?nyqxuh') format('woff');
+    src:  url('icons/icons.eot?nyqxuh');
+    src:  url('icons/icons.eot?nyqxuh#iefix') format('embedded-opentype'),
+        url('icons/icons.ttf?nyqxuh') format('truetype'),
+        url('icons/icons.woff?nyqxuh') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: block;
