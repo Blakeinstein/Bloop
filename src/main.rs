@@ -22,7 +22,7 @@ impl Bloop {
 
         // let name_list = scripts::build_scripts(&mut self.script_list);
 
-        let mut view = builder()
+        let view = builder()
         .title("Bloop")
         .content(Content::Html(&html_content))
         .size(900, 400)

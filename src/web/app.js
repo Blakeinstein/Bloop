@@ -288,7 +288,7 @@ window.spotlight.init();
 window.titlebar.init();
 
 window.onload = () => {
-	external.invoke("doc_ready");
+	external.invoke('doc_ready');
 	window.editor.focus();
 }
 
