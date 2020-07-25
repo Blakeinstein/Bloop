@@ -6,12 +6,6 @@ use web_view::*;
 
 use std::collections::HashMap;
 
-use rust_embed::RustEmbed;
-
-#[derive(RustEmbed)]
-#[folder = "src/web/fonts/"]
-struct Fonts;
-
 struct Bloop {
     // html_content: String,
     script_list: HashMap<String, scripts::Script>
@@ -62,20 +56,6 @@ impl Bloop {
         })
         .build()
         .unwrap();
-
-        let mut fonts = Fonts::iter();
-        let font_path = fonts.next();
-        
-        let css = &format!(r#"
-        @font-face {{
-            font-family: "SMNF";
-            src: url("fonts/{}") format("truetype");
-        }}
-        "#, font_path.as_ref().unwrap());
-
-        println!("{}", &css);
-        
-        view.inject_css(&css).unwrap();
         
         view.run().unwrap();
     }
