@@ -293,6 +293,7 @@ body {
 	visibility: visible;
 	position: absolute;
 	z-index: 10;
+	padding: 5px 0;
 }
 
 .labelHidden {

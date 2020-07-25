@@ -10,7 +10,6 @@
 }
 
 .icon{
-    font-size: 14px;
     font-family: 'icons' !important;
 	font-style: normal;
 	display: inline-block;
@@ -20,7 +19,7 @@
     font-family: 'icons' !important;
     font-style: normal;
     display: table-cell;
-    font-size: 2em;
+    font-size: 2.2em;
     vertical-align: middle;
     width: 50px;    
 }
