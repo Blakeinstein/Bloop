@@ -36,8 +36,9 @@ window.titlebar = {
 	init: () => {
 		titlebar.maximizeNodes = titlebar.maximize.children;
 		titlebar.close.onclick = (e) => {
-			external.invoke('exit');
 			e.stopPropagation();
+			// window.localStorage.setItem('BloopText', window.editorObj.fullText);
+			external.invoke('exit');
 		}
 		titlebar.minimize.onclick = (e) => {
 			external.invoke('minimize');
@@ -125,7 +126,7 @@ window.spotlight = {
 	hideSpotlight: () => {
 		spotlight.spotlightWrapper.classList.add("hidden");
 		spotlight.body.classList.remove("shaded");
-		window.setTimeout(() => editor.focus(), 0);
+		window.setTimeout(() => window.editorObj.focus(), 0);
 		if (spotlight.savedRange != null) {
 			editor.setCursor(spotlight.savedRange);
 		}
@@ -222,7 +223,7 @@ window.spotlight = {
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
 			else 
-				editor.focus();
+				window.editorObj.focus();
 		});
 		spotlight.label.addEventListener('click', (e) => {
 			if (!spotlight.visible){
@@ -279,6 +280,10 @@ window.editorObj = {
 		else
 			window.editorObj.fullText = value
 	},
+	focus: () => {
+		window.editor.focus();
+		window.editor.setCursor(window.editor.lineCount(), 0);
+	},
 	postInfo: (message) => console.log(message),
 };
 
@@ -289,7 +294,10 @@ window.titlebar.init();
 
 window.onload = () => {
 	external.invoke('doc_ready');
-	window.editor.focus();
+	// let cachedText = window.localStorage.getItem('BloopText');
+	// if (cachedText) 
+	// 	window.editorObj.fullText = cachedText;
+	window.editorObj.focus();
 }
 
 /// #if env == 'DEBUG'
