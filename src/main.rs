@@ -7,7 +7,6 @@ use web_view::*;
 use std::collections::HashMap;
 
 struct Bloop {
-    // html_content: String,
     script_list: HashMap<String, scripts::Script>
 }
 
@@ -19,8 +18,6 @@ impl Bloop {
     }
     fn exec(&mut self, html_content: &str) {
         let mut maximized_state = false;
-
-        // let name_list = scripts::build_scripts(&mut self.script_list);
 
         let view = builder()
         .title("Bloop")
