@@ -131,8 +131,9 @@ window.spotlight = {
 			editor.setCursor(spotlight.savedRange);
 		}
 		spotlight.visible = false;
-		spotlight.labelText[1].classList.add("labelHidden");
-		spotlight.labelText[0].classList.remove("labelHidden");
+		spotlight.labelText[2].classList.add("labelHidden");
+		if (spotlight.labelText[1].classList.contains("labelHidden"))
+			spotlight.labelText[0].classList.remove("labelHidden");
 	},
 
 	showSpotlight: () => {
@@ -144,7 +145,8 @@ window.spotlight = {
 			spotlight.dataList[i].classList.add('hidden');
 		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = true;
-		spotlight.labelText[1].classList.remove("labelHidden");
+		spotlight.labelText[2].classList.remove("labelHidden");
+		spotlight.labelText[1].classList.add("labelHidden");
 		spotlight.labelText[0].classList.add("labelHidden");
 	},
 
@@ -284,7 +286,10 @@ window.editorObj = {
 		window.editor.focus();
 		window.editor.setCursor(window.editor.lineCount(), 0);
 	},
-	postInfo: (message) => console.log(message),
+	postInfo: (message) => {
+		spotlight.labelText[1].innerText = message;
+		spotlight.labelText[1].classList.remove('labelHidden');
+	},
 };
 
 //* Execute
@@ -303,7 +308,6 @@ window.onload = () => {
 /// #if env == 'DEBUG'
 const external = {
 	invoke: (script) => {
-		console.log(script);
 		let fn = window[script.slice(1)]
 		if (typeof fn === "function") fn(window.editorObj);
 	}
@@ -311,6 +315,7 @@ const external = {
 
 window.Test = (text) => {
 	text.text = "did it work?";
+	text.postInfo = "Hello World!";
 };
 
 spotlight.spotlightActions.addAction(

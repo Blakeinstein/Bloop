@@ -296,6 +296,12 @@ body {
 	padding: 5px 0;
 }
 
+.postInfo {
+	border-radius: 5px;
+	background-color: rgb(6, 101, 179);
+	color: #dadada
+}
+
 .labelHidden {
 	visibility: hidden;
 	opacity: 0;
