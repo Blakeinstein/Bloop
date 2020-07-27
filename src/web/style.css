@@ -15,6 +15,7 @@ body {
 	height: 100vh;
 	width: 100vw;
 	margin: 0px;
+	cursor: default;
 }
 
 #content {
@@ -36,11 +37,13 @@ body {
 	flex: 0 1 auto;
 	order: 1;
 	user-select: none;
+	cursor: move;
 }
 
 .titlebar-stoplight {
 	float: left;
 	text-align: left;
+	cursor: default;
 }
 
 .titlebar:after,
@@ -153,6 +156,7 @@ body {
 	overflow-x: hidden;
 	overflow-y: auto;
 	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 5.4px), #1e1e1e calc(5rem - 5.4px), #1e1e1e 100%);
+	cursor: text;
 }
 
 /* spotlight */

@@ -1,13 +1,15 @@
 import CodeMirror from 'codemirror';
+
+import bloopMode from './code-mirror/mode';
+
 import Fuse from 'fuse.js';
 
 window.editor = CodeMirror(
 	document.getElementsByClassName('window-body')[0],
 	{
 		scrollbarStyle: null,
-		theme: 'night',
 		lineWrapping: true,
-		mode: "text/javascript"
+		mode: "bloop"
 	}
 );
 	
@@ -56,7 +58,6 @@ window.titlebar = {
 window.spotlight = {
 	firstChar: false,
     visible: false,
-    pissed: false,
     spotlightWrapper: document.getElementById('spotlight-wrapper'),
 	spotlight: document.getElementById('spotlight'),
 	body: document.getElementsByClassName('window-body')[0],
@@ -80,6 +81,8 @@ window.spotlight = {
 									<description>${desc}</description>
 									</div></div>`;
 			listItem.setAttribute("name", name);
+			listItem.onclick = () => editorObj.script = name;
+			listItem.onmouseover = () => spotlight.selected = listItem;
 			spotlight.actionList.appendChild(listItem);
 			spotlight.spotlightActions.count++;
 			spotlight.fuse.add({
@@ -208,13 +211,12 @@ window.spotlight = {
 				e.preventDefault();
 				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
-				external.invoke("#"+editorObj.script);
+				// external.invoke("#"+editorObj.script);
 			}
 			else if (e.key === 'Escape') 
 					spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keydown', (e) => {
-			// let visibleActions = document.querySelectorAll('.action-list > li:not(.hidden)');
 			if (!spotlight.visibleActions) return;
 			let i = Array.prototype.indexOf.call(spotlight.visibleActions, spotlight.alSelected);
 
@@ -269,7 +271,10 @@ window.spotlight = {
 };
 
 window.editorObj = {
-	script: "",
+	_script: "",
+	get script() {
+		return editorObj._script;
+	},
 	get isSelection() {
 		return window.editor.somethingSelected();
 	},
@@ -282,6 +287,11 @@ window.editorObj = {
 	},
 	get selection() {
 		return window.editor.getSelection();
+	},
+
+	set script(value) {
+		editorObj._script = value;
+		external.invoke("#"+value);
 	},
 	set selection(value) {
 		window.editor.replaceSelection(value);
