@@ -1,6 +1,8 @@
-# Bloop
-A light weight scratch pad inspired and derived from boop.
-The tool aims to be an exact imitation of boop built using web technologies and powered by <a href="https://github.com/Boscop/web-view">WebView-rs</a>
+﻿# Bloop
+<p align="center">
+A light weight scratch pad inspired and derived from boop.<br/>
+The tool aims to be an exact imitation of boop built using web technologies and powered by <a href="https://github.com/Boscop/web-view">webview-rs</a>.
+</p>
 
 <p align="center">
     screenshot placeholder
