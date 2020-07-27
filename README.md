@@ -27,10 +27,10 @@ Todo build instructions
 ### Planned features
 
 - Add directory for user-written scripts (for 0.1.0) 
-- Syntax highlighting (for 0.1.0)
 - Preferences(fonts etc)
 - Drag and Drop file to copy its contents
 - Add Boop's scripts automatically in build script(maybe as a git submodule)
+- light mode(Depends, not really interested)
 
 ### Documentation
 
