@@ -155,7 +155,7 @@ body {
 	order: 2;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background-image: linear-gradient(to right, #151515 0%, #151515 calc(5rem - 5.4px), #1e1e1e calc(5rem - 5.4px), #1e1e1e 100%);
+	background-image: linear-gradient(to right, #161616 0%, #161616 calc(5rem - 5.4px), #0f0f0f calc(5rem - 5.4px),#0f0f0f calc(5rem - 4.4px), #1f1f1f calc(5rem - 4.4px), #1f1f1f 100%);
 	cursor: text;
 }
 
