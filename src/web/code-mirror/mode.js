@@ -26,6 +26,31 @@
   
     CodeMirror.defineSimpleMode("bloop", {
       start: [
+        // Extras
+
+        //UTC date
+        {
+          regex: new RegExp(standalonePrefix+"("+UTCDate+")"+standaloneSuffix),
+          token: "number"
+        },
+        // MD5 strings
+        {
+          regex: new RegExp(standalonePrefix+"([a-f0-9]{32})"+standaloneSuffix),
+          token: "keyword"
+        },
+        // Match JSON labels and generic parameters
+        {
+          regex: new RegExp(quoteLookahead+"(?=(?:[ {\\[]*))([^\\r\\n:\\s\\w]+?|"+quotes+")\\s*(?=\\:(?!\\:))", "m"),
+          token: "extra"
+        },
+        // XML-like tags
+        {
+          regex: new RegExp(+quoteLookahead+"<(?:.*?)\\b[^>]*\\/?>", "m"),
+          token: "attribute"
+        },
+
+        //regulars
+
         {
           regex: new RegExp(number),
           token: "number"
@@ -39,21 +64,7 @@
           regex: new RegExp(standalonePrefix+"("+moreAttributes.join("|")+")"+standaloneSuffix, "i"),
           token: "keyword"
         },
-        // Extras
-        {
-          regex: new RegExp(standalonePrefix+"("+UTCDate+")"+standaloneSuffix),
-          token: "number"
-        },
-        // MD5 strings
-        {
-          regex: new RegExp(standalonePrefix+"([a-f0-9]{32})"+standaloneSuffix),
-          token: "keyword"
-        },
-        // XML-like tags
-        {
-          regex: new RegExp(+quoteLookahead+"<(?:.*?)\\b[^>]*\\/?>", "m"),
-          token: "attribute"
-        },
+        
         // Strings
         {
           regex: new RegExp(quotes, "is"),
@@ -70,13 +81,6 @@
         {
           regex: new RegExp("(\"\"\")(.*?)(\"\"\")", "is"),
           token: "string"
-        },
-        // More Extras
-
-        // Match JSON labels and generic parameters
-        {
-          regex: new RegExp(quoteLookahead+"(?=(?:[ {\\[]*))([^\\r\\n:\\s\\w]+?|"+quotes+")\\s*(?=\\:(?!\\:))", "m"),
-          token: "extra"
         },
 
         // Comments
