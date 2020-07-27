@@ -214,7 +214,8 @@ body {
 }
 
 .action-list {
-	display: block;
+	display: flex;
+	flex-flow: column;
 	width: 628px;
 	outline: none;
 	font-size: 1.3rem;

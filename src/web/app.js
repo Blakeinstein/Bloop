@@ -69,6 +69,7 @@ window.spotlight = {
 	labelText: document.getElementsByClassName('label'),
 	alSelected: null,
 	actionCollection: [],
+	visibleActions: [],
 	fuse: null,
 	spotlightActions: {
 		count: 0,
@@ -153,10 +154,21 @@ window.spotlight = {
 	search: () => {
 		let query = spotlight.spotlight.value;
 
+		spotlight.visibleActions = [];
 		for (let i = 0; i < spotlight.dataList.length; i++)
-		spotlight.dataList[i].classList.add('hidden');
+			spotlight.dataList[i].classList.add('hidden');
+
 		if (query == "" || query.length > 20){
 			return;
+		};
+
+		if (query == "*") {
+			for (let i in spotlight.actionCollection) {
+				let currentDom = spotlight.actionCollection[i].dom;
+				currentDom.classList.remove('hidden');
+				currentDom.style.order = i;
+				spotlight.visibleActions.push(currentDom);
+			}
 		};
 
 		const searchResult = spotlight.fuse.search(query).filter(
@@ -164,12 +176,14 @@ window.spotlight = {
 		);
 
 		for (let i in searchResult) {
-			searchResult[i].item.dom.classList.remove('hidden');
+			let currentDom = searchResult[i].item.dom;
+			currentDom.classList.remove('hidden');
+			currentDom.style.order = i;
+			spotlight.visibleActions.push(currentDom);
 		};
 
-		let first = document.querySelector('.action-list > li:not(.hidden)');
-		if (first) {
-			spotlight.selected = first;
+		if (spotlight.visibleActions) {
+			spotlight.selected = spotlight.visibleActions[0];
 			spotlight.alPlaceholder.classList.add('hidden');
 		}
 		else {
@@ -200,20 +214,20 @@ window.spotlight = {
 					spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keydown', (e) => {
-			let visibleActions = document.querySelectorAll('.action-list > li:not(.hidden)');
-			if (!visibleActions) return;
-			let i = Array.prototype.indexOf.call(visibleActions, spotlight.alSelected);
+			// let visibleActions = document.querySelectorAll('.action-list > li:not(.hidden)');
+			if (!spotlight.visibleActions) return;
+			let i = Array.prototype.indexOf.call(spotlight.visibleActions, spotlight.alSelected);
 
 			if (e.key === 'ArrowDown') {
 				e.preventDefault();
-				if (i < visibleActions.length - 1) {
-					spotlight.selected = visibleActions[i+1];
+				if (i < spotlight.visibleActions.length - 1) {
+					spotlight.selected = spotlight.visibleActions[i+1];
 				}
 			}
 			else if (e.key === 'ArrowUp') {
 				e.preventDefault();
 				if (i > 0) {
-					spotlight.selected = visibleActions[i-1];
+					spotlight.selected = spotlight.visibleActions[i-1];
 				}
 			}
 		})
