@@ -45,7 +45,7 @@
         },
         // XML-like tags
         {
-          regex: new RegExp(+quoteLookahead+"<(?:.*?)\\b[^>]*\\/?>", "m"),
+          regex: new RegExp(quoteLookahead+"<(?:.*?)\\b[^>]*\\/?>", "m"),
           token: "attribute"
         },
 
