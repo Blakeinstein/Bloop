@@ -12,7 +12,7 @@
     
     var moreAttributes = ["true", "false", "to", "string", "int", "float", "double", "bool", "boolean", "from"]
 
-    let standalonePrefix = "(?<=[\\s]|^|[\\(,:])"
+    let standalonePrefix = "(?:[\\s]|^|[\\(,:])"
 
     let standaloneSuffix = "(?=[\\s\\?\\!,:\\)\\();]|$)"
     
@@ -38,7 +38,7 @@
           regex: new RegExp(standalonePrefix+"([a-f0-9]{32})"+standaloneSuffix),
           token: "keyword"
         },
-        // Match JSON labels and generic parameters
+        // Match JSON labelss and generic parameters
         {
           regex: new RegExp(quoteLookahead+"(?=(?:[ {\\[]*))([^\\r\\n:\\s\\w]+?|"+quotes+")\\s*(?=\\:(?!\\:))", "m"),
           token: "extra"
@@ -67,19 +67,7 @@
         
         // Strings
         {
-          regex: new RegExp(quotes, "is"),
-          token: "string"
-        },
-        {
-          regex: new RegExp("`(?:[^`\\\\\\n]|\\\\.)*[^`\\n]*`", "is"),
-          token: "string"
-        },
-        {
-          regex: new RegExp("'(?:[^\'\\\\\\n]|\\\\.)*[^\'\\n]*'", "is"),
-          token: "string"
-        },
-        {
-          regex: new RegExp("(\"\"\")(.*?)(\"\"\")", "is"),
+          regex: new RegExp("(\"\"\"|\'\'\'|\"|\')(?:(?!\\1)(?:\\\\.|[^\\\\]))*\\1", "m"),
           token: "string"
         },
 
@@ -88,14 +76,14 @@
           regex: new RegExp(quoteLookahead+"//(.*)"),
           token: "extra"
         },
-        {
-          regex: new RegExp(quoteLookahead+"/\\*.*?\\*/", "is"),
-          token: "comment"
-        },
-        {
-          regex: new RegExp(quoteLookahead+"<\\!--[\\s\\S]*?(?:-\\->|$)", "is"),
-          token: "comment"
-        }
+        // {
+        //   regex: new RegExp(quoteLookahead+"\/\\*.*?\\*\/", "is"),
+        //   token: "comment"
+        // },
+        // {
+        //   regex: new RegExp(quoteLookahead+"<\\!--[\\s\\S]*?(?:-\\->|$)", "is"),
+        //   token: "comment"
+        // }
       ],
     });
   
