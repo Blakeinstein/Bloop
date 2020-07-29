@@ -1,6 +1,6 @@
 import CodeMirror from 'codemirror';
 
-import bloopMode from './code-mirror/mode';
+import './code-mirror/mode';
 
 import Fuse from 'fuse.js';
 
@@ -8,6 +8,8 @@ window.editor = CodeMirror(
 	document.getElementsByClassName('window-body')[0],
 	{
 		scrollbarStyle: null,
+		indentUnit: 4,
+		electricChars: false,
 		lineWrapping: true,
 		mode: "bloop"
 	}
@@ -240,8 +242,6 @@ window.spotlight = {
 		document.addEventListener('click', () => {
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
-			else 
-				window.editorObj.focus();
 		});
 		spotlight.label.addEventListener('click', (e) => {
 			if (!spotlight.visible){

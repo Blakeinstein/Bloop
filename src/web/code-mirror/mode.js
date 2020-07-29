@@ -12,7 +12,7 @@
     
     var moreAttributes = ["true", "false", "to", "string", "int", "float", "double", "bool", "boolean", "from"]
 
-    let standalonePrefix = "(?:[\\s]|^|[\\(,:])"
+    let standalonePrefix = "(?:[\\s]|[\\(,:])"
 
     let standaloneSuffix = "(?=[\\s\\?\\!,:\\)\\();]|$)"
     
@@ -33,9 +33,19 @@
           regex: new RegExp(standalonePrefix+"("+UTCDate+")"+standaloneSuffix),
           token: "number"
         },
+        {
+          regex: new RegExp("(?:^)("+UTCDate+")"+standaloneSuffix),
+          sol: true,
+          token: "number"
+        },
         // MD5 strings
         {
           regex: new RegExp(standalonePrefix+"([a-f0-9]{32})"+standaloneSuffix),
+          token: "keyword"
+        },
+        {
+          regex: new RegExp("(?:^)([a-f0-9]{32})"+standaloneSuffix),
+          sol: true,
           token: "keyword"
         },
         // Match JSON labelss and generic parameters
@@ -62,6 +72,16 @@
         },
         {
           regex: new RegExp(standalonePrefix+"("+moreAttributes.join("|")+")"+standaloneSuffix, "i"),
+          token: "keyword"
+        },
+        {
+          regex: new RegExp("(?:^)("+commonAttributes.join("|")+")"+standaloneSuffix, "i"),
+          sol: true,
+          token: "attribute"
+        },
+        {
+          regex: new RegExp("(?:^)("+moreAttributes.join("|")+")"+standaloneSuffix, "i"),
+          sol: true,
           token: "keyword"
         },
         
