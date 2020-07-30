@@ -19,12 +19,29 @@
 /* PADDING */
 
 .CodeMirror-lines {
-  padding: 5px 0; /* Vertical padding around content */
+  padding: 4px 0; /* Vertical padding around content */
 }
 .CodeMirror pre.CodeMirror-line,
 .CodeMirror pre.CodeMirror-line-like {
-  padding: 0 0 0 5rem; /* Horizontal padding of content */
+  padding: 0 5px; /* Horizontal padding of content */
 }
+/* GUTTER */
+
+.CodeMirror-gutters {
+  white-space: nowrap;
+}
+.CodeMirror-linenumbers {
+  width: 5rem;
+}
+.CodeMirror-linenumber {
+  margin-left: -0.4em;
+  text-align: right;
+  color: #999;
+  white-space: nowrap;
+}
+
+.CodeMirror-guttermarker { color: black; }
+.CodeMirror-guttermarker-subtle { color: #999; }
 
 /* CURSOR */
 
@@ -75,6 +92,19 @@
   100% {}
 }
 
+.cm-tab { display: inline-block; text-decoration: inherit; }
+
+.CodeMirror-rulers {
+  position: absolute;
+  left: 0; right: 0; top: -50px; bottom: 0;
+  overflow: hidden;
+}
+.CodeMirror-ruler {
+  border-left: 1px solid #ccc;
+  top: 0; bottom: 0;
+  position: absolute;
+}
+
 /* Bloop theme */
 
 .cm-header, .cm-strong {font-weight: bold;}
@@ -100,8 +130,15 @@
 .cm-s-default .cm-keyword{
   color: #32FF47;
 }
-
 .CodeMirror-composing { border-bottom: 2px solid; }
+
+/* Default styles for common addons */
+
+div.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}
+div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }
+.CodeMirror-activeline-background {background: #e8f2ff;}
+
 /* STOP */
 
 /* The rest of this file contains styles related to the mechanics of
@@ -109,12 +146,56 @@
 
 .CodeMirror-sizer {
   position: relative;
-  border-right: 50px solid transparent;
 }
 
 /* The fake, visible scrollbars. Used to force redraw during scrolling
    before actual scrolling happens, thus preventing shaking and
    flickering artifacts. */
+.CodeMirror-vscrollbar, .CodeMirror-gutter-filler {
+  position: absolute;
+  z-index: 6;
+  display: none;
+}
+.CodeMirror-vscrollbar {
+  right: 0; top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.CodeMirror-gutter-filler {
+  left: 0; bottom: 0;
+}
+
+.CodeMirror-gutters {
+  position: absolute; left: 0; top: 0;
+  min-height: 100%;
+  z-index: 3;
+}
+.CodeMirror-gutter {
+  white-space: normal;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: -50px;
+}
+.CodeMirror-gutter-wrapper {
+  position: absolute;
+  z-index: 4;
+  background: none !important;
+  border: none !important;
+}
+.CodeMirror-gutter-background {
+  position: absolute;
+  top: 0; bottom: 0;
+  z-index: 4;
+}
+.CodeMirror-gutter-elt {
+  position: absolute;
+  cursor: default;
+  z-index: 4;
+}
+.CodeMirror-gutter-wrapper ::selection { background-color: transparent }
+.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }
+
 .CodeMirror-lines {
   cursor: text;
   min-height: 1px; /* prevents collapsing before first draw */
@@ -136,23 +217,8 @@
   position: relative;
   overflow: visible;
   -webkit-tap-highlight-color: transparent;
-  -webkit-font-variant-ligatures: common;
-  font-variant-ligatures: common;
-  
-}
-
-.CodeMirror pre.CodeMirror-line::before,
-.CodeMirror pre.CodeMirror-line-like::before {
-  counter-increment: line;
-  content: counter(line);
-	font-size: 1em;
-	padding: 0 0.4em;
-	user-select: none;
-	width: 5rem;
-	text-align: right;
-	left: 0;
-	user-select: none;
-	position: absolute;
+  -webkit-font-variant-ligatures: contextual;
+  font-variant-ligatures: contextual;
 }
 .CodeMirror-wrap pre.CodeMirror-line,
 .CodeMirror-wrap pre.CodeMirror-line-like {
@@ -177,8 +243,6 @@
 
 .CodeMirror-code {
   outline: none;
-	counter-reset: line;
-
 }
 
 /* Force content-box sizing for the elements where we expect it */
@@ -218,7 +282,7 @@ div.CodeMirror-dragcursors {
   visibility: visible;
 }
 
-.CodeMirror-selected { background: #d9d9d9; }
+.CodeMirror-selected { background: rgba(200, 200, 200, 0.5); }
 .CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
 .CodeMirror-crosshair { cursor: crosshair; }
 .CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }
