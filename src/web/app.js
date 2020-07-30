@@ -2,16 +2,23 @@ import CodeMirror from 'codemirror';
 
 import './code-mirror/mode';
 
+import 'codemirror/keymap/sublime'
+
 import Fuse from 'fuse.js';
 
 window.editor = CodeMirror(
-	document.getElementsByClassName('window-body')[0],
-	{
+	document.getElementsByClassName('window-body')[0],{
 		scrollbarStyle: null,
-		indentUnit: 4,
 		electricChars: false,
 		lineWrapping: true,
 		autofocus: true,
+		lineNumbers: true,
+		keyMap: "sublime",
+		extraKeys: {
+			Tab: (cm) => {
+				CodeMirror.commands[cm.somethingSelected()? "indentMore" : "insertTab"](cm);
+			}
+		},
 		mode: "bloop"
 	}
 );
@@ -192,7 +199,6 @@ window.spotlight = {
 			spotlight.alPlaceholder.classList.add('hidden');
 		}
 		else {
-			console.log("here");
 			spotlight.selected = null;
 			spotlight.alPlaceholder.classList.remove('hidden');
 		}
@@ -224,6 +230,29 @@ window.spotlight = {
 				}
 			}
 		}, true);
+		window.addEventListener('keypress', (e) => {
+			if (!editor.hasFocus()){
+				window.setTimeout(() => window.editorObj.focus(), 0);
+				if (spotlight.savedRange != null) {
+					editor.setCursor(spotlight.savedRange);
+				}
+			}
+		});
+		document.addEventListener('click', () => {
+			if (spotlight.visible)
+				spotlight.hideSpotlight();
+			if (!editor.hasFocus()){
+				window.setTimeout(() => window.editorObj.focus(), 0);
+				if (spotlight.savedRange != null) {
+					editor.setCursor(spotlight.savedRange);
+				}
+			}	
+		}, false);
+		editor.on("blur", (cm) => {
+			console.log("blurrrred");
+			spotlight.savedRange = editor.getCursor();
+		});
+		
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
 				e.preventDefault();
@@ -254,10 +283,6 @@ window.spotlight = {
 		spotlight.spotlight.addEventListener('input', spotlight.search);
 		spotlight.spotlight.addEventListener('click', (e) => {
 			e.stopPropagation();
-		});
-		document.addEventListener('click', () => {
-			if (spotlight.visible)
-				spotlight.hideSpotlight();
 		});
 		spotlight.label.addEventListener('click', (e) => {
 			if (!spotlight.visible){
