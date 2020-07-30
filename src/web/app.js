@@ -200,18 +200,29 @@ window.spotlight = {
 	init: () => {
 		// Create event listeners
 		document.addEventListener('keydown', (e) => {
-			if (e.ctrlKey && e.key === 'b') {
-				e.preventDefault();
-				if (e.shiftKey)
-					editorObj.script = editorObj.script;
-				else{
-					if (!spotlight.visible)
-						spotlight.showSpotlight();
-					else
-						spotlight.hideSpotlight();
+			if (e.ctrlKey){
+				if (e.key === 'b') {
+					e.preventDefault();
+					if (e.shiftKey)
+						editorObj.script = editorObj.script;
+					else{
+						if (!spotlight.visible)
+							spotlight.showSpotlight();
+						else
+							spotlight.hideSpotlight();
+					}
+				}
+				else if (e.key === 'n') {
+					editorObj.fullText = "";
+					spotlight.labelText[2].classList.add("labelHidden");
+					if (spotlight.labelText[1].classList.contains("labelHidden"))
+						spotlight.labelText[0].classList.remove("labelHidden");
+				}
+				else if (e.key === 'q') {
+					external.invoke('exit');
 				}
 			}
-		});
+		}, true);
 		spotlight.spotlight.addEventListener('keyup', (e) => {
 			if (e.which == 13) {
 				e.preventDefault();
