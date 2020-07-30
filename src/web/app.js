@@ -11,6 +11,7 @@ window.editor = CodeMirror(
 		indentUnit: 4,
 		electricChars: false,
 		lineWrapping: true,
+		autofocus: true,
 		mode: "bloop"
 	}
 );
@@ -203,7 +204,7 @@ window.spotlight = {
 			if (e.ctrlKey){
 				if (e.key === 'b') {
 					e.preventDefault();
-					if (e.shiftKey)
+					if (e.shiftKey && editorObj.script)
 						editorObj.script = editorObj.script;
 					else{
 						if (!spotlight.visible)
@@ -215,8 +216,8 @@ window.spotlight = {
 				else if (e.key === 'n') {
 					editorObj.fullText = "";
 					spotlight.labelText[2].classList.add("labelHidden");
-					if (spotlight.labelText[1].classList.contains("labelHidden"))
-						spotlight.labelText[0].classList.remove("labelHidden");
+					spotlight.labelText[1].classList.add("labelHidden");
+					spotlight.labelText[0].classList.remove("labelHidden");
 				}
 				else if (e.key === 'q') {
 					external.invoke('exit');
@@ -228,10 +229,10 @@ window.spotlight = {
 				e.preventDefault();
 				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
-				// external.invoke("#"+editorObj.script);
+				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
-					spotlight.hideSpotlight();
+				spotlight.hideSpotlight();
 		});
 		spotlight.spotlight.addEventListener('keydown', (e) => {
 			if (!spotlight.visibleActions) return;
