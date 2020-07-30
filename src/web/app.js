@@ -41,7 +41,6 @@ window.titlebar = {
 		titlebar.maximizeNodes = titlebar.maximize.children;
 		titlebar.close.onclick = (e) => {
 			e.stopPropagation();
-			// window.localStorage.setItem('BloopText', window.editorObj.fullText);
 			external.invoke('exit');
 		}
 		titlebar.minimize.onclick = (e) => {
@@ -187,11 +186,12 @@ window.spotlight = {
 			spotlight.visibleActions.push(currentDom);
 		};
 
-		if (spotlight.visibleActions) {
+		if (spotlight.visibleActions.length > 0) {
 			spotlight.selected = spotlight.visibleActions[0];
 			spotlight.alPlaceholder.classList.add('hidden');
 		}
 		else {
+			console.log("here");
 			spotlight.selected = null;
 			spotlight.alPlaceholder.classList.remove('hidden');
 		}
@@ -323,9 +323,6 @@ window.titlebar.init();
 
 window.onload = () => {
 	external.invoke('doc_ready');
-	// let cachedText = window.localStorage.getItem('BloopText');
-	// if (cachedText) 
-	// 	window.editorObj.fullText = cachedText;
 	window.editorObj.focus();
 }
 

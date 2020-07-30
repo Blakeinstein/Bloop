@@ -55,7 +55,6 @@ impl Bloop {
         })
         .build()
         .unwrap();
-        
         view.run().unwrap();
     }
 }
