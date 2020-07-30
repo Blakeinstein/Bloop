@@ -231,7 +231,7 @@ window.spotlight = {
 			}
 		}, true);
 		window.addEventListener('keypress', (e) => {
-			if (!editor.hasFocus()){
+			if (!spotlight.visible && !editor.hasFocus()){
 				window.setTimeout(() => window.editorObj.focus(), 0);
 				if (spotlight.savedRange != null) {
 					editor.setCursor(spotlight.savedRange);
@@ -241,7 +241,7 @@ window.spotlight = {
 		document.addEventListener('click', () => {
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
-			if (!editor.hasFocus()){
+			else if (!editor.hasFocus()){
 				window.setTimeout(() => window.editorObj.focus(), 0);
 				if (spotlight.savedRange != null) {
 					editor.setCursor(spotlight.savedRange);
@@ -249,7 +249,6 @@ window.spotlight = {
 			}	
 		}, false);
 		editor.on("blur", (cm) => {
-			console.log("blurrrred");
 			spotlight.savedRange = editor.getCursor();
 		});
 		
@@ -367,6 +366,21 @@ window.editorObj = {
 window.spotlight.init();
 
 window.titlebar.init();
+
+window.addEventListener("dragover", (e) => {
+	e.preventDefault();
+});
+window.addEventListener("drop", (e) => {
+	e.preventDefault();
+	
+	for (let i in e.dataTransfer.files) {
+		let reader = new FileReader();
+		reader.onload = (ev) => {
+			editor.replaceSelection(ev.target.result, "end");
+		}
+		reader.readAsText(e.dataTransfer.files[i]);
+	}
+})
 
 window.onload = () => {
 	external.invoke('doc_ready');
