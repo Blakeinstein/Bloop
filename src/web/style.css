@@ -303,8 +303,14 @@ body {
 
 .postInfo {
 	border-radius: 5px;
-	background-color: rgb(6, 101, 179);
-	color: #dadada
+	background-color: #3586ff;
+	color: #dadada;
+}
+
+.postError {
+	border-radius: 5px;
+	background-color: #ff4c7c;
+	color: #dadada;
 }
 
 .labelHidden {

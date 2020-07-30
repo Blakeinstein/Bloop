@@ -202,10 +202,14 @@ window.spotlight = {
 		document.addEventListener('keydown', (e) => {
 			if (e.ctrlKey && e.key === 'b') {
 				e.preventDefault();
-				if (!spotlight.visible)
-					spotlight.showSpotlight();
-				else
-					spotlight.hideSpotlight();
+				if (e.shiftKey)
+					editorObj.script = editorObj.script;
+				else{
+					if (!spotlight.visible)
+						spotlight.showSpotlight();
+					else
+						spotlight.hideSpotlight();
+				}
 			}
 		});
 		spotlight.spotlight.addEventListener('keyup', (e) => {
@@ -312,7 +316,13 @@ window.editorObj = {
 	},
 	postInfo: (message) => {
 		spotlight.labelText[1].innerText = message;
-		spotlight.labelText[1].classList.remove('labelHidden');
+		spotlight.labelText[1].classList.remove('labelHidden', 'postError');
+		spotlight.labelText[1].classList.add('postInfo');
+	},
+	postError: (message) => {
+		spotlight.labelText[1].innerText = message;
+		spotlight.labelText[1].classList.remove('labelHidden', 'postInfo');
+		spotlight.labelText[1].classList.add('postError');
 	},
 };
 
