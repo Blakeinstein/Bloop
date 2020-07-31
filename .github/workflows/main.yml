@@ -47,11 +47,9 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Build installer
       run: |
-          nuget install WiX
-          .\WiX.3.11.2\tools\candle.exe -nologo -arch "x64" -ext WixUIExtension -ext WixUtilExtension -out \
-              "target/bloop.wixobj" "build/bloop.wxs"
-          .\WiX.3.11.2\tools\light.exe -nologo -ext WixUIExtension -ext WixUtilExtension -out \
-              "deploy/installer.msi" "target/bloop.wixobj"
+          nuget install WiX -Version 3.11.2
+          .\WiX.3.11.2\tools\candle.exe -nologo -arch "x64" -ext WixUIExtension -ext WixUtilExtension -out "target/bloop.wixobj" "build/bloop.wxs"
+          .\WiX.3.11.2\tools\light.exe -nologo -ext WixUIExtension -ext WixUtilExtension -out "deploy/installer.msi" "target/bloop.wixobj"
     - name: Deploy
       run: mv "target/release/bloop.exe" "deploy/Bloop.exe"
     - name: Release
