@@ -238,10 +238,12 @@ window.spotlight = {
 				}
 			}
 		});
-		document.addEventListener('click', () => {
+		document.addEventListener('click', (event) => {
+			if (!editorObj.somethingSelected())
+				event.preventDefault();
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
-			else if (!editor.hasFocus()){
+			else if(!editor.hasFocus()){
 				window.setTimeout(() => window.editorObj.focus(), 0);
 				if (spotlight.savedRange != null) {
 					editor.setCursor(spotlight.savedRange);
@@ -257,7 +259,6 @@ window.spotlight = {
 				e.preventDefault();
 				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
-				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
 				spotlight.hideSpotlight();
