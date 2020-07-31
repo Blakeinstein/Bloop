@@ -5,7 +5,7 @@
     <Product Name="Bloop" Id="*" UpgradeCode="2dcec7e7-f562-4dd7-a2ad-200a57d23740" Language="1033" Codepage="1252" Version="0.1.0" Manufacturer="Blaine">
         <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
         <Icon Id="BloopIco" SourceFile="..\assets\Icon.ico"/>
-        <WixVariable Id="WixUILicenseRtf" Value=".\license.rtf"/>
+        <WixVariable Id="WixUILicenseRtf" Value="..\build\license.rtf"/>
         <Property Id="ARPPRODUCTICON" Value="BloopIco"/>
         <MediaTemplate EmbedCab="yes"/>
         <UIRef Id="WixUI_Minimal"/>
