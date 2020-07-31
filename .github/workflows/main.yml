@@ -19,20 +19,31 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: |
-        actions/checkout@v2
-        actions-rs/cargo@v1.0.1
-        NuGet/setup-nuget@v1.0.2
+    - uses: actions/checkout@v2
+    - uses: raftario/setup-rust-action@v1
+    - uses: NuGet/setup-nuget@v1.0.2
+    - uses: actions/setup-node@v2-beta
+    
+    #Install Win10 SDK
+    - name: Install SDK
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+        sdk: 10.0.19041.0
+        toolset: 14.26
+    
+    #Get Boop scripts
+    - name: Get Boop scripts
+      run: |
+        git clone http://github.com/ivanmathy/boop
+        mv boop/Boop/Boop/scripts src/
 
     # Runs a single command using the runners shell
     - name: Get dependencies
-      uses: CultureHQ/actions-yarn@master
-      with:
-        args: install
-    - name: Compile portable binary
-      uses:  CultureHQ/actions-yarn@master
-      with:
-        args: release
+      run: npm install
+    - name: Compile binary
+      run: npm run release
+    
     # Runs a set of commands using the runners shell
     - name: Build installer
       run: |
