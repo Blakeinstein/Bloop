@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+    xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+    <Product Name="Bloop" Id="*" UpgradeCode="2dcec7e7-f562-4dd7-a2ad-200a57d23740" Language="1033" Codepage="1252" Version="0.1.0" Manufacturer="Blaine">
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
+        <Icon Id="BloopIco" SourceFile="..\assets\Icon.ico"/>
+        <WixVariable Id="WixUILicenseRtf" Value=".\license.rtf"/>
+        <Property Id="ARPPRODUCTICON" Value="BloopIco"/>
+        <MediaTemplate EmbedCab="yes"/>
+        <UIRef Id="WixUI_Minimal"/>
+
+        <Feature Id="ProductFeature" Title="ScratchPad" Level="1">
+            <ComponentRef Id="BloopExe"/>
+
+            <ComponentRef Id="BloopShortcut"/>
+        </Feature>
+
+        <!-- Create directories -->
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFiles64Folder">
+                <Directory Id="BloopProgramFiles" Name="Bloop"/>
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="BloopProgramMenu" Name="Bloop"/>
+            </Directory>
+        </Directory>
+
+        <!-- Application binaries -->
+        <DirectoryRef Id="BloopProgramFiles">
+            <Component Id="BloopExe" Guid="*">
+                <File Id="BloopExeFile" Source="..\target\release\bloop.exe" Name="Bloop.exe" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+
+        <DirectoryRef Id="BloopProgramMenu">
+            <!-- Application shortcut -->
+            <Component Id="BloopShortcut" Guid="85af44ec-04d2-4c7c-a597-5bcf8307fc2e">
+                <Shortcut Id="BloopShortcutFile" Name="Bloop" Description="A fast and lightweight scratchpad for developers" Target="[BloopProgramFiles]Bloop.exe"/>
+                <RemoveFolder Id="BloopProgramMenu" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\Blaine\Bloop" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+    </Product>
+    <!-- <Fragment>
+        <util:RegistrySearch Root="HKLM"
+                        Key="SOFTWARE\classes\installer\Dependencies\Microsoft.VS.VC_RuntimeDebug_amd64,v14"
+                        Result="exists"
+                        Variable="MVC201519Present_x64"
+                        Win64="yes"/>
+        <ExePackage Id="MVC201519Present_x64"
+                    Name="Microsoft Visual C++ 2015-19 Redistributable Package (x64)"
+                    Cache="no"
+                    Compressed="no"
+                    PerMachine="yes"
+                    DownloadUrl="https://aka.ms/vs/16/release/vc_redist.x64.exe"
+                    Permanent="yes"
+            InstallCommand="/q"
+            DetectCondition="MVC201519Present_x64"
+            InstallCondition="not MVC201519Present_x64">
+            <ExitCode Behavior="scheduleReboot" Value="1641" />
+            <ExitCode Behavior="scheduleReboot" Value="3010" />
+        </ExePackage>
+    </Fragment> -->
+</Wix>
