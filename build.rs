@@ -9,3 +9,6 @@ fn main() {
     res.compile().unwrap();
   }
 }
+
+#[cfg(not(windows))]
+fn main() {}
