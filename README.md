@@ -1,7 +1,7 @@
 ﻿# Bloop.
 <p align="center">
 A light weight scratch pad inspired and derived from boop.<br/>
-The tool aims to be an exact imitation of boop built using web technologies and powered by <a href="https://github.com/Boscop/web-view">webview-rs</a>.
+The tool aims to be an exact imitation of boop built using web technologies and powered by my own fork of <a href="https://github.com/Boscop/web-view">webview-rs</a>, available <a href="https://github.com/Blakeinstein/web-view/">here</a>
 </p>
 
 <p align="center">
