@@ -1,3 +1,7 @@
+import { appWindow } from '@tauri-apps/api/window';
+
+import { invoke } from '@tauri-apps/api/tauri';
+
 import CodeMirror from 'codemirror';
 
 import './code-mirror/mode';
@@ -42,23 +46,20 @@ window.titlebar = {
 			titlebar.maximizeNodes[0].classList.add('hidden');
 			titlebar.maximizeState = true;
 		}
-		external.invoke('maximize');
+		appWindow.maximize();
 	},
 
 	init: () => {
 		titlebar.maximizeNodes = titlebar.maximize.children;
 		titlebar.close.onclick = (e) => {
 			e.stopPropagation();
-			external.invoke('exit');
+			appWindow.close();
 		}
 		titlebar.minimize.onclick = (e) => {
-			external.invoke('minimize');
+			appWindow.minimize();
 			e.stopPropagation();
 		}
 		titlebar.maximize.onclick = (e) => titlebar.maximizeEvent();
-		titlebar.titlebar.addEventListener('mousedown', () => {
-			external.invoke('drag_intent');
-		});
 		titlebar.titlebar.ondblclick = () => titlebar.maximizeEvent();
 	}
 }
@@ -226,7 +227,7 @@ window.spotlight = {
 					spotlight.labelText[0].classList.remove("labelHidden");
 				}
 				else if (e.key === 'q') {
-					external.invoke('exit');
+					appWindow.close();
 				}
 			}
 		}, true);
@@ -239,7 +240,7 @@ window.spotlight = {
 			}
 		});
 		document.addEventListener('click', (event) => {
-			if (!editorObj.somethingSelected())
+			if (!window.editorObj.somethingSelected)
 				event.preventDefault();
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
@@ -332,7 +333,7 @@ window.editorObj = {
 
 	set script(value) {
 		editorObj._script = value;
-		external.invoke("#"+value);
+		invoke('exec', { scriptName: value }).catch((error) => this.postError(error));
 	},
 	set selection(value) {
 		window.editor.replaceSelection(value);
@@ -384,7 +385,7 @@ window.addEventListener("drop", (e) => {
 })
 
 window.onload = () => {
-	external.invoke('doc_ready');
+	invoke('doc_ready');
 	window.editorObj.focus();
 }
 

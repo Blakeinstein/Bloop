@@ -1,11 +1,11 @@
 {
   "package": {
     "productName": "bloop",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "build": {
     "distDir": "dist",
-    "devPath": "localhost:8080",
+    "devPath": "http://localhost:8080",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
   },
@@ -49,7 +49,10 @@
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": true,
+      "window": {
+        "all": true
+      }
     },
     "windows": [
       {
@@ -57,7 +60,9 @@
         "width": 900,
         "height": 400,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "decorations": false,
+        "transparent": true
       }
     ],
     "security": {
