@@ -14,7 +14,7 @@ default = [ "custom-protocol" ]
 custom-protocol = [ "tauri/custom-protocol" ]
 
 [dependencies]
-tauri = { version = "1.0.0-beta.1" }
+tauri = { version = "1.0.0-beta.1", features = ["window-all"]}
 rust-embed = "5.9.0"
 serde_json = "1.0.56"
 serde = { version = "1.0.114", features = ["derive"] }
@@ -22,13 +22,3 @@ glob = "0.3.0"
 directories = "3.0.1"
 tinyfiledialogs = "3.3.10"
 anyhow = "1.0.40"
-
-[target.'cfg(windows)'.build-dependencies]
-winres = "0.1.11"
-
-[package.metadata.winres]
-ProductName = "Bloop"
-FileDescription = "A light weight scratch pad for developers"
-OriginalFilename = "Bloop.EXE"
-ProductVersion = "0.1.0"
-LegalCopyright = "© 2020 Blaine"
