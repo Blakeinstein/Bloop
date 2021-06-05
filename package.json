@@ -1,23 +1,32 @@
 {
   "name": "bloop",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/index.html",
   "license": "MIT",
+  "targets": {
+    "main": {
+      "context": "browser",
+      "distDir": "~/dev/"
+    }
+  },
+  "source": "src/web/index.html",
   "scripts": {
-    "serve": "cross-env env=DEBUG parcel src/web/index.html",
-    "build": "cross-env env=PROD parcel build src/web/index.html --target browser --out-dir dist/ --no-content-hash",
-    "run": "yarn build && cargo run",
+    "serve": "parcel src/web/index.html --dist-dir dev/ --port 8080",
+    "build": "parcel build src/web/index.html --no-content-hash",
+    "tauri-serve": "cargo run --no-default-features",
+    "dev": "npm-run-all --parallel serve tauri-serve",
     "make": "yarn build && cargo build",
-    "release": "yarn make --release"
+    "release": "tauri build"
   },
   "dependencies": {
-    "codemirror": "^5.55.0",
-    "fuse.js": "^6.4.0"
+    "@tauri-apps/api": "^1.0.0-beta.1",
+    "codemirror": "^5.61.0",
+    "fuse.js": "^6.4.6",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@kenpb/parcel-plugin-ifdef": "^1.1.2",
-    "cross-env": "^7.0.2",
-    "parcel": "^1.12.4",
-    "parcel-plugin-inline-source": "^1.0.0"
+    "@tauri-apps/cli": "^1.0.0-beta.2",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.0.0-beta.3.1"
   }
 }

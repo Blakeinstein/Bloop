@@ -1,74 +1,46 @@
-#![windows_subsystem = "windows"]
-
-extern crate web_view;
-
+#![cfg_attr(
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
+)]
 mod scripts;
-
-use web_view::*;
-
 use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
-struct Bloop {
-    script_list: HashMap<String, scripts::Script>
+#[derive(Default)]
+struct Scripts(Arc<Mutex<HashMap<String, scripts::Script>>>);
+
+#[tauri::command]
+fn doc_ready(window: tauri::Window, scripts: tauri::State<Scripts>) -> Result<String, String> {
+  match scripts::build_scripts(window, &mut scripts.0.lock().unwrap()) {
+    Ok(_) => Ok("".to_string()),
+    Err(err) => Err(err.to_string()),
+  }
 }
 
-impl Bloop {
-    fn new() -> Bloop{    
-        Bloop {
-            script_list: HashMap::new()
-        }
-    }
-    fn exec(&mut self, html_content: &str) {
-        let mut maximized_state = false;
-
-        let view = builder()
-        .title("Bloop")
-        .content(Content::Html(&html_content))
-        .size(900, 400)
-        .frameless(true)
-        .resizable(true)
-        .debug(true)
-        .user_data(())
-        .invoke_handler(|webview, arg|  {
-            match arg {
-                "exit" => webview.exit(),
-                "maximize" => {
-                    maximized_state = !maximized_state;
-                    webview.set_maximized(maximized_state);
-                },
-                "minimize" => {
-                    webview.set_minimized();
-                },
-                "drag_intent" => {
-                    webview.drag_intent();
-                },
-                "doc_ready" => {
-                    scripts::build_scripts(webview, &mut self.script_list)?;
-                },
-                _ => {
-                    if arg.starts_with("#"){
-                        scripts::script_eval(&self.script_list.get(&arg[1..]).unwrap(), webview)?;
-                    }   
-                },
-            }    
-            Ok(())
-        })
-        .build()
-        .unwrap();
-        view.run().unwrap();
-    }
+#[tauri::command]
+fn exec(
+  window: tauri::Window,
+  scripts: tauri::State<Scripts>,
+  script_name: String,
+) -> Result<String, String> {
+  match scripts::script_eval(
+    scripts
+      .0
+      .lock()
+      .unwrap()
+      .get(&script_name)
+      .ok_or(format!("Script, {}, not found", &script_name))?,
+    &window,
+  ) {
+    Ok(_) => Ok("".to_string()),
+    Err(err) => Err(err.to_string()),
+  }
 }
 
 fn main() {
-    let html_content = include_str!("../dist/index.html");
-    let mut app = Bloop::new();
-    app.exec(&html_content);
-}
-
-fn _inline_style(s: &str) -> String {
-    format!(r#"<style type="text/css">{}</style>"#, s)
-}
-
-fn _inline_script(s: &str) -> String {
-    format!(r#"<script type="text/javascript">{}</script>"#, s)
+  tauri::Builder::default()
+    .manage(Scripts(Default::default()))
+    .invoke_handler(tauri::generate_handler![doc_ready, exec])
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
 }

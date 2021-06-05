@@ -1,3 +1,7 @@
+import { appWindow } from '@tauri-apps/api/window';
+
+import { invoke } from '@tauri-apps/api/tauri';
+
 import CodeMirror from 'codemirror';
 
 import './code-mirror/mode';
@@ -36,29 +40,27 @@ window.titlebar = {
 			titlebar.maximizeNodes[0].classList.remove('hidden');
 			titlebar.maximizeNodes[1].classList.add('hidden');
 			titlebar.maximizeState = false;
+			appWindow.unmaximize();
 		}
 		else {
 			titlebar.maximizeNodes[1].classList.remove('hidden');
 			titlebar.maximizeNodes[0].classList.add('hidden');
 			titlebar.maximizeState = true;
+			appWindow.maximize();
 		}
-		external.invoke('maximize');
 	},
 
 	init: () => {
 		titlebar.maximizeNodes = titlebar.maximize.children;
 		titlebar.close.onclick = (e) => {
 			e.stopPropagation();
-			external.invoke('exit');
+			appWindow.close();
 		}
 		titlebar.minimize.onclick = (e) => {
-			external.invoke('minimize');
+			appWindow.minimize();
 			e.stopPropagation();
 		}
 		titlebar.maximize.onclick = (e) => titlebar.maximizeEvent();
-		titlebar.titlebar.addEventListener('mousedown', () => {
-			external.invoke('drag_intent');
-		});
 		titlebar.titlebar.ondblclick = () => titlebar.maximizeEvent();
 	}
 }
@@ -158,6 +160,8 @@ window.spotlight = {
 			spotlight.dataList[i].classList.add('hidden');
 		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = true;
+		spotlight.label.classList.remove('postInfo');
+		spotlight.label.classList.remove('postError');
 		spotlight.labelText[2].classList.remove("labelHidden");
 		spotlight.labelText[1].classList.add("labelHidden");
 		spotlight.labelText[0].classList.add("labelHidden");
@@ -226,7 +230,7 @@ window.spotlight = {
 					spotlight.labelText[0].classList.remove("labelHidden");
 				}
 				else if (e.key === 'q') {
-					external.invoke('exit');
+					appWindow.close();
 				}
 			}
 		}, true);
@@ -239,7 +243,7 @@ window.spotlight = {
 			}
 		});
 		document.addEventListener('click', (event) => {
-			if (!editorObj.somethingSelected())
+			if (!window.editorObj.somethingSelected)
 				event.preventDefault();
 			if (spotlight.visible)
 				spotlight.hideSpotlight();
@@ -259,6 +263,7 @@ window.spotlight = {
 				e.preventDefault();
 				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
+				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
 				spotlight.hideSpotlight();
@@ -332,7 +337,7 @@ window.editorObj = {
 
 	set script(value) {
 		editorObj._script = value;
-		external.invoke("#"+value);
+		invoke('exec', { scriptName: value }).catch((error) => window.editorObj.postError(error));
 	},
 	set selection(value) {
 		window.editor.replaceSelection(value);
@@ -351,15 +356,19 @@ window.editorObj = {
 		window.editor.focus();
 		window.editor.setCursor(window.editor.lineCount(), 0);
 	},
-	postInfo: (message) => {
+	postMessage: (message) => {
 		spotlight.labelText[1].innerText = message;
-		spotlight.labelText[1].classList.remove('labelHidden', 'postError');
-		spotlight.labelText[1].classList.add('postInfo');
+		spotlight.labelText[0].classList.add('labelHidden');
+		spotlight.labelText[1].classList.remove('labelHidden');
+	},
+	postInfo: (message) => {
+		window.editorObj.postMessage(message);
+		spotlight.label.classList.add('postInfo');
 	},
 	postError: (message) => {
-		spotlight.labelText[1].innerText = message;
-		spotlight.labelText[1].classList.remove('labelHidden', 'postInfo');
-		spotlight.labelText[1].classList.add('postError');
+		window.editorObj.postMessage(message);
+		spotlight.labelText[1].classList.remove('labelHidden');
+		spotlight.label.classList.add('postError');
 	},
 };
 
@@ -384,29 +393,6 @@ window.addEventListener("drop", (e) => {
 })
 
 window.onload = () => {
-	external.invoke('doc_ready');
+	invoke('doc_ready');
 	window.editorObj.focus();
 }
-
-/// #if env == 'DEBUG'
-const external = {
-	invoke: (script) => {
-		let fn = window[script.slice(1)]
-		if (typeof fn === "function") fn(window.editorObj);
-	}
-};
-
-window.Test = (text) => {
-	text.text = "did it work?";
-	text.postInfo = "Hello World!";
-};
-
-spotlight.spotlightActions.addAction(
-	"Test",
-	"Testing script",
-	"quote",
-	"test,test,one,two"
-);
-
-spotlight.spotlightActions.finalize();
-/// #endif
