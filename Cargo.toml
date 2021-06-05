@@ -1,6 +1,6 @@
 [package]
 name = "bloop"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Blaine <rishi1998@gmail.com>"]
 edition = "2018"
 build = "build.rs"
@@ -29,4 +29,4 @@ panic = "abort"
 codegen-units = 1
 lto = true
 incremental = false
-opt-level = "z"
+opt-level = "s"
