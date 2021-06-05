@@ -40,13 +40,14 @@ window.titlebar = {
 			titlebar.maximizeNodes[0].classList.remove('hidden');
 			titlebar.maximizeNodes[1].classList.add('hidden');
 			titlebar.maximizeState = false;
+			appWindow.unmaximize();
 		}
 		else {
 			titlebar.maximizeNodes[1].classList.remove('hidden');
 			titlebar.maximizeNodes[0].classList.add('hidden');
 			titlebar.maximizeState = true;
+			appWindow.maximize();
 		}
-		appWindow.maximize();
 	},
 
 	init: () => {
@@ -159,6 +160,8 @@ window.spotlight = {
 			spotlight.dataList[i].classList.add('hidden');
 		window.setTimeout(() => spotlight.spotlight.focus(), 0);
 		spotlight.visible = true;
+		spotlight.label.classList.remove('postInfo');
+		spotlight.label.classList.remove('postError');
 		spotlight.labelText[2].classList.remove("labelHidden");
 		spotlight.labelText[1].classList.add("labelHidden");
 		spotlight.labelText[0].classList.add("labelHidden");
@@ -352,15 +355,19 @@ window.editorObj = {
 		window.editor.focus();
 		window.editor.setCursor(window.editor.lineCount(), 0);
 	},
-	postInfo: (message) => {
+	postMessage: (message) => {
 		spotlight.labelText[1].innerText = message;
-		spotlight.labelText[1].classList.remove('labelHidden', 'postError');
-		spotlight.labelText[1].classList.add('postInfo');
+		spotlight.labelText[0].classList.add('labelHidden');
+		spotlight.labelText[1].classList.remove('labelHidden');
+	},
+	postInfo: (message) => {
+		window.editorObj.postMessage(message);
+		spotlight.label.classList.add('postInfo');
 	},
 	postError: (message) => {
-		spotlight.labelText[1].innerText = message;
-		spotlight.labelText[1].classList.remove('labelHidden', 'postInfo');
-		spotlight.labelText[1].classList.add('postError');
+		window.editorObj.postMessage(message);
+		spotlight.labelText[1].classList.remove('labelHidden');
+		spotlight.label.classList.add('postError');
 	},
 };
 
@@ -388,14 +395,6 @@ window.onload = () => {
 	invoke('doc_ready');
 	window.editorObj.focus();
 }
-
-/// #if env == 'DEBUG'
-const external = {
-	invoke: (script) => {
-		let fn = window[script.slice(1)]
-		if (typeof fn === "function") fn(window.editorObj);
-	}
-};
 
 window.Test = (text) => {
 	text.text = "did it work?";
