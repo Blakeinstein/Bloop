@@ -12,3 +12,4 @@ src/scripts
 dist
 .cache
 .dnconfig
+.parcel-cache
