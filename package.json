@@ -1,16 +1,18 @@
 {
   "name": "bloop",
   "version": "0.1.0",
-  "main": "index.html",
+  "main": "dist/index.html",
   "license": "MIT",
   "targets": {
     "main": {
-      "context": "browser"
+      "context": "browser",
+      "distDir": "~/dev/"
     }
   },
+  "source": "src/web/index.html",
   "scripts": {
-    "serve": "parcel src/web/index.html  --dist-dir dist/ --port 8080",
-    "build": "parcel build src/web/index.html --dist-dir dist/ --no-content-hash",
+    "serve": "parcel src/web/index.html --dist-dir dev/ --port 8080",
+    "build": "parcel build src/web/index.html --no-content-hash",
     "tauri-serve": "cargo run --no-default-features",
     "dev": "npm-run-all --parallel serve tauri-serve",
     "make": "yarn build && cargo build",

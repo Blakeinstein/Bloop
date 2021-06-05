@@ -1,5 +1,3 @@
-
-
 #Added by cargo
 
 /target
@@ -10,6 +8,7 @@ bloop.code-workspace
 webview
 src/scripts
 dist
+dev
 .cache
 .dnconfig
 .parcel-cache
