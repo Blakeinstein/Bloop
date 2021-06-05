@@ -263,6 +263,7 @@ window.spotlight = {
 				e.preventDefault();
 				e.stopPropagation();
 				editorObj.script = spotlight.alSelected.getAttribute('name');
+				spotlight.hideSpotlight();
 			}
 			else if (e.key === 'Escape') 
 				spotlight.hideSpotlight();
@@ -336,7 +337,7 @@ window.editorObj = {
 
 	set script(value) {
 		editorObj._script = value;
-		invoke('exec', { scriptName: value }).catch((error) => this.postError(error));
+		invoke('exec', { scriptName: value }).catch((error) => window.editorObj.postError(error));
 	},
 	set selection(value) {
 		window.editor.replaceSelection(value);
