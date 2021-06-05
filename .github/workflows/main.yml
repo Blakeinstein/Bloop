@@ -50,7 +50,7 @@ jobs:
       - name: config directory
         run: |
           mkdir src-tauri
-          mv dist src cargo.toml cargo.lock tauri.conf.json build.rs icons src-tauri/
+          mv dist src cargo.toml tauri.conf.json build.rs icons src-tauri/
 
       # Create release
       - uses: tauri-apps/tauri-action@v0
