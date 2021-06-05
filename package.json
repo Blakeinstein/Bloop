@@ -16,7 +16,7 @@
     "tauri-serve": "cargo run --no-default-features",
     "dev": "npm-run-all --parallel serve tauri-serve",
     "make": "yarn build && cargo build",
-    "release": "yarn make --release"
+    "release": "tauri build"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-beta.1",
