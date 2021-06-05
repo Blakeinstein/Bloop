@@ -24,7 +24,12 @@ fn exec(
   script_name: String,
 ) -> Result<String, String> {
   match scripts::script_eval(
-    scripts.0.lock().unwrap().get(&script_name).unwrap(),
+    scripts
+      .0
+      .lock()
+      .unwrap()
+      .get(&script_name)
+      .ok_or(format!("Script, {}, not found", &script_name))?,
     &window,
   ) {
     Ok(_) => Ok("".to_string()),
