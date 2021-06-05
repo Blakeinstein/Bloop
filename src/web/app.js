@@ -396,18 +396,3 @@ window.onload = () => {
 	invoke('doc_ready');
 	window.editorObj.focus();
 }
-
-window.Test = (text) => {
-	text.text = "did it work?";
-	text.postInfo = "Hello World!";
-};
-
-spotlight.spotlightActions.addAction(
-	"Test",
-	"Testing script",
-	"quote",
-	"test,test,one,two"
-);
-
-spotlight.spotlightActions.finalize();
-/// #endif
