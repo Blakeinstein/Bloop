@@ -21,6 +21,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
       - uses: NuGet/setup-nuget@v1.0.2
       - uses: actions/setup-node@v2-beta
 
