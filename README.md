@@ -17,33 +17,45 @@ The tool aims to be an exact imitation of boop built using web technologies and 
 </p>
 
 #### Suggestions
+To add custom scripts add the scripts to your documents directory which you can confirm [here](https://docs.rs/dirs-next/2.0.0/dirs_next/fn.document_dir.html)
+
 As bloop supports some ligaturized fonts, I suggest that you install these fonts manually!
 Until preferences are implemented, you are stuck with the following fonts.
 * [SF Mono ligaturized](https://github.com/kube/sf-mono-ligaturized/tree/master/ligaturized)
 * [Cascadia Code](https://github.com/microsoft/cascadia-code)
+
 ### How to get Bloop
 
 For the time being the only way to obtain a working copy is to either get the installer or portable binary from [here](https://github.com/Blakeinstein/Bloop/releases) or compile it yourself.
 
 ### How to build from source
 
-- ####  Install Rust and Yarn
-  - ##### Via Chocolatey
-  > choco install rust yarn
-  - ##### Manually
-    - Get Rust up and running, from [Rust-lang](https://www.rust-lang.org/)
-    - Install Yarn, from [yarnpkg](https://yarnpkg.com/)
-- #### Installing windows 10 SDK
-   * Webview for windows requires the latest sdk to be available on the dev environment.
-   * Follow the following [guide](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)
-   * At the time of writing, 
-   > Windows 10 SDK version: 10.0.19041.0
-   > C++ toolset: 14.26
- - #### Get yarn/npm dependencies
-   > yarn install
+- ####  Config
+  - ##### Setup Tauri and Yarn
+    - Follow the setup guide from their [docs](https://tauri.studio/en/docs/getting-started/intro)
+  - ##### Get Boop scripts
+    - Get the base scripts from boop
+    ```bash
+      mkdir src-tauri
+      git clone http://github.com/ivanmathy/boop
+      mv boop/Boop/Boop/scripts src-tauri/
+    ```
+  - ##### Build web component
+    - Install app dependencies and build it
+    ```bash
+      yarn && yarn build
+    ```
+  - ##### Copy data over to replicate tauri config
+    ```bash
+      mv dist src-tauri/
+      mv src src-tauri/
+      mv icons src-tauri/
+      mv ./Cargo.toml src-tauri/
+      mv ./tauri.conf.json src-tauri/
+      mv ./build.rs src-tauri/
+    ```
  - #### Build
-   -  To just run the program, use ``` yarn run run ```
-   -  To build release binaries, use ``` yarn release ```, The resultant binaries would be located in ```target/release```
+   -  To build release binaries, use ``` yarn release ```, The resultant binaries would be located in ```src-tauri/target/release```
 
 ### Planned features
 
