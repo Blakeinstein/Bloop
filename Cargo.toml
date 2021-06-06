@@ -21,8 +21,6 @@ serde_json = "1.0.56"
 serde = { version = "1.0.114", features = ["derive"] }
 glob = "0.3.0"
 directories = "3.0.1"
-tinyfiledialogs = "3.3.10"
-anyhow = "1.0.40"
 
 [profile.release]
 panic = "abort"

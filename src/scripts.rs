@@ -2,7 +2,6 @@ use directories::UserDirs;
 use glob::glob;
 use rust_embed::RustEmbed;
 use std::fs::{create_dir_all, read_to_string};
-use tinyfiledialogs::{message_box_ok, MessageBoxIcon};
 
 use tauri::Window;
 
@@ -56,14 +55,7 @@ fn append_script(
   file_name: &str,
 ) -> tauri::Result<()> {
   match Script::new(script_string) {
-    Err(msg) => {
-      message_box_ok(
-        "Script parsing error",
-        &format!("File: {}\n{}", file_name, msg.to_string()),
-        MessageBoxIcon::Warning,
-      );
-      Ok(())
-    }
+    Err(msg) => Ok(()),
     Ok(val) => {
       let meta = &val.metadata;
       window.eval(&format!(
