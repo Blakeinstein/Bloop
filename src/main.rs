@@ -38,9 +38,13 @@ fn exec(
 }
 
 fn main() {
+  let context = tauri::generate_context!();
+  unsafe {
+    scripts::PACKAGE_INFO = Some(context.package_info().clone());
+  };
   tauri::Builder::default()
     .manage(Scripts(Default::default()))
     .invoke_handler(tauri::generate_handler![doc_ready, exec])
-    .run(tauri::generate_context!())
+    .run(context)
     .expect("error while running tauri application");
 }

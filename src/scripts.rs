@@ -6,9 +6,9 @@ use tauri::Window;
 
 use serde::{Deserialize, Serialize};
 
-use serde_json;
-
 use std::collections::HashMap;
+
+pub static mut PACKAGE_INFO: Option<tauri::PackageInfo> = None;
 
 #[derive(Serialize, Deserialize)]
 struct Metadata {
@@ -66,8 +66,7 @@ pub fn build_scripts(
   window: Window,
   script_list: &mut HashMap<String, Script>,
 ) -> tauri::Result<()> {
-  let config = tauri::generate_context!();
-  if let Some(resource_dir) = resource_dir(config.package_info()) {
+  if let Some(resource_dir) = unsafe { resource_dir(&(PACKAGE_INFO.clone()).unwrap()) } {
     dbg!(&resource_dir);
     let script_path = &resource_dir.join("scripts").join("**").join("*.js");
     install_scripts(&window, script_list, script_path.to_str().unwrap())?;
