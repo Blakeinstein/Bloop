@@ -6,7 +6,7 @@ cargo.lock
 bloop.code-workspace
 
 webview
-scripts
+src-tauri
 dist
 dev
 .cache

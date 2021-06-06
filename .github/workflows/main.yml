@@ -39,8 +39,9 @@ jobs:
       # Get Boop scripts
       - name: Get Boop scripts
         run: |
+          mkdir src-tauri
           git clone http://github.com/ivanmathy/boop
-          mv boop/Boop/Boop/scripts src/
+          mv boop/Boop/Boop/scripts src-tauri/
 
       # Build web component
       - name: install app dependencies and build it
@@ -49,7 +50,6 @@ jobs:
       # Copy data over to replicate tauri config
       - name: config directory
         run: |
-          mkdir src-tauri
           mv dist src-tauri/
           mv src src-tauri/
           mv icons src-tauri/
