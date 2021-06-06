@@ -24,7 +24,7 @@ jobs:
         with:
           toolchain: stable
           override: true
-      - uses: NuGet/setup-nuget@v1.0.2
+      - uses: NuGet/setup-nuget@v1
       - uses: actions/setup-node@v2-beta
 
       #Install Win10 SDK
