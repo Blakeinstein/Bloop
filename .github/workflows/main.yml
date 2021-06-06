@@ -7,7 +7,7 @@ name: Release
 on:
   workflow_dispatch:
   push:
-    branches: [ Release ]
+    branches: [v1]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -18,69 +18,69 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-    - uses: raftario/setup-rust-action@v1
-    - uses: NuGet/setup-nuget@v1.0.2
-    - uses: actions/setup-node@v2-beta
-    
-    #Install Win10 SDK
-    - name: Install SDK
-      uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: x64
-        sdk: 10.0.19041.0
-        toolset: 14.26
-    
-    #Get Boop scripts
-    - name: Get Boop scripts
-      run: |
-        git clone http://github.com/ivanmathy/boop
-        mv boop/Boop/Boop/scripts src/
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+      - uses: NuGet/setup-nuget@v1.0.2
+      - uses: actions/setup-node@v2-beta
 
-    # Runs a single command using the runners shell
-    - name: Get dependencies
-      run: npm install
-    - name: Compile binary
-      run: npm run release
-    
-    # Runs a set of commands using the runners shell
-    - name: Build installer
-      run: |
+      #Install Win10 SDK
+      - name: Install SDK
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          sdk: 10.0.19041.0
+          toolset: 14.26
+
+      #Get Boop scripts
+      - name: Get Boop scripts
+        run: |
+          git clone http://github.com/ivanmathy/boop
+          mv boop/Boop/Boop/scripts src/
+
+      # Runs a single command using the runners shell
+      - name: Get dependencies
+        run: npm install
+      - name: Compile binary
+        run: npm run release
+
+      # Runs a set of commands using the runners shell
+      - name: Build installer
+        run: |
           nuget install WiX -Version 3.11.2
           .\WiX.3.11.2\tools\candle.exe -nologo -arch "x64" -ext WixUIExtension -ext WixUtilExtension -out "target/bloop.wixobj" "build/bloop.wxs"
           .\WiX.3.11.2\tools\light.exe -nologo -ext WixUIExtension -ext WixUtilExtension -out "deploy/installer.msi" "target/bloop.wixobj"
-    - name: Deploy
-      run: mv "target/release/bloop.exe" "deploy/Bloop.exe"
-    - name: Release
-      id: release
-      uses: actions/create-release@v1
-      env:
+      - name: Deploy
+        run: mv "target/release/bloop.exe" "deploy/Bloop.exe"
+      - name: Release
+        id: release
+        uses: actions/create-release@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
-        draft: false
-        prerelease: false
-    - name: Upload Binary
-      uses: actions/upload-release-asset@v1
-      env:
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
+      - name: Upload Binary
+        uses: actions/upload-release-asset@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-          upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./deploy/Bloop.exe
           asset_name: Bloop.exe
           asset_content_type: application/octet-stream
-    - name: Upload Installer
-      uses: actions/upload-release-asset@v1
-      env:
+      - name: Upload Installer
+        uses: actions/upload-release-asset@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-          upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./deploy/installer.msi
           asset_name: Bloop-installer.msi
           asset_content_type: application/octet-stream
