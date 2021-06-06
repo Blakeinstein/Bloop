@@ -21,7 +21,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": [],
+      "resources": ["scripts"],
       "externalBin": [],
       "copyright": "Blaine",
       "category": "DeveloperTool",

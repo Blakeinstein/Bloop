@@ -1,8 +1,7 @@
-use directories::UserDirs;
 use glob::glob;
-use rust_embed::RustEmbed;
 use std::fs::{create_dir_all, read_to_string};
 
+use tauri::api::path::{document_dir, resource_dir};
 use tauri::Window;
 
 use serde::{Deserialize, Serialize};
@@ -10,10 +9,6 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 
 use std::collections::HashMap;
-
-#[derive(RustEmbed)]
-#[folder = "src/scripts/"]
-pub struct Asset;
 
 #[derive(Serialize, Deserialize)]
 struct Metadata {
@@ -52,10 +47,9 @@ fn append_script(
   window: &Window,
   script_list: &mut HashMap<String, Script>,
   script_string: &str,
-  file_name: &str,
 ) -> tauri::Result<()> {
   match Script::new(script_string) {
-    Err(msg) => Ok(()),
+    Err(_) => Ok(()),
     Ok(val) => {
       let meta = &val.metadata;
       window.eval(&format!(
@@ -72,31 +66,36 @@ pub fn build_scripts(
   window: Window,
   script_list: &mut HashMap<String, Script>,
 ) -> tauri::Result<()> {
-  for script in Asset::iter() {
-    let file = &Asset::get(script.as_ref()).unwrap();
-    let script_string: &str = std::str::from_utf8(file.as_ref()).unwrap();
-    append_script(&window, script_list, script_string, script.as_ref())?
+  let config = tauri::generate_context!();
+  if let Some(resource_dir) = resource_dir(config.package_info()) {
+    dbg!(&resource_dir);
+    let script_path = &resource_dir.join("scripts").join("**").join("*.js");
+    install_scripts(&window, script_list, script_path.to_str().unwrap())?;
   }
-  if let Some(user_dir) = UserDirs::new() {
-    let bloop_dir = user_dir.document_dir().unwrap().join("bloop");
+  if let Some(user_dir) = document_dir() {
+    let bloop_dir = user_dir.join("bloop");
     if bloop_dir.exists() {
       let script_path = &bloop_dir.join("**").join("*.js");
-      for script in glob(script_path.to_str().unwrap()).unwrap() {
-        let file = script.unwrap();
-        let script_string = read_to_string(&file).unwrap();
-        append_script(
-          &window,
-          script_list,
-          &script_string,
-          &file.to_str().unwrap(),
-        )?
-      }
+      install_scripts(&window, script_list, script_path.to_str().unwrap())?;
     } else {
       create_dir_all(bloop_dir).unwrap();
     }
   }
 
   window.eval("spotlight.spotlightActions.finalize()")?;
+  Ok(())
+}
+
+pub fn install_scripts(
+  window: &Window,
+  script_list: &mut HashMap<String, Script>,
+  pattern: &str,
+) -> tauri::Result<()> {
+  for script in glob(pattern).unwrap() {
+    let file = script.unwrap();
+    let script_string = read_to_string(&file).unwrap();
+    append_script(window, script_list, &script_string)?;
+  }
   Ok(())
 }
 

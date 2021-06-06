@@ -6,7 +6,7 @@ cargo.lock
 bloop.code-workspace
 
 webview
-src/scripts
+scripts
 dist
 dev
 .cache
