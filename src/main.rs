@@ -3,8 +3,11 @@
   windows_subsystem = "windows"
 )]
 mod scripts;
+use once_cell::sync::OnceCell;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
+
+pub static PACKAGE_INFO: OnceCell<tauri::PackageInfo> = OnceCell::new();
 
 #[derive(Default)]
 struct Scripts(Arc<Mutex<HashMap<String, scripts::Script>>>);
@@ -39,9 +42,7 @@ fn exec(
 
 fn main() {
   let context = tauri::generate_context!();
-  scripts::PACKAGE_INFO
-    .set(context.package_info().clone())
-    .unwrap();
+  PACKAGE_INFO.set(context.package_info().clone()).unwrap();
   tauri::Builder::default()
     .manage(Scripts(Default::default()))
     .invoke_handler(tauri::generate_handler![doc_ready, exec])

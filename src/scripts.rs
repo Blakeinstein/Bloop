@@ -1,15 +1,9 @@
 use glob::glob;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::fs::{create_dir_all, read_to_string};
-
 use tauri::api::path::{document_dir, resource_dir};
 use tauri::Window;
-
-use serde::{Deserialize, Serialize};
-
-use std::collections::HashMap;
-
-use once_cell::sync::OnceCell;
-pub static PACKAGE_INFO: OnceCell<tauri::PackageInfo> = OnceCell::new();
 
 #[derive(Serialize, Deserialize)]
 struct Metadata {
@@ -67,7 +61,7 @@ pub fn build_scripts(
   window: Window,
   script_list: &mut HashMap<String, Script>,
 ) -> tauri::Result<()> {
-  if let Some(resource_dir) = resource_dir(&PACKAGE_INFO.get().unwrap()) {
+  if let Some(resource_dir) = resource_dir(&crate::PACKAGE_INFO.get().unwrap()) {
     dbg!(&resource_dir);
     let script_path = &resource_dir.join("scripts").join("**").join("*.js");
     install_scripts(&window, script_list, script_path.to_str().unwrap())?;
