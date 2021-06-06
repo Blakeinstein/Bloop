@@ -8,7 +8,8 @@ use serde::{Deserialize, Serialize};
 
 use std::collections::HashMap;
 
-pub static mut PACKAGE_INFO: Option<tauri::PackageInfo> = None;
+use once_cell::sync::OnceCell;
+pub static PACKAGE_INFO: OnceCell<tauri::PackageInfo> = OnceCell::new();
 
 #[derive(Serialize, Deserialize)]
 struct Metadata {
@@ -66,7 +67,7 @@ pub fn build_scripts(
   window: Window,
   script_list: &mut HashMap<String, Script>,
 ) -> tauri::Result<()> {
-  if let Some(resource_dir) = unsafe { resource_dir(&(PACKAGE_INFO.clone()).unwrap()) } {
+  if let Some(resource_dir) = resource_dir(&PACKAGE_INFO.get().unwrap()) {
     dbg!(&resource_dir);
     let script_path = &resource_dir.join("scripts").join("**").join("*.js");
     install_scripts(&window, script_list, script_path.to_str().unwrap())?;

@@ -39,9 +39,9 @@ fn exec(
 
 fn main() {
   let context = tauri::generate_context!();
-  unsafe {
-    scripts::PACKAGE_INFO = Some(context.package_info().clone());
-  };
+  scripts::PACKAGE_INFO
+    .set(context.package_info().clone())
+    .unwrap();
   tauri::Builder::default()
     .manage(Scripts(Default::default()))
     .invoke_handler(tauri::generate_handler![doc_ready, exec])
