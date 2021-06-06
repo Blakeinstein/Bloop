@@ -59,7 +59,7 @@ fn append_script(
     Err(msg) => {
       message_box_ok(
         "Script parsing error",
-        &format!("File: {}\n{:?}", file_name, msg),
+        &format!("File: {}\n{}", file_name, msg.to_string()),
         MessageBoxIcon::Warning,
       );
       Ok(())
