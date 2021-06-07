@@ -40,12 +40,20 @@ fn exec(
   }
 }
 
+#[tauri::command]
+fn require(scripts: tauri::State<Scripts>, script_name: String) -> Result<String, String> {
+  match scripts.0.lock().unwrap().get(&script_name) {
+    Some(script) => Ok(script.string.clone()),
+    None => Err("lib not found".into()),
+  }
+}
+
 fn main() {
   let context = tauri::generate_context!();
   PACKAGE_INFO.set(context.package_info().clone()).unwrap();
   tauri::Builder::default()
     .manage(Scripts(Default::default()))
-    .invoke_handler(tauri::generate_handler![doc_ready, exec])
+    .invoke_handler(tauri::generate_handler![doc_ready, exec, require])
     .run(context)
     .expect("error while running tauri application");
 }

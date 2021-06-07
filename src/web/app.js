@@ -346,7 +346,6 @@ window.editorObj = {
 		window.editor.setValue(value);
 	},
 	set text(value) {
-		console.log(window.editorObj.isSelection)
 		if (window.editorObj.isSelection)
 			window.editorObj.selection = value
 		else
@@ -371,6 +370,18 @@ window.editorObj = {
 		spotlight.label.classList.add('postError');
 	},
 };
+
+window.requireMod = async (path) => {
+	if (!path.endsWith(".js"))
+		path += ".js";
+	try {
+		const code = await invoke('require', { scriptName: path });
+		const func = new Function(`let exports = {}; const module = { exports }; ${code}; return module.exports;`);
+		return func();
+	} catch (err) {
+		window.editorObj.postError(err);
+	}
+}
 
 //* Execute
 window.spotlight.init();

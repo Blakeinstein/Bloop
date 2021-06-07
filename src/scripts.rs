@@ -1,7 +1,8 @@
-use glob::glob;
+use glob::{glob, GlobError};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::{create_dir_all, read_to_string};
+use std::path::PathBuf;
 use tauri::api::path::{document_dir, resource_dir};
 use tauri::Window;
 
@@ -17,7 +18,7 @@ struct Metadata {
 
 pub struct Script {
   metadata: Metadata,
-  string: String,
+  pub string: String,
 }
 
 impl Script {
@@ -28,7 +29,7 @@ impl Script {
       Err(msg) => Err(msg),
       Ok(meta) => Ok(Script {
         metadata: meta,
-        string: string.to_string(),
+        string: string.to_string().replace("require(", "await requireMod("),
       }),
     }
   }
@@ -41,9 +42,11 @@ fn parse_meta(string: &str) -> serde_json::Result<Metadata> {
 fn append_script(
   window: &Window,
   script_list: &mut HashMap<String, Script>,
-  script_string: &str,
+  script: Result<&PathBuf, &GlobError>,
 ) -> tauri::Result<()> {
-  match Script::new(script_string) {
+  let file = script.unwrap();
+  let script_string = read_to_string(&file).unwrap();
+  match Script::new(&script_string) {
     Err(_) => Ok(()),
     Ok(val) => {
       let meta = &val.metadata;
@@ -57,20 +60,45 @@ fn append_script(
   }
 }
 
+fn append_lib(
+  script_list: &mut HashMap<String, Script>,
+  script: Result<&PathBuf, &GlobError>,
+  builtin: bool,
+) -> tauri::Result<()> {
+  let file = script.unwrap();
+  let script_string = read_to_string(&file).unwrap();
+  let file_name = file.file_name().unwrap().to_str().unwrap();
+  let lib = Script {
+    metadata: Metadata {
+      api: 1,
+      name: if builtin {
+        String::from("@boop/") + file_name
+      } else {
+        String::from("lib/") + file_name
+      },
+      description: "Is lib".into(),
+      author: "Is lib".into(),
+      icon: "Is lib".into(),
+      tags: "lib".into(),
+    },
+    string: script_string.to_string(),
+  };
+  script_list.insert(lib.metadata.name.to_string(), lib);
+  Ok(())
+}
+
 pub fn build_scripts(
   window: Window,
   script_list: &mut HashMap<String, Script>,
 ) -> tauri::Result<()> {
   if let Some(resource_dir) = resource_dir(&crate::PACKAGE_INFO.get().unwrap()) {
-    dbg!(&resource_dir);
-    let script_path = &resource_dir.join("scripts").join("**").join("*.js");
-    install_scripts(&window, script_list, script_path.to_str().unwrap())?;
+    let script_path = &resource_dir.join("scripts");
+    install_scripts(&window, script_list, script_path, true)?;
   }
   if let Some(user_dir) = document_dir() {
     let bloop_dir = user_dir.join("bloop");
     if bloop_dir.exists() {
-      let script_path = &bloop_dir.join("**").join("*.js");
-      install_scripts(&window, script_list, script_path.to_str().unwrap())?;
+      install_scripts(&window, script_list, &bloop_dir, false)?;
     } else {
       create_dir_all(bloop_dir).unwrap();
     }
@@ -83,18 +111,23 @@ pub fn build_scripts(
 pub fn install_scripts(
   window: &Window,
   script_list: &mut HashMap<String, Script>,
-  pattern: &str,
+  pattern: &PathBuf,
+  builtin: bool,
 ) -> tauri::Result<()> {
-  for script in glob(pattern).unwrap() {
-    let file = script.unwrap();
-    let script_string = read_to_string(&file).unwrap();
-    append_script(window, script_list, &script_string)?;
+  for script in glob(pattern.join("*.js").to_str().unwrap()).unwrap() {
+    append_script(window, script_list, script.as_ref())?;
+  }
+  for script in glob(pattern.join("lib").join("*.js").to_str().unwrap()).unwrap() {
+    append_lib(script_list, script.as_ref(), builtin)?;
   }
   Ok(())
 }
 
 pub fn script_eval(script_obj: &Script, window: &Window) -> tauri::Result<()> {
-  let js = format!("{}; main(editorObj);", &script_obj.string);
+  let js = format!(
+    "(async () => {{ {}; main(editorObj) }})()",
+    &script_obj.string
+  );
   window.eval(&js)?;
   window.eval("spotlight.spotlightActions.Ok()")?;
   Ok(())
