@@ -12,3 +12,4 @@ dev
 .cache
 .dnconfig
 .parcel-cache
+bloop.key

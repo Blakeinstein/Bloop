@@ -46,10 +46,15 @@
       }
     },
     "updater": {
-      "active": false
+        "active": true,
+        "endpoints": [
+            "https://bloop-updates.azurewebsites.net/api/{{target}}/{{current_version}}"
+        ],
+        "dialog": false,
+        "pubkey": "key/bloop.key.pub"
     },
     "allowlist": {
-      "all": true,
+      "all": false,
       "window": {
         "all": true
       }
