@@ -1,7 +1,7 @@
 ﻿# Bloop.
 <p align="center">
-A light weight scratch pad inspired and derived from boop.<br/>
-The tool aims to be an exact imitation of boop built using web technologies and powered by my own fork of <a href="https://github.com/Boscop/web-view">webview-rs</a>, available <a href="https://github.com/Blakeinstein/web-view/">here</a>
+A light weight hackable scratch pad for developers inspired from boop.<br/>
+The tool aims to be an exact imitation of boop built using web technologies and powered by <a href="https://tauri.studio">Tauri</a>.
 </p>
 
 <p align="center">
@@ -26,7 +26,9 @@ Until preferences are implemented, you are stuck with the following fonts.
 
 ### How to get Bloop
 
-For the time being the only way to obtain a working copy is to either get the installer or portable binary from [here](https://github.com/Blakeinstein/Bloop/releases) or compile it yourself.
+For the time being the only way to obtain a working copy is to either get the installer from [here](https://github.com/Blakeinstein/Bloop/releases). or compile it yourself.
+
+> Archive files like tar.gz, msi.zip, appimage.tar.gz are update images that can be ignored.
 
 ### How to build from source
 
@@ -60,9 +62,9 @@ For the time being the only way to obtain a working copy is to either get the in
 ### Planned features
 
 - Preferences(fonts etc)
-- light mode(Depends, not really interested)
 
 ### Documentation
 
-- [Documentation](https://github.com/Blakeinstein/Bloop/wiki)
-- [Custom scripts](https://github.com/Blakeinstein/Bloop/wiki#CustomScripts)
+##### TODO
+<!-- - [Documentation](https://github.com/Blakeinstein/Bloop/wiki)
+- [Custom scripts](https://github.com/Blakeinstein/Bloop/wiki#CustomScripts) -->
