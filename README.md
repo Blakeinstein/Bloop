@@ -52,6 +52,7 @@ For the time being the only way to obtain a working copy is to either get the in
       mv dist src-tauri/
       mv src src-tauri/
       mv icons src-tauri/
+      mv keys src-tauri/
       mv ./Cargo.toml src-tauri/
       mv ./tauri.conf.json src-tauri/
       mv ./build.rs src-tauri/
