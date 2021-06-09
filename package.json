@@ -1,6 +1,6 @@
 {
   "name": "bloop",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main": "dist/index.html",
   "license": "MIT",
   "targets": {
