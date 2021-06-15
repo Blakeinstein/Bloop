@@ -46,7 +46,7 @@
       }
     },
     "updater": {
-        "active": true,
+        "active": false,
         "endpoints": [
             "https://bloop-updates.azurewebsites.net/api/{{target}}/{{current_version}}"
         ],
