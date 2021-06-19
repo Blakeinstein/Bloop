@@ -1,0 +1,20 @@
+@import "./codemirror";
+
+.window-body {
+  flex-grow: 1;
+  width: 100%;
+  order: 2;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-image: linear-gradient(
+    to right,
+    #161616e2 0%,
+    #161616e2 var(--gutter-size),
+    #0f0f0fe2 var(--gutter-size),
+    #0f0f0fe2 calc(var(--gutter-size) + var(--seperator-width)),
+    #1f1f1fe2 calc(var(--gutter-size) + var(--seperator-width)),
+    #1f1f1fe2 100%
+  );
+  backdrop-filter: blur(2px);
+  cursor: text;
+}
