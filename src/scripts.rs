@@ -51,7 +51,7 @@ fn append_script(
     Ok(val) => {
       let meta = &val.metadata;
       window.eval(&format!(
-        "spotlight.spotlightActions.addAction({:?}, {:?}, {:?}, {:?})",
+        "spotlight.addAction({:?}, {:?}, {:?}, {:?})",
         meta.name, meta.description, meta.icon, meta.tags
       ))?;
       script_list.insert(meta.name.to_string(), val);
