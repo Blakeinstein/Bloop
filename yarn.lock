@@ -817,10 +817,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tauri-apps/api@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-beta.1.tgz#5b3696235c841cfe68d31b65a61c381778e5c733"
-  integrity sha512-WX9Hqf6pXFfpURTdz9VbHctnh4gjsWZDj5tSWqV4mQ2T8TldVmOSKqHpPDcVFibeM1L6oXJfrSgqR68Ho4g3bQ==
+"@tauri-apps/api@^1.0.0-beta.2":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-beta.3.tgz#4794ee794e023d3f00eb0926b6b1825a251ec3d4"
+  integrity sha512-EtgykB6FVO6/gc51MXXXnNhOp81UUeI9en2CwetVKOMmXyqFSBR9yDP/P7yg658mKDefLaAEnm6eSHQxVMmB3w==
 
 "@tauri-apps/cli@^1.0.0-beta.2":
   version "1.0.0-beta.2"
@@ -935,11 +935,6 @@ abortcontroller-polyfill@^1.1.9:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.7.3.tgz#1b5b487bd6436b5b764fd52a612509702c3144b5"
   integrity sha512-zetDJxd89y3X99Kvo4qFx8GKlt6GsvN3UcRZHwU6iFA/0KiOmhkTVhe8oRoTBiTVPZu09x3vCra47+w8Yz1+2Q==
-
-ace-builds@^1.4.12:
-  version "1.4.12"
-  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.4.12.tgz#888efa386e36f4345f40b5233fcc4fe4c588fae7"
-  integrity sha512-G+chJctFPiiLGvs3+/Mly3apXTcfgE45dT5yp12BcWZ1kUs+gm0qd3/fv4gsz6fVag4mM0moHVpjHDIgph6Psg==
 
 acorn-globals@^4.3.0:
   version "4.3.4"
