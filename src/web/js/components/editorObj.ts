@@ -1,13 +1,13 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import { Editor } from "codemirror";
+import { Ace } from "ace-builds";
 import Spotlight from "./spotlight";
 
 class EditorObj {
   _script: String;
-  editor: Editor;
+  editor: Ace.Editor;
   spotlight: Spotlight;
 
-  constructor(editor: Editor) {
+  constructor(editor: Ace.Editor) {
     this.editor = editor;
   }
 
@@ -15,7 +15,7 @@ class EditorObj {
     return this._script;
   }
   get isSelection() {
-    return this.editor.somethingSelected();
+    return !this.editor.getSelection().isEmpty();
   }
   get fullText() {
     return this.editor.getValue();
@@ -24,7 +24,7 @@ class EditorObj {
     return this.isSelection ? this.selection : this.fullText;
   }
   get selection() {
-    return this.editor.getSelection();
+    return this.editor.getSelectedText();
   }
 
   set script(value) {
@@ -34,7 +34,8 @@ class EditorObj {
     );
   }
   set selection(value) {
-    this.editor.replaceSelection(value);
+    let range = this.editor.getSelection().getRange();
+    this.editor.session.replace(range, value);
   }
   set fullText(value) {
     this.editor.setValue(value);
@@ -46,7 +47,7 @@ class EditorObj {
 
   focus() {
     this.editor.focus();
-    this.editor.setCursor(this.editor.lineCount(), 0);
+    this.editor.navigateFileEnd();
   }
 
   postMessage(message) {

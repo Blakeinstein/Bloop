@@ -1,4 +1,4 @@
-import { Editor, Position } from "codemirror";
+import { Ace } from "ace-builds";
 import Fuse from "fuse.js";
 import { appWindow } from "@tauri-apps/api/window";
 
@@ -9,12 +9,12 @@ class Spotlight {
   firstChar: boolean;
   visible: boolean;
   body: Element;
-  editor: Editor;
+  editor: Ace.Editor;
   editorObj: EditorObj;
   spotlight: HTMLInputElement;
   spotlightWrapper: HTMLElement;
   alPlaceholder: HTMLElement;
-  savedRange: Position;
+  savedRange: Ace.Point;
   dataList: HTMLCollection;
   actionList: HTMLElement;
   alSelected: HTMLElement;
@@ -25,7 +25,7 @@ class Spotlight {
   actionCollection: Action[];
   visibleActions: HTMLElement[];
 
-  constructor(editorObj: EditorObj, editor: Editor) {
+  constructor(editorObj: EditorObj, editor: Ace.Editor) {
     this.editorObj = editorObj;
     this.editorObj.spotlight = this;
     this.editor = editor;
@@ -70,29 +70,29 @@ class Spotlight {
       true
     );
     window.addEventListener("keypress", (e) => {
-      if (!this.visible && !this.editor.hasFocus()) {
+      if (!this.visible && !this.editor.isFocused()) {
         window.setTimeout(() => this.editor.focus(), 0);
         if (this.savedRange != null) {
-          this.editor.setCursor(this.savedRange);
+          this.editor.moveCursorToPosition(this.savedRange);
         }
       }
     });
     document.addEventListener(
       "click",
       (event) => {
-        if (!this.editor.somethingSelected) event.preventDefault();
+        if (!this.editorObj.isSelection) event.preventDefault();
         if (this.visible) this.hideSpotlight();
-        else if (!this.editor.hasFocus()) {
+        else if (!this.editor.isFocused()) {
           window.setTimeout(() => this.editor.focus(), 0);
           if (this.savedRange != null) {
-            this.editor.setCursor(this.savedRange);
+            this.editor.moveCursorToPosition(this.savedRange);
           }
         }
       },
       false
     );
     this.editor.on("blur", (cm) => {
-      this.savedRange = this.editor.getCursor();
+      this.savedRange = this.editor.getCursorPosition();
     });
 
     this.spotlight.addEventListener("keyup", (e) => {
@@ -180,9 +180,9 @@ class Spotlight {
   hideSpotlight() {
     this.spotlightWrapper.classList.add("hidden");
     this.body.classList.remove("shaded");
-    window.setTimeout(() => this.editorObj.focus(), 0);
+    window.setTimeout(() => this.spotlight.focus(), 0);
     if (this.savedRange != null) {
-      this.editor.setCursor(this.savedRange);
+      this.editor.moveCursorToPosition(this.savedRange);
     }
     this.visible = false;
     this.labelText[2].classList.add("labelHidden");
@@ -194,7 +194,7 @@ class Spotlight {
     this.spotlightWrapper.classList.remove("hidden");
     this.body.classList.add("shaded");
     this.spotlight.value = "";
-    this.savedRange = this.editor.getCursor();
+    this.savedRange = this.editor.getCursorPosition();
     for (let i = 0; i < this.dataList.length; i++)
       this.dataList[i].classList.add("hidden");
     window.setTimeout(() => this.spotlight.focus(), 0);

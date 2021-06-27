@@ -1,25 +1,24 @@
-import "./code-mirror/mode";
-import "codemirror/keymap/sublime";
-
-import CodeMirror from "codemirror";
+import ace from "ace-builds";
+import "ace-builds/src-min-noconflict/keybinding-sublime";
+// import "./bloopMode";
 
 const EditorElement: HTMLElement = document.querySelector(".window-body");
 
-const Config: CodeMirror.EditorConfiguration = {
-  scrollbarStyle: null,
-  electricChars: false,
-  lineWrapping: true,
-  autofocus: true,
-  lineNumbers: true,
-  keyMap: "sublime",
-  extraKeys: {
-    Tab: (cm) => {
-      CodeMirror.commands[cm.somethingSelected() ? "indentMore" : "insertTab"](
-        cm
-      );
-    },
-  },
-  mode: "bloop",
+const Config: Record<string, any> = {
+  cursorStyle: "ace",
+  fontFamily: `var(--font)`,
+  fontSize: `var(--editor-font-size)`,
+  useWorker: false,
+  indentedSoftWrap: false,
+  wrap: true,
+  hScrollBarAlwaysVisible: false,
+  vScrollBarAlwaysVisible: false,
+  autoScrollEditorIntoView: true,
 };
 
-export const editor = CodeMirror(EditorElement, Config);
+const editor = ace.edit(EditorElement);
+editor.setOptions(Config);
+editor.setKeyboardHandler("ace/keyboard/sublime");
+// editor.session.setMode("ace/mode/bloop");
+
+export default editor;

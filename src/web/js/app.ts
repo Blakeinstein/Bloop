@@ -1,14 +1,14 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import { Editor } from "codemirror";
+import { Ace } from "ace-builds";
 
-import { editor } from "./components/editor";
+import editor from "./components/editor";
 import Spotlight from "./components/spotlight";
 import EditorObj from "./components/editorObj";
 import TitleBar from "./components/titlebar";
 
 declare global {
   interface Window {
-    editor: Editor;
+    editor: Ace.Editor;
     editorObj: EditorObj;
     titlebar: TitleBar;
     spotlight: Spotlight;
@@ -22,7 +22,7 @@ window.titlebar = new TitleBar();
 
 window.editorObj = new EditorObj(editor);
 // * Implement Spotlight
-window.spotlight = new Spotlight(editorObj, editor);
+window.spotlight = new Spotlight(window.editorObj, editor);
 
 window.requireMod = async (path: string) => {
   if (!path.endsWith(".js")) path += ".js";
@@ -33,7 +33,7 @@ window.requireMod = async (path: string) => {
     );
     return func();
   } catch (err) {
-    editorObj.postError(err);
+    window.editorObj.postError(err);
   }
 };
 
@@ -46,7 +46,7 @@ window.addEventListener("drop", (e) => {
   for (let i in e.dataTransfer.files) {
     let reader = new FileReader();
     reader.onload = (ev) => {
-      editor.replaceSelection(ev.target.result as string, "end");
+      editor.setValue(ev.target.result as string);
     };
     reader.readAsText(e.dataTransfer.files[i]);
   }
@@ -54,5 +54,5 @@ window.addEventListener("drop", (e) => {
 
 window.onload = () => {
   invoke("doc_ready");
-  editorObj.focus();
+  window.editorObj.focus();
 };

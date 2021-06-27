@@ -2,8 +2,22 @@
   --font: "SF mono", "Cascadia Code", "CascadiaCode Nerd Font",
     "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica,
     Arial, "Lucida Grande", sans-serif;
-  --font-size: ;
+  --font-size: 30px;
+  --editor-font-size: 20px;
   --gutter-size: 4.2rem;
+  --gutter-color: #161616a2;
+  --editor-color: #1f1f1fa2;
+  --gutter-text-color: #999;
+  --editor-text-color: white;
   --seperator-width: 1.2px;
+  --seperator-color: 0f0f0fe2;
+  // syntax
+  --syntax-comment: #888ea6;
+  --syntax-string: #ff4c7c;
+  --syntax-attribute: #4cffb2;
+  --syntax-number: #ffb24c;
+  --syntax-extra: #3586ff;
+  --syntax-keyword: #32ff47;
+
   font-family: var(--font);
 }

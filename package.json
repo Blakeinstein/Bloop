@@ -20,11 +20,10 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-beta.2",
-    "codemirror": "^5.61.0",
+    "ace-builds": "^1.4.12",
     "fuse.js": "^6.4.6"
   },
   "devDependencies": {
-    "@types/codemirror": "^5.60.0",
     "@parcel/transformer-sass": "2.0.0-beta.3.1",
     "@tauri-apps/cli": "^1.0.0-beta.2",
     "npm-run-all": "^4.1.5",
