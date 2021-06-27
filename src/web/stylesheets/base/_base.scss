@@ -2,6 +2,24 @@
 *:before,
 *:after {
   box-sizing: border-box;
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--gutter-color) #afafaf52 !important;
+}
+
+* {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--gutter-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #afafaf52;
+    border-radius: 20px;
+    border: 1px solid black;
+  }
 }
 
 html {
