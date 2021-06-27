@@ -108,6 +108,26 @@
   grid-area: label;
 }
 
+.titlebar-settings {
+  float: right;
+  display: grid;
+  margin-right: 0.2em;
+
+  img {
+    opacity: 0.4;
+    transition: all 0.5s ease-in-out;
+
+    &:hover {
+      filter: invert(0.4);
+      opacity: 0.7;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .postInfo {
   background-color: #3586ff;
   color: #dadada;
