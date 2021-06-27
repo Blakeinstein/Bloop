@@ -1,6 +1,6 @@
 import ace from "ace-builds";
 import "ace-builds/src-min-noconflict/keybinding-sublime";
-// import "./bloopMode";
+import "./bloopMode";
 
 const EditorElement: HTMLElement = document.querySelector(".window-body");
 
@@ -19,6 +19,6 @@ const Config: Record<string, any> = {
 const editor = ace.edit(EditorElement);
 editor.setOptions(Config);
 editor.setKeyboardHandler("ace/keyboard/sublime");
-// editor.session.setMode("ace/mode/bloop");
+editor.session.setMode("ace/mode/bloop");
 
 export default editor;
