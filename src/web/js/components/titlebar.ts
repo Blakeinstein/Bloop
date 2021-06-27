@@ -14,7 +14,7 @@ class TitleBar {
     this.minimize = document.querySelector(".titlebar-minimize");
     this.maximize = document.querySelector(".titlebar-fullscreen");
     this.fullscreenSvg = document.querySelector(".fullscreen-svg");
-    this.maximizeSvg = document.querySelector(".fullscreen-svg");
+    this.maximizeSvg = document.querySelector(".maximize-svg");
     this.titlebar = document.querySelector(".titlebar");
     this.maximizeState = false;
 
