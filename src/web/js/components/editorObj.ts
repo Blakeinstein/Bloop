@@ -39,6 +39,7 @@ class EditorObj {
   }
   set fullText(value) {
     this.editor.setValue(value);
+    this.editor.clearSelection();
   }
   set text(value) {
     if (this.isSelection) this.selection = value;
