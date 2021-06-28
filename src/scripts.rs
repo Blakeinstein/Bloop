@@ -91,6 +91,7 @@ pub fn build_scripts(
   window: Window,
   script_list: &mut HashMap<String, Script>,
 ) -> tauri::Result<()> {
+  script_list.clear(); // flush scripts on reload
   if let Some(resource_dir) = resource_dir(&crate::PACKAGE_INFO.get().unwrap()) {
     let script_path = &resource_dir.join("scripts");
     install_scripts(&window, script_list, script_path, true)?;
