@@ -7,7 +7,7 @@ const EditorElement: HTMLElement = document.querySelector(".window-body");
 const Config: Record<string, any> = {
   cursorStyle: "ace",
   fontFamily: `var(--font)`,
-  fontSize: `var(--editor-font-size)`,
+  fontSize: `var(--editor_font_size)`,
   useWorker: false,
   indentedSoftWrap: false,
   wrap: true,

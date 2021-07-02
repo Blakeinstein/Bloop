@@ -3,7 +3,7 @@
 *:after {
   box-sizing: border-box;
   scrollbar-width: thin !important;
-  scrollbar-color: var(--gutter-color) #afafaf52 !important;
+  scrollbar-color: var(--gutter_color) #afafaf52 !important;
 }
 
 * {
@@ -12,7 +12,7 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--gutter-color);
+    background: var(--gutter_color);
   }
 
   &::-webkit-scrollbar-thumb {
