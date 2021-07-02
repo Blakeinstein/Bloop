@@ -99,7 +99,7 @@ ace.define("ace/mode/bloop_highlight", [], function (require, exports, module) {
         },
         // Match JSON labelss and generic parameters
         {
-          regex: `${quoteLookahead}(?=(?:[ {\\[]*))([^\\r\\n:\\s\\w]+?|"${quotes})\\s*(?=\\:(?!\\:))`,
+          regex: `["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]\\s*(?=:)`,
           token: "extra",
         },
         // XML-like tags
@@ -140,13 +140,59 @@ ace.define("ace/mode/bloop_highlight", [], function (require, exports, module) {
         },
         // Strings
         {
-          regex: `(\"\"\"|'''|\"|')(?:(?!\\1)(?:\\\\.|[^\\\\]))*\\1`,
+          token: "string", // single line
+          regex: `"""|'''|\``,
+          next: "string",
+        },
+        {
+          regex: `("|')(?:(?!\\1)(?:\\\\.|[^\\\\]))*\\1`,
           token: "string",
         },
         // Comments
         {
           regex: `${quoteLookahead}//(.*)`,
           token: "extra",
+        },
+        {
+          regex: `${quoteLookahead}\/\\*`,
+          caseInsensitive: true,
+          token: "comment",
+          next: "comment",
+        },
+        {
+          regex: `${quoteLookahead}<!--`,
+          caseInsensitive: true,
+          token: "comment",
+          next: "comment",
+        },
+      ],
+      string: [
+        {
+          token: "attribute",
+          regex: /\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|["\\\/bfnrt])/,
+        },
+        {
+          token: "string",
+          regex: `"""|'''|\``,
+          next: "start",
+        },
+        {
+          defaultToken: "string",
+        },
+      ],
+      comment: [
+        {
+          token: "comment", // comments are not allowed, but who cares?
+          regex: "\\*/",
+          next: "start",
+        },
+        {
+          token: "comment", // comments are not allowed, but who cares?
+          regex: "-\\->",
+          next: "start",
+        },
+        {
+          defaultToken: "comment",
         },
       ],
     };
