@@ -1,12 +1,5 @@
-.window-body {
-  flex-grow: 1;
-  width: 100%;
-  order: 2;
-  overflow-x: hidden;
-  overflow-y: auto;
-  backdrop-filter: blur(2px);
-  background: transparent;
-  cursor: text;
+.editor-container {
+  height: 100%;
 }
 
 .ace-tm {

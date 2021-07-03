@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-@import "base/vars", "base/base", "base/helpers";
+@import "base/base", "base/helpers";
 
 @import "components/titlebar", "components/spotlight", "components/icons",
-  "components/editor";
+  "components/editor", "components/window";

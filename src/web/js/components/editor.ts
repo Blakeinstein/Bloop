@@ -2,7 +2,7 @@ import ace from "ace-builds";
 import "ace-builds/src-min-noconflict/keybinding-sublime";
 import "./bloopMode";
 
-const EditorElement: HTMLElement = document.querySelector(".window-body");
+const EditorElement: HTMLElement = document.querySelector(".editor-container");
 
 const Config: Record<string, any> = {
   cursorStyle: "ace",

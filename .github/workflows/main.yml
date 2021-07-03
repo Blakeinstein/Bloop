@@ -52,6 +52,7 @@ jobs:
         run: |
           mv dist src-tauri/
           mv src src-tauri/
+          mv config src-tauri/
           mv icons src-tauri/
           mv ./Cargo.toml src-tauri/
           mv ./tauri.conf.json src-tauri/

@@ -62,8 +62,6 @@
     "windows": [
       {
         "title": "Bloop",
-        "width": 900,
-        "height": 400,
         "resizable": true,
         "fullscreen": false,
         "decorations": false,

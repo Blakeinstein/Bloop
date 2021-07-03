@@ -45,6 +45,8 @@ class Spotlight {
 
   init() {
     // Create event listeners
+
+    // handle open
     document.addEventListener(
       "keydown",
       (e) => {

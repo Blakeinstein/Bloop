@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="stylesheets/main.scss">
     <script type="module" src="./js/app.ts" async></script>
 </head>
-<body>
+<body style="display: none;">
     <div id=content style="border: 1px solid rgba(0, 0, 0, 0.5);border-radius: 5px;">
         <div class="titlebar" data-tauri-drag-region>
             <div class="titlebar-stoplight">
@@ -40,7 +40,9 @@
                 <img src="icons/cog.svg" height="24px" width="24px">
             </div>
         </div>
-        <div class="window-body"></div>
+        <div class="window-body">
+            <div class="editor-container"></div>
+        </div>
     </div>
     <div id="spotlight-wrapper" class="hidden">
         <input type="text" id="spotlight" placeholder="Start typing..." autocomplete="off" />

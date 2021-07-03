@@ -1,3 +1,4 @@
+import { getCurrent } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Ace } from "ace-builds";
 
@@ -5,6 +6,7 @@ import editor from "./components/editor";
 import Spotlight from "./components/spotlight";
 import EditorObj from "./components/editorObj";
 import TitleBar from "./components/titlebar";
+import Settings from "./components/settings";
 
 declare global {
   interface Window {
@@ -12,9 +14,11 @@ declare global {
     editorObj: EditorObj;
     titlebar: TitleBar;
     spotlight: Spotlight;
+    settings: Settings;
     requireMod: Function;
   }
 }
+window.settings = new Settings();
 
 window.editor = editor;
 
@@ -56,3 +60,14 @@ window.onload = () => {
   invoke("doc_ready");
   window.editorObj.focus();
 };
+
+// todo restore focus?
+// getCurrent().listen("tauri://focus", () => {
+//   window.focus();
+//   console.log("kek");
+//   if (window.spotlight.visible) {
+//     window.spotlight.spotlight.focus();
+//   } else {
+//     window.editor.focus();
+//   }
+// });
