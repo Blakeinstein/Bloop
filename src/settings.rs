@@ -1,6 +1,9 @@
 use std::collections::HashMap;
+use std::error::Error;
+use std::fs::File as FileWriter;
+use std::io::Write;
 
-use config::{Config, ConfigError, File};
+use config::{Config, File};
 use serde::{Deserialize, Serialize};
 use tauri::api::dialog::message;
 use tauri::api::path::document_dir;
@@ -19,8 +22,9 @@ pub struct BloopConfig {
 }
 
 impl BloopConfig {
-  pub fn new() -> Result<Self, ConfigError> {
+  pub fn new() -> Result<Self, Box<dyn Error>> {
     let mut settings = Config::default();
+    const DEFAULT_CONFIG: &[u8] = include_bytes!("../config/default.toml");
     if let Err(err) = settings.merge(File::with_name("config/default")) {
       message("Error parsing default config", err.to_string());
     }
@@ -30,8 +34,11 @@ impl BloopConfig {
         if let Err(err) = settings.merge(File::from(bloop_config)) {
           message("Error parsing config", err.to_string());
         }
+      } else {
+        let mut file = FileWriter::create(bloop_config)?;
+        file.write_all(DEFAULT_CONFIG)?;
       }
     }
-    settings.try_into()
+    settings.try_into().map_err(|err| err.into())
   }
 }

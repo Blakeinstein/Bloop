@@ -1,9 +1,14 @@
 import { invoke } from "@tauri-apps/api/tauri";
+import { open } from "@tauri-apps/api/shell";
+import { documentDir } from "@tauri-apps/api/path";
 class Settings {
   root: HTMLElement;
+  settingsButton: HTMLElement;
 
   constructor() {
     this.root = document.documentElement;
+    this.settingsButton = document.querySelector(".titlebar-settings");
+    this.settingsButton.addEventListener("click", this.openSettingsFile);
     invoke("settings").then(
       (config) => this.updateConfig(config as string),
       (err) => console.log(err)
@@ -19,7 +24,9 @@ class Settings {
     );
   }
   openSettingsFile() {
-    invoke("open_config");
+    documentDir()
+      .then((dir) => open(dir + "bloop/config.toml"))
+      .catch((err) => console.log(err));
   }
 }
 
