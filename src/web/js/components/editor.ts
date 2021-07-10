@@ -14,6 +14,7 @@ const Config: Record<string, any> = {
   hScrollBarAlwaysVisible: false,
   vScrollBarAlwaysVisible: false,
   autoScrollEditorIntoView: true,
+  showPrintMargin: false,
 };
 
 const editor = ace.edit(EditorElement);
