@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::error::Error;
-use std::fs::File as FileWriter;
+use std::fs::{read_to_string, File as FileWriter};
 use std::io::Write;
 
 use config::{Config, File};
@@ -10,7 +10,7 @@ use tauri::api::path::document_dir;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Global {
-  pub custom_css: bool,
+  pub custom_css: String,
   pub width: u32,
   pub height: u32,
 }
@@ -41,4 +41,16 @@ impl BloopConfig {
     }
     settings.try_into().map_err(|err| err.into())
   }
+}
+
+pub fn custom_css(css_file_name: String) -> Option<String> {
+  if let Some(document_path) = document_dir() {
+    let css_file = document_path
+      .join("bloop/themes")
+      .join(css_file_name + ".css");
+    if css_file.exists() {
+      return Some(read_to_string(&css_file).unwrap());
+    }
+  }
+  None
 }

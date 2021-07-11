@@ -61,6 +61,12 @@ fn settings() -> Result<String, String> {
   serde_json::to_string(config).map_err(|err| err.to_string())
 }
 
+#[tauri::command]
+fn custom_css() -> String {
+  let config = GLOBAL_CONFIG.get().unwrap();
+  settings::custom_css(config.global.custom_css.clone()).unwrap_or_default()
+}
+
 fn main() {
   let context = tauri::generate_context!();
   PACKAGE_INFO.set(context.package_info().clone()).unwrap();
@@ -83,7 +89,9 @@ fn main() {
       Ok(())
     })
     .manage(Scripts(Default::default()))
-    .invoke_handler(tauri::generate_handler![doc_ready, exec, require, settings])
+    .invoke_handler(tauri::generate_handler![
+      doc_ready, exec, require, settings, custom_css
+    ])
     .run(context)
     .expect("error while running tauri application");
 }

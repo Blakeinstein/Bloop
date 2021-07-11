@@ -1,5 +1,5 @@
 [global]
-custom_css = false
+custom_css = ""
 width = 900
 height = 400
 

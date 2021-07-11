@@ -4,9 +4,12 @@ import { documentDir } from "@tauri-apps/api/path";
 class Settings {
   root: HTMLElement;
   settingsButton: HTMLElement;
+  cssElement: HTMLStyleElement;
 
   constructor() {
     this.root = document.documentElement;
+    this.cssElement = document.createElement("style") as HTMLStyleElement;
+    document.head.append(this.cssElement);
     this.settingsButton = document.querySelector(".titlebar-settings");
     this.settingsButton.addEventListener("click", this.openSettingsFile);
     invoke("settings").then(
@@ -22,6 +25,12 @@ class Settings {
         this.root.style.setProperty("--" + prop, value);
       }
     );
+    if (settings["global"]["custom_css"]) {
+      invoke("custom_css").then(
+        (css) => (this.cssElement.textContent = css as string),
+        (err) => console.log(err)
+      );
+    }
   }
   openSettingsFile() {
     documentDir()
