@@ -21,7 +21,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": ["./scripts/*.js"],
+      "resources": ["./scripts/*.js", "./config/default.toml"],
       "externalBin": [],
       "copyright": "Blaine",
       "category": "DeveloperTool",
@@ -57,6 +57,14 @@
       "all": false,
       "window": {
         "all": true
+      },
+      "fs": {
+        "all": false,
+        "path": true
+      },
+      "shell": {
+        "all": false,
+        "open": true
       }
     },
     "windows": [

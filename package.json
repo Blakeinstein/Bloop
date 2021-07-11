@@ -1,14 +1,7 @@
 {
   "name": "bloop",
-  "version": "0.3.0",
-  "main": "dist/index.html",
+  "version": "0.4.0",
   "license": "MIT",
-  "targets": {
-    "main": {
-      "context": "browser",
-      "distDir": "~/dev/"
-    }
-  },
   "source": "src/web/index.html",
   "scripts": {
     "serve": "parcel src/web/index.html --dist-dir dev/ --port 8080",

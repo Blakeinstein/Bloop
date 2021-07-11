@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 use std::error::Error;
-use std::fs::{read_to_string, File as FileWriter};
+use std::fs::{create_dir_all, read_to_string, File as FileWriter};
 use std::io::Write;
 
 use config::{Config, File};
 use serde::{Deserialize, Serialize};
 use tauri::api::dialog::message;
-use tauri::api::path::document_dir;
+use tauri::api::path::config_dir;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Global {
@@ -28,13 +28,15 @@ impl BloopConfig {
     if let Err(err) = settings.merge(File::with_name("config/default")) {
       message("Error parsing default config", err.to_string());
     }
-    if let Some(document_path) = document_dir() {
-      let bloop_config = document_path.join("bloop").join("config.toml");
-      if bloop_config.exists() {
+    if let Some(config_path) = config_dir() {
+      let config_dir = config_path.join("bloop");
+      let bloop_config = config_dir.join("config.toml");
+      if config_dir.exists() && bloop_config.exists() {
         if let Err(err) = settings.merge(File::from(bloop_config)) {
           message("Error parsing config", err.to_string());
         }
       } else {
+        create_dir_all(config_dir)?;
         let mut file = FileWriter::create(bloop_config)?;
         file.write_all(DEFAULT_CONFIG)?;
       }
@@ -44,8 +46,8 @@ impl BloopConfig {
 }
 
 pub fn custom_css(css_file_name: String) -> Option<String> {
-  if let Some(document_path) = document_dir() {
-    let css_file = document_path
+  if let Some(config_path) = config_dir() {
+    let css_file = config_path
       .join("bloop/themes")
       .join(css_file_name + ".css");
     if css_file.exists() {

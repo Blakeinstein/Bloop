@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/shell";
-import { documentDir } from "@tauri-apps/api/path";
+import { configDir } from "@tauri-apps/api/path";
 class Settings {
   root: HTMLElement;
   settingsButton: HTMLElement;
@@ -33,7 +33,7 @@ class Settings {
     }
   }
   openSettingsFile() {
-    documentDir()
+    configDir()
       .then((dir) => open(dir + "bloop/config.toml"))
       .catch((err) => console.log(err));
   }
