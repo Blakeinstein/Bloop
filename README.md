@@ -13,7 +13,7 @@ The tool aims to be an exact imitation of boop built using web technologies and 
 </p>
 
 <p align="center">
-  <a href="https://boop.okat.best/">Inspired from Boop</a>  •  <a href="https://github.com/Blakeinstein/Bloop/blob/main/docs/Readme.md">Documentation</a>  •  <a href="https://github.com/IvanMathy/Boop/tree/main/Scripts">Find more scripts</a>
+  <a href="https://boop.okat.best/">Inspired from Boop</a>  •  <a href="https://github.com/Blakeinstein/Bloop/wiki/Getting-Started">Documentation</a>  •  <a href="https://github.com/IvanMathy/Boop/tree/main/Scripts">Find more scripts</a>
 </p>
 
 #### Suggestions
@@ -23,6 +23,9 @@ As bloop supports some ligaturized fonts, I suggest that you install these fonts
 Until preferences are implemented, you are stuck with the following fonts.
 * [SF Mono ligaturized](https://github.com/kube/sf-mono-ligaturized/tree/master/ligaturized)
 * [Cascadia Code](https://github.com/microsoft/cascadia-code)
+
+### Documentation
+New? Read how to use bloop [here](https://github.com/Blakeinstein/Bloop/wiki/Getting-Started)
 
 ### How to get Bloop
 
@@ -59,12 +62,6 @@ For the time being the only way to obtain a working copy is to either get the in
  - #### Build
    -  To build release binaries, use ``` yarn release ```, The resultant binaries would be located in ```src-tauri/target/release```
 
-### Planned features
-
-- Preferences(fonts etc)
-
-### Documentation
-
-##### TODO
+<!-- ##### TODO -->
 <!-- - [Documentation](https://github.com/Blakeinstein/Bloop/wiki)
 - [Custom scripts](https://github.com/Blakeinstein/Bloop/wiki#CustomScripts) -->
