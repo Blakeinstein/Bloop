@@ -21,7 +21,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": ["./scripts/*.js", "./config/default.toml"],
+      "resources": ["./scripts", "./config/default.toml"],
       "externalBin": [],
       "copyright": "Blaine",
       "category": "DeveloperTool",
