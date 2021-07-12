@@ -19,8 +19,7 @@ The tool aims to be an exact imitation of boop built using web technologies and 
 #### Suggestions
 To add custom scripts add the scripts to your documents directory which you can confirm [here](https://docs.rs/dirs-next/2.0.0/dirs_next/fn.document_dir.html)
 
-As bloop supports some ligaturized fonts, I suggest that you install these fonts manually!
-Until preferences are implemented, you are stuck with the following fonts.
+Bloop supports ligaturized fonts, Some fonts are set up by default, but require you to install them manually. You can also use your own fonts, by changing `config.toml`. Suggested fonts =>
 * [SF Mono ligaturized](https://github.com/kube/sf-mono-ligaturized/tree/master/ligaturized)
 * [Cascadia Code](https://github.com/microsoft/cascadia-code)
 
@@ -31,7 +30,7 @@ New? Read how to use bloop [here](https://github.com/Blakeinstein/Bloop/wiki/Get
 
 For the time being the only way to obtain a working copy is to either get the installer from [here](https://github.com/Blakeinstein/Bloop/releases). or compile it yourself.
 
-> Archive files like tar.gz, msi.zip, appimage.tar.gz are update images that can be ignored.
+> Archive files like tar.gz, msi.zip, appimage.tar.gz are update images that can be ignored. (Updater not planned as of July 2021)
 
 ### How to build from source
 
