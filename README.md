@@ -54,6 +54,7 @@ For the time being the only way to obtain a working copy is to either get the in
     ```bash
       mv dist src-tauri/
       mv src src-tauri/
+      mv config src-tauri/
       mv icons src-tauri/
       mv ./Cargo.toml src-tauri/
       mv ./tauri.conf.json src-tauri/
