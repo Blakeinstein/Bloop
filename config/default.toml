@@ -4,7 +4,7 @@ width = 900
 height = 400
 
 [vars]
-font = '"SF mono", "Cascadia Code", "CascadiaCode Nerd Font", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif'
+font = '"SF mono", "Cascadia Code", "CascadiaCode Nerd Font", monaco, monospace'
 spotlight_font = '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif'
 font_size = '30px'
 editor_font_size = '20px'
