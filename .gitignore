@@ -13,3 +13,4 @@ dev
 .dnconfig
 .parcel-cache
 keys
+*.log
