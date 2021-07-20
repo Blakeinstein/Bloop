@@ -1,6 +1,6 @@
 [package]
 name = "bloop"
-version = "0.4.2"
+version = "0.4.3"
 authors = ["Blaine <rishi1998@gmail.com>"]
 edition = "2018"
 build = "build.rs"
@@ -15,7 +15,7 @@ default = [ "custom-protocol" ]
 custom-protocol = [ "tauri/custom-protocol" ]
 
 [dependencies]
-tauri = { version = "1.0.0-beta.2", features = ["window-all", "fs-path", "shell-open"] }
+tauri = { version = "1.0.0-beta.5", features = ["window-all", "fs-path", "shell-open"] }
 serde_json = "1.0.56"
 serde = { version = "1.0.114", features = ["derive"] }
 glob = "0.3.0"
