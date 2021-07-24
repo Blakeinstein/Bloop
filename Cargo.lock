@@ -2557,9 +2557,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-build"
-version = "1.0.0-beta.2"
+version = "1.0.0-beta.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bcefc20a0068157a26623f431aefa165601fe7e612b3bba8fc7b16995f91d86a"
+checksum = "78fbf1de4ceafab0706c586a4abbb920051899d13aeb67a1d6953a79aced5d99"
 dependencies = [
  "anyhow",
  "proc-macro2",

@@ -1,4 +1,4 @@
-import { getCurrent } from "@tauri-apps/api/window";
+import { appWindow } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Ace } from "ace-builds";
 
@@ -61,10 +61,9 @@ window.onload = () => {
   window.editorObj.focus();
 };
 
-// todo restore focus?
-// getCurrent().listen("tauri://focus", () => {
-//   window.focus();
-//   console.log("kek");
+// Todo refocus input (Maybe not necessary with dev?)
+// appWindow.listen("tauri://focus", async () => {
+//   await appWindow.setFocus();
 //   if (window.spotlight.visible) {
 //     window.spotlight.spotlight.focus();
 //   } else {
