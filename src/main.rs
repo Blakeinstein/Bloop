@@ -77,6 +77,7 @@ fn main() {
   });
   let width = app_config.global.width;
   let height = app_config.global.height;
+  let always_on_top = app_config.global.always_on_top;
   GLOBAL_CONFIG.set(app_config).unwrap();
 
   tauri::Builder::default()
@@ -85,6 +86,9 @@ fn main() {
       window.set_min_size(Some(MIN_SIZE)).unwrap();
       window
         .set_size(tauri::Size::Physical(tauri::PhysicalSize { width, height }))
+        .unwrap();
+      window
+        .set_always_on_top(always_on_top)
         .unwrap();
       Ok(())
     })

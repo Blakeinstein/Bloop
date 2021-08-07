@@ -13,6 +13,7 @@ pub struct Global {
   pub custom_css: String,
   pub width: u32,
   pub height: u32,
+  pub always_on_top: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

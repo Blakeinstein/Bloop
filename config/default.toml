@@ -2,6 +2,7 @@
 custom_css = ""
 width = 900
 height = 400
+always_on_top = false
 
 [vars]
 font = '"SF mono", "Cascadia Code", "CascadiaCode Nerd Font", monaco, monospace'
