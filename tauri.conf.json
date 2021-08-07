@@ -73,7 +73,10 @@
         "resizable": true,
         "fullscreen": false,
         "decorations": false,
-        "transparent": true
+        "transparent": true,
+        "focus": true,
+        "center": true,
+        "fileDropEnabled": true
       }
     ],
     "security": {
