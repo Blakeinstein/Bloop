@@ -1,6 +1,6 @@
 {
   "name": "bloop",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "license": "MIT",
   "source": "src/web/index.html",
   "scripts": {
