@@ -1,4 +1,3 @@
-import { appWindow } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Ace } from "ace-builds";
 
@@ -60,13 +59,3 @@ window.onload = () => {
   invoke("doc_ready");
   window.editorObj.focus();
 };
-
-// Todo refocus input (Maybe not necessary with dev?)
-// appWindow.listen("tauri://focus", async () => {
-//   await appWindow.setFocus();
-//   if (window.spotlight.visible) {
-//     window.spotlight.spotlight.focus();
-//   } else {
-//     window.editor.focus();
-//   }
-// });
