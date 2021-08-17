@@ -1,11 +1,11 @@
 {
   "package": {
     "productName": "Bloop",
-    "version": "0.4.4"
+    "version": "0.5.0"
   },
   "build": {
     "distDir": "dist",
-    "devPath": "http://localhost:8080",
+    "devPath": "http://localhost:3000",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
   },

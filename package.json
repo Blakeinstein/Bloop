@@ -1,25 +1,25 @@
 {
   "name": "bloop",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "license": "MIT",
   "source": "src/web/index.html",
   "scripts": {
-    "serve": "parcel src/web/index.html --dist-dir dev/ --port 8080",
-    "build": "parcel build src/web/index.html --no-content-hash",
+    "serve": "vite",
+    "build": "vite build",
     "tauri-serve": "cargo run --no-default-features",
     "dev": "npm-run-all --parallel serve tauri-serve",
     "make": "yarn build && cargo build",
     "release": "tauri build"
   },
   "dependencies": {
-    "@tauri-apps/api": "1.0.0-beta.5",
+    "@tauri-apps/api": "1.0.0-beta.6",
     "ace-builds": "^1.4.12",
     "fuse.js": "^6.4.6"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "2.0.0-nightly.766",
-    "@tauri-apps/cli": "1.0.0-beta.6",
+    "@tauri-apps/cli": "1.0.0-beta.8",
     "npm-run-all": "^4.1.5",
-    "parcel": "^2.0.0-beta.3.1"
+    "sass": "^1.38.0",
+    "vite": "^2.5.0"
   }
 }
