@@ -42,7 +42,11 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "dialogImagePath": "icons/setupBackground.bmp",
+          "bannerPath": "icons/setupBanner.bmp"
+        }
       }
     },
     "updater": {
