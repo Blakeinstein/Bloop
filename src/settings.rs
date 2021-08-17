@@ -27,14 +27,14 @@ impl BloopConfig {
     let mut settings = Config::default();
     const DEFAULT_CONFIG: &'static str = include_str!("../config/default.toml");
     if let Err(err) = settings.merge(File::from_str(DEFAULT_CONFIG, FileFormat::Toml)) {
-      message("Error parsing default config", err.to_string());
+      message(Option::<&tauri::Window<tauri::Wry>>::None, "Error parsing default config", err.to_string());
     }
     if let Some(config_path) = config_dir() {
       let config_dir = config_path.join("bloop");
       let bloop_config = config_dir.join("config.toml");
       if config_dir.exists() && bloop_config.exists() {
         if let Err(err) = settings.merge(File::from(bloop_config)) {
-          message("Error parsing config", err.to_string());
+          message(Option::<&tauri::Window<tauri::Wry>>::None, "Error parsing config", err.to_string());
         }
       } else {
         create_dir_all(config_dir)?;
