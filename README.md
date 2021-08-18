@@ -1,6 +1,10 @@
-﻿# Bloop.
-<p align="center">
+﻿<p align="center">
+<img src="icons/128x128.png" width="100">
+<h1 align="center"><i><strong>BLOOP</strong></i></h1>
 A light weight hackable scratch pad for developers inspired from boop.<br/>
+Run scripts (written in JS) directly over any piece of text!<br/>
+Base64? EZ. Got an unreadable JSON? parse it! Just want to count characters? Well we got you covered.<br/>
+Or just use it to take notes, data persists in local storage :)<br/>
 The tool aims to be an exact imitation of boop built using web technologies and powered by <a href="https://tauri.studio">Tauri</a>.
 </p>
 
@@ -16,6 +20,9 @@ The tool aims to be an exact imitation of boop built using web technologies and 
   <a href="https://boop.okat.best/">Inspired from Boop</a>  •  <a href="https://github.com/Blakeinstein/Bloop/wiki/Getting-Started">Documentation</a>  •  <a href="https://github.com/IvanMathy/Boop/tree/main/Scripts">Find more scripts</a>
 </p>
 
+
+### Documentation
+New? Read how to use bloop [here](https://github.com/Blakeinstein/Bloop/wiki/Getting-Started)
 #### Suggestions
 To add custom scripts add the scripts to your documents directory which you can confirm [here](https://docs.rs/dirs-next/2.0.0/dirs_next/fn.document_dir.html)
 
@@ -23,14 +30,14 @@ Bloop supports ligaturized fonts, Some fonts are set up by default, but require 
 * [SF Mono ligaturized](https://github.com/kube/sf-mono-ligaturized/tree/master/ligaturized)
 * [Cascadia Code](https://github.com/microsoft/cascadia-code)
 
-### Documentation
-New? Read how to use bloop [here](https://github.com/Blakeinstein/Bloop/wiki/Getting-Started)
 
 ### How to get Bloop
+You can obtain installer/binaries for your platform [here](https://github.com/Blakeinstein/Bloop/releases).
 
-For the time being the only way to obtain a working copy is to either get the installer from [here](https://github.com/Blakeinstein/Bloop/releases). or compile it yourself.
+---
+Alternatively you can compile it yourself.
 
-> Archive files like tar.gz, msi.zip, appimage.tar.gz are update images that can be ignored. (Updater not planned as of July 2021)
+> Only for developers.
 
 ### How to build from source
 
