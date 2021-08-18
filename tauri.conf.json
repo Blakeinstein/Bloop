@@ -64,7 +64,7 @@
       },
       "fs": {
         "all": false,
-        "path": true
+        "readDir": true
       },
       "shell": {
         "all": false,
