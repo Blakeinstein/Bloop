@@ -52,15 +52,15 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tauri-apps/api@1.0.0-beta.6":
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-beta.6.tgz#00de5208ef39cd7c37a4c9e7be09727de2eda776"
-  integrity sha512-RQ3AI6Fb8LAbP/r6M2r1rEbJLEGBu0BjwcjDbyFD/L/m97kugEep+VQjHATAS7nUAU1X6LmftswZo0JPMX1PzQ==
-
-"@tauri-apps/cli@1.0.0-beta.8":
+"@tauri-apps/api@1.0.0-beta.8":
   version "1.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/cli/-/cli-1.0.0-beta.8.tgz#f47ea2d8f90bc4ea544b09ecd06f4d8a2ad51e19"
-  integrity sha512-aI9gEZfzsMOa8lM3Z62EBpyjQtQElTHcRT3o+AEv4yLyQrhVjVcRHZ5h4Ch7M+SqO52RrQXn9V3o7yLZpdQFmg==
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-beta.8.tgz#a43dc4a4515148f29bfb616db85445b771e84f78"
+  integrity sha512-a56lXB7XvQ4+fKtT0pxpkjTSKhyrQ1Vmjyvt2ox3mT9xw3l7s8IOKHJ1WuqW6TA6xdoy3Cyja3Z3prw8hflS7g==
+
+"@tauri-apps/cli@1.0.0-beta.10":
+  version "1.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/cli/-/cli-1.0.0-beta.10.tgz#753a011d6fbbf1a903e18593b5b99d7dee8ccc5b"
+  integrity sha512-T0cvV5Y5vCeEw6tQ7DfuGhXxxe26AwW9i3oYT/AQZlwrLG9Xk02Pp0/lKqd/WeddE3X/IFfSm8YMRCz3VElIWQ==
   dependencies:
     "@tauri-apps/toml" "2.2.4"
     chalk "4.1.2"

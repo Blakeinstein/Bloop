@@ -1,13 +1,13 @@
 {
   "package": {
     "productName": "Bloop",
-    "version": "0.4.5"
+    "version": "0.4.6"
   },
   "build": {
     "distDir": "dist",
     "devPath": "http://localhost:3000",
-    "beforeDevCommand": "",
-    "beforeBuildCommand": ""
+    "beforeDevCommand": "yarn serve",
+    "beforeBuildCommand": "yarn build"
   },
   "tauri": {
     "bundle": {
