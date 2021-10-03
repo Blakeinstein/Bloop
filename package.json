@@ -6,9 +6,7 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build",
-    "tauri-serve": "cargo run --no-default-features",
-    "dev": "npm-run-all --parallel serve tauri-serve",
-    "make": "yarn build && cargo build",
+    "dev": "tauri dev",
     "release": "tauri build"
   },
   "dependencies": {

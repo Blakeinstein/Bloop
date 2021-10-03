@@ -133,7 +133,7 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 
 [[package]]
 name = "bloop"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "config",
  "glob",
@@ -1197,6 +1197,12 @@ dependencies = [
  "fnv",
  "itoa",
 ]
+
+[[package]]
+name = "http-range"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eee9694f83d9b7c09682fdb32213682939507884e5bcf227be9aff5d644b90dc"
 
 [[package]]
 name = "ico"
@@ -2632,9 +2638,9 @@ dependencies = [
 
 [[package]]
 name = "tauri"
-version = "1.0.0-beta.7"
+version = "1.0.0-beta.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b3482290a7ecae6f86258d96036818dc8cbe298af25ba39babc49415413d75cf"
+checksum = "79a0579dcc6fb883fe90dd3c66d76b8b8f4a1786e1e915e314b2017a500ede09"
 dependencies = [
  "attohttpc",
  "bincode",
@@ -2720,11 +2726,14 @@ dependencies = [
 
 [[package]]
 name = "tauri-runtime"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9009773eec893d0ed13a957135d60dfe4a8ab88d6f177dba4ae51ff7b0adc66f"
+checksum = "e9c52eccfb7f2ce5a09262bdc3671f0f07f637e27f8aa25e5f38145cddcd4e01"
 dependencies = [
  "gtk",
+ "http",
+ "http-range",
+ "infer",
  "serde 1.0.126",
  "serde_json",
  "tauri-utils",
@@ -2735,9 +2744,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-runtime-wry"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b785c990163617312f6d08fea78b5000bd9dd95d624aa98429de4bc500539f8"
+checksum = "1fed8dd0a448c303fa764859d6dfa1c746c4f2c6c30a83c162f8bebb12e4af4e"
 dependencies = [
  "gtk",
  "ico",
@@ -2860,6 +2869,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "01cf844b23c6131f624accf65ce0e4e9956a8bb329400ea5bcc26ae3a5c20b0b"
 dependencies = [
  "autocfg",
+ "bytes",
+ "memchr",
  "num_cpus",
  "pin-project-lite",
 ]

@@ -1,15 +1,12 @@
 #Added by cargo
 
-/target
+target
 node_modules
 cargo.lock
 bloop.code-workspace
 
-webview
 dist
-dev
 .cache
 .dnconfig
-.parcel-cache
 keys
 *.log
