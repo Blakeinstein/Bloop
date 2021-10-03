@@ -40,21 +40,6 @@ window.requireMod = async (path: string) => {
   }
 };
 
-window.addEventListener("dragover", (e) => {
-  e.preventDefault();
-});
-window.addEventListener("drop", (e) => {
-  e.preventDefault();
-
-  for (let i in e.dataTransfer.files) {
-    let reader = new FileReader();
-    reader.onload = (ev) => {
-      editor.setValue(ev.target.result as string);
-    };
-    reader.readAsText(e.dataTransfer.files[i]);
-  }
-});
-
 window.onload = () => {
   invoke("doc_ready");
   window.editorObj.focus();

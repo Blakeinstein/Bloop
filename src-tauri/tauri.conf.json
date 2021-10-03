@@ -64,11 +64,16 @@
       },
       "fs": {
         "all": false,
+        "readTextFile": true,
+        "writeFile": true,
         "readDir": true
       },
       "shell": {
         "all": false,
         "open": true
+      },
+      "path": {
+        "all": true
       }
     },
     "windows": [
@@ -80,7 +85,7 @@
         "transparent": true,
         "focus": true,
         "center": true,
-        "fileDropEnabled": true
+        "fileDropEnabled": false
       }
     ],
     "security": {
