@@ -45,18 +45,7 @@ jobs:
 
       # Build web component
       - name: install app dependencies and build it
-        run: yarn && yarn build
-
-      # Copy data over to replicate tauri config
-      - name: config directory
-        run: |
-          mv dist src-tauri/
-          mv src src-tauri/
-          mv config src-tauri/
-          mv icons src-tauri/
-          mv ./Cargo.toml src-tauri/
-          mv ./tauri.conf.json src-tauri/
-          mv ./build.rs src-tauri/
+        run: yarn
 
       # Create release
       - uses: tauri-apps/tauri-action@v0
