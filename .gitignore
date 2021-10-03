@@ -8,5 +8,6 @@ bloop.code-workspace
 dist
 .cache
 .dnconfig
+WixTools
 keys
 *.log
