@@ -23,15 +23,14 @@ pub struct Script {
 
 impl Script {
   fn new(string: &str) -> Result<Script, serde_json::error::Error> {
-    let start_bytes = string.find("/**").unwrap_or(0) + 3;
-    let end_bytes = string.find("**/").unwrap_or(string.len());
-    match parse_meta(&string[start_bytes..end_bytes]) {
-      Err(msg) => Err(msg),
-      Ok(meta) => Ok(Script {
+    let start_bytes = string.find("/**").map(|x| x+3);
+    let end_bytes = string.find("**/");
+    parse_meta(&string[start_bytes.unwrap_or(0)..end_bytes.unwrap_or(0)])
+      .map(|meta| Script {
         metadata: meta,
-        string: string.to_string().replace("require(", "await requireMod("),
-      }),
-    }
+        string: string.to_string().replace("require(", "await requireMod(")
+      }
+    )
   }
 }
 

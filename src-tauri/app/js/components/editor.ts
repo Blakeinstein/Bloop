@@ -28,4 +28,21 @@ window.addEventListener("beforeunload", () => {
   localStorage.setItem("bloopTextData", editor.getValue());
 });
 
+
+window.addEventListener("drop", (e) => {
+  e.preventDefault();
+
+  for (let i in e.dataTransfer.files) {
+    let reader = new FileReader();
+    reader.onload = (ev) => {
+      editor.setValue(ev.target.result as string);
+    };
+    reader.readAsText(e.dataTransfer.files[i]);
+  }
+});
+
+window.addEventListener("dragover", (e) => {
+  e.preventDefault();
+});
+
 export default editor;

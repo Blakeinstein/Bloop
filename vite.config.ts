@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  root: 'src-tauri/src/web',
+  root: 'src-tauri/app',
   build: {
     target: 'es2021',
-    outDir: '../../dist/',
+    outDir: '../dist/',
   }
 })

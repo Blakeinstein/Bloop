@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
+import { appWindow, PhysicalSize, PhysicalPosition } from '@tauri-apps/api/window'
 import { Ace } from "ace-builds";
 
 import editor from "./components/editor";
@@ -40,22 +41,32 @@ window.requireMod = async (path: string) => {
   }
 };
 
-window.addEventListener("dragover", (e) => {
-  e.preventDefault();
-});
-window.addEventListener("drop", (e) => {
-  e.preventDefault();
-
-  for (let i in e.dataTransfer.files) {
-    let reader = new FileReader();
-    reader.onload = (ev) => {
-      editor.setValue(ev.target.result as string);
-    };
-    reader.readAsText(e.dataTransfer.files[i]);
-  }
-});
-
 window.onload = () => {
   invoke("doc_ready");
   window.editorObj.focus();
 };
+
+type coords = [number, number];
+
+try {
+  const lastSize = JSON.parse(localStorage.getItem("bloopWindowSize")) as coords;
+  if (lastSize)
+    appWindow.setSize(new PhysicalSize(...lastSize))
+  
+  const currPosition = JSON.parse(localStorage.getItem("bloopWindowPosition")) as coords;
+  console.log(currPosition, lastSize)
+  if (currPosition)
+    appWindow.setPosition(new PhysicalPosition(...currPosition))
+  else
+    appWindow.center()
+} catch(err) {
+  console.log(err)
+}
+
+setInterval( async () => {
+  const currSize = await appWindow.innerSize();
+  const currPosition = await appWindow.innerPosition();
+  console.log("new", currSize, currPosition);
+  localStorage.setItem("bloopWindowSize", JSON.stringify([currSize.width, currSize.height]));
+  localStorage.setItem("bloopWindowPosition", JSON.stringify([currPosition.x, currPosition.y]));
+}, 10000);

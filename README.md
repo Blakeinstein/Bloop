@@ -1,5 +1,5 @@
 ﻿<p align="center">
-<img src="icons/128x128.png" width="100">
+<img src="src-tauri/icons/128x128.png" width="100">
 <h1 align="center"><i><strong>BLOOP</strong></i></h1>
 A light weight hackable scratch pad for developers inspired from boop.<br/>
 Run scripts (written in JS) directly over any piece of text!<br/>
@@ -9,7 +9,7 @@ The tool aims to be an exact imitation of boop built using web technologies and 
 </p>
 
 <p align="center">
-    <img src="assets/UI.png?raw=true" width="663" alt="UI screenshot">
+    <img src="src-tauri/assets/UI.png?raw=true" width="663" alt="UI screenshot">
 </p>
 
 <p align="center">
