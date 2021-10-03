@@ -30,7 +30,6 @@ window.addEventListener("beforeunload", () => {
 
 
 window.addEventListener("drop", (e) => {
-  console.log("Got item", e.dataTransfer)
   e.preventDefault();
 
   for (let i in e.dataTransfer.files) {
