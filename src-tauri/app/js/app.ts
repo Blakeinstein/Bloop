@@ -49,12 +49,11 @@ window.onload = () => {
 type coords = [number, number];
 
 try {
-  const lastSize = JSON.parse(localStorage.getItem("bloopWindowSize")) as coords;
+  const lastSize = JSON.parse(localStorage.getItem("bloopWindowSize")) as coords || [900, 400];
   if (lastSize)
     appWindow.setSize(new PhysicalSize(...lastSize))
   
   const currPosition = JSON.parse(localStorage.getItem("bloopWindowPosition")) as coords;
-  console.log(currPosition, lastSize)
   if (currPosition)
     appWindow.setPosition(new PhysicalPosition(...currPosition))
   else
@@ -66,7 +65,7 @@ try {
 setInterval( async () => {
   const currSize = await appWindow.innerSize();
   const currPosition = await appWindow.innerPosition();
-  console.log("new", currSize, currPosition);
+  localStorage.setItem("bloopTextData", window.editor.getValue());
   localStorage.setItem("bloopWindowSize", JSON.stringify([currSize.width, currSize.height]));
   localStorage.setItem("bloopWindowPosition", JSON.stringify([currPosition.x, currPosition.y]));
-}, 10000);
+}, 5000);

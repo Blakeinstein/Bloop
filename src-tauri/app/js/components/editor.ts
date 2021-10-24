@@ -24,11 +24,6 @@ editor.session.setMode("ace/mode/bloop");
 
 editor.setValue(localStorage.getItem("bloopTextData") ?? "");
 
-window.addEventListener("beforeunload", () => {
-  localStorage.setItem("bloopTextData", editor.getValue());
-});
-
-
 window.addEventListener("drop", (e) => {
   e.preventDefault();
 
