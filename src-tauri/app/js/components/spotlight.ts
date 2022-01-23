@@ -47,55 +47,17 @@ class Spotlight {
     // Create event listeners
 
     // handle open
-    document.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.ctrlKey) {
-          if (e.key === "b") {
-            e.preventDefault();
-            if (e.shiftKey && this.editorObj.script)
-              this.editorObj.script = this.editorObj.script;
-            else {
-              if (!this.visible) this.showSpotlight();
-              else this.hideSpotlight();
-            }
-          } else if (e.key === "n") {
-            this.editorObj.fullText = "";
-            this.labelText[2].classList.add("labelHidden");
-            this.labelText[1].classList.add("labelHidden");
-            this.labelText[0].classList.remove("labelHidden");
-          } else if (e.key === "q") {
-            appWindow.close();
-          }
-        }
-      },
-      true
-    );
-    window.addEventListener("keypress", (e) => {
+    document.addEventListener("keydown", this.startSpotlight.bind(this), true);
+
+    window.addEventListener("keypress", () => {
       if (!this.visible && !this.editor.isFocused()) {
-        window.setTimeout(() => this.editor.focus(), 0);
-        if (this.savedRange != null) {
-          this.editor.moveCursorToPosition(this.savedRange);
-        }
+        this.focusEditor();
       }
     });
-    document.addEventListener(
-      "click",
-      (event) => {
-        if (!this.editorObj.isSelection) event.preventDefault();
-        if (this.visible) this.hideSpotlight();
-        else if (!this.editor.isFocused()) {
-          window.setTimeout(() => this.editor.focus(), 0);
-          if (this.savedRange != null) {
-            this.editor.moveCursorToPosition(this.savedRange);
-          }
-        }
-      },
-      false
-    );
-    this.editor.on("blur", (cm) => {
-      this.savedRange = this.editor.getCursorPosition();
-    });
+    
+    document.addEventListener("click", this.hideSpotlight.bind(this), false);
+
+    this.editor.on("blur", () => this.savedRange = this.editor.getCursorPosition());
 
     this.spotlight.addEventListener("keyup", (e) => {
       if (e.key == "Enter") {
@@ -105,29 +67,10 @@ class Spotlight {
         this.hideSpotlight();
       } else if (e.key === "Escape") this.hideSpotlight();
     });
-    this.spotlight.addEventListener("keydown", (e) => {
-      if (!this.visibleActions) return;
-      let i = Array.prototype.indexOf.call(
-        this.visibleActions,
-        this.alSelected
-      );
-
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (i < this.visibleActions.length - 1) {
-          this.selected = this.visibleActions[i + 1];
-        }
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (i > 0) {
-          this.selected = this.visibleActions[i - 1];
-        }
-      }
-    });
+    
+    this.spotlight.addEventListener("keydown", this.scrollScripts.bind(this));
     this.spotlight.addEventListener("input", this.search.bind(this));
-    this.spotlight.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
+    this.spotlight.addEventListener("click", (e) => e.stopPropagation());
     this.label.addEventListener("click", (e) => {
       if (!this.visible) {
         this.showSpotlight();
@@ -135,6 +78,139 @@ class Spotlight {
       }
     });
     // build action list collection
+    this.setupFuse();
+  }
+
+  get selected(): HTMLElement {
+    return this.alSelected;
+  }
+
+  set selected(elem: HTMLElement) {
+    if (this.alSelected) this.alSelected.classList.remove("selected");
+    this.alSelected = elem;
+    if (elem == null || elem.classList.contains("hidden")) return;
+
+    this.scrollToElement(elem);
+
+    elem.classList.add("selected");
+  }
+
+  scrollToElement(elem: HTMLElement) {
+    let y = elem.offsetTop;
+    let top = this.actionList.scrollTop;
+    let viewport = top + this.actionList.offsetHeight;
+    if (y - 56 < top || y > viewport) this.actionList.scrollTop = y - 56;
+  }
+
+  startSpotlight(e: KeyboardEvent) {
+    if (e.ctrlKey) {
+      if (e.key === "b") {
+        e.preventDefault();
+        if (e.shiftKey && this.editorObj.script)
+          this.editorObj.script = this.editorObj.script;
+        else {
+          if (!this.visible) this.showSpotlight();
+          else this.hideSpotlight();
+        }
+      } else if (e.key === "n") {
+        this.editorObj.fullText = "";
+        this.labelText[2].classList.add("labelHidden");
+        this.labelText[1].classList.add("labelHidden");
+        this.labelText[0].classList.remove("labelHidden");
+      } else if (e.key === "q") {
+        appWindow.close();
+      }
+    }
+  }
+
+  hideSpotlight() {
+    if (this.visible) {
+      this.spotlightWrapper.classList.add("hidden");
+      this.body.classList.remove("shaded");
+      this.visible = false;
+      this.labelText[2].classList.add("labelHidden");
+      if (this.labelText[1].classList.contains("labelHidden"))
+        this.labelText[0].classList.remove("labelHidden");
+    }
+    this.focusEditor();
+  }
+
+  showSpotlight() {
+    this.spotlightWrapper.classList.remove("hidden");
+    this.body.classList.add("shaded");
+    this.spotlight.value = "";
+    this.savedRange = this.editor.getCursorPosition();
+    this.hideAll();
+    window.setTimeout(() => this.spotlight.focus(), 0);
+    this.visible = true;
+    this.label.classList.remove("postInfo");
+    this.label.classList.remove("postError");
+    this.labelText[2].classList.remove("labelHidden");
+    this.labelText[1].classList.add("labelHidden");
+    this.labelText[0].classList.add("labelHidden");
+  }
+
+  focusEditor() {
+    window.setTimeout(() => this.editor.focus(), 0);
+    if (this.savedRange != null) {
+      this.editor.moveCursorToPosition(this.savedRange);
+    }
+  }
+  
+  hideAll() {
+    for (let i = 0; i < this.dataList.length; i++)
+      this.dataList[i].classList.add("hidden");
+  }
+
+  scrollScripts(e: KeyboardEvent) {
+    if (!this.visibleActions) return;
+    let i = Array.prototype.indexOf.call(
+      this.visibleActions,
+      this.alSelected
+    );
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (i < this.visibleActions.length - 1) {
+        this.selected = this.visibleActions[i + 1];
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (i > 0) {
+        this.selected = this.visibleActions[i - 1];
+      }
+    }
+  }
+
+  search() {
+    let query = this.spotlight.value;
+    this.hideAll();
+    if (query == "" || query.length > 20) return;
+
+    if (query == "*") {
+      this.visibleActions = this.actionCollection.map(this.actionSearchMap);
+    } else {
+      const searchResult = this.fuse.search(query).filter(e => e.score < 0.4);
+      this.visibleActions = searchResult.map(res => res.item).map(this.actionSearchMap);
+    }
+
+    if (this.visibleActions.length > 0) {
+      this.selected = this.visibleActions[0];
+      this.alPlaceholder.classList.add("hidden");
+    } else {
+      this.selected = null;
+      this.alPlaceholder.classList.remove("hidden");
+    }
+  }
+
+  actionSearchMap(action: Action, i: number) {
+    let currentDom = action.dom;
+    currentDom.classList.remove("hidden");
+    currentDom.style.order = String(i);
+    return currentDom;
+  }
+
+  setupFuse() {
     this.fuse = new Fuse(this.actionCollection, {
       includeScore: true,
       keys: [
@@ -160,90 +236,6 @@ class Spotlight {
     listItem.classList.add("hidden");
     this.actionList.appendChild(listItem);
     this.alPlaceholder = listItem;
-  }
-
-  get selected(): HTMLElement {
-    return this.alSelected;
-  }
-
-  set selected(elem: HTMLElement) {
-    if (this.alSelected) this.alSelected.classList.remove("selected");
-    this.alSelected = elem;
-    if (elem == null) return;
-    if (!elem.classList.contains("hiddens")) {
-      let y = elem.offsetTop;
-      let top = this.actionList.scrollTop;
-      let viewport = top + this.actionList.offsetHeight;
-      if (y - 56 < top || y > viewport) this.actionList.scrollTop = y - 56;
-    }
-    elem.classList.add("selected");
-  }
-
-  hideSpotlight() {
-    this.spotlightWrapper.classList.add("hidden");
-    this.body.classList.remove("shaded");
-    window.setTimeout(() => this.spotlight.focus(), 0);
-    if (this.savedRange != null) {
-      this.editor.moveCursorToPosition(this.savedRange);
-    }
-    this.visible = false;
-    this.labelText[2].classList.add("labelHidden");
-    if (this.labelText[1].classList.contains("labelHidden"))
-      this.labelText[0].classList.remove("labelHidden");
-  }
-
-  showSpotlight() {
-    this.spotlightWrapper.classList.remove("hidden");
-    this.body.classList.add("shaded");
-    this.spotlight.value = "";
-    this.savedRange = this.editor.getCursorPosition();
-    for (let i = 0; i < this.dataList.length; i++)
-      this.dataList[i].classList.add("hidden");
-    window.setTimeout(() => this.spotlight.focus(), 0);
-    this.visible = true;
-    this.label.classList.remove("postInfo");
-    this.label.classList.remove("postError");
-    this.labelText[2].classList.remove("labelHidden");
-    this.labelText[1].classList.add("labelHidden");
-    this.labelText[0].classList.add("labelHidden");
-  }
-
-  search() {
-    let query = this.spotlight.value;
-
-    this.visibleActions = [];
-    for (let i = 0; i < this.dataList.length; i++)
-      this.dataList[i].classList.add("hidden");
-
-    if (query == "" || query.length > 20) {
-      return;
-    }
-
-    if (query == "*") {
-      for (let i in this.actionCollection) {
-        let currentDom = this.actionCollection[i].dom;
-        currentDom.classList.remove("hidden");
-        currentDom.style.order = i;
-        this.visibleActions.push(currentDom);
-      }
-    }
-
-    const searchResult = this.fuse.search(query).filter((e) => e.score < 0.4);
-
-    for (let i in searchResult) {
-      let currentDom = searchResult[i].item.dom;
-      currentDom.classList.remove("hidden");
-      currentDom.style.order = i;
-      this.visibleActions.push(currentDom);
-    }
-
-    if (this.visibleActions.length > 0) {
-      this.selected = this.visibleActions[0];
-      this.alPlaceholder.classList.add("hidden");
-    } else {
-      this.selected = null;
-      this.alPlaceholder.classList.remove("hidden");
-    }
   }
 
   addAction(name: string, desc: string, icon: string, tags: string) {

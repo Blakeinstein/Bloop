@@ -46,29 +46,6 @@ window.onload = () => {
   window.editorObj.focus();
 };
 
-type coords = [number, number];
-
-try {
-  const lastSize = JSON.parse(localStorage.getItem("bloopWindowSize")) as coords;
-  if (lastSize) {
-    lastSize[0] = Math.max(lastSize[0], 50);
-    lastSize[1] = Math.max(lastSize[1], 50);
-    appWindow.setSize(new PhysicalSize(...lastSize));
-  }
-  
-  const currPosition = JSON.parse(localStorage.getItem("bloopWindowPosition")) as coords;
-  if (currPosition)
-    appWindow.setPosition(new PhysicalPosition(...currPosition));
-  else
-    appWindow.center();
-} catch(err) {
-  console.log(err);
-}
-
 setInterval( async () => {
-  const currSize = await appWindow.innerSize();
-  const currPosition = await appWindow.innerPosition();
   localStorage.setItem("bloopTextData", window.editor.getValue());
-  localStorage.setItem("bloopWindowSize", JSON.stringify([currSize.width, currSize.height]));
-  localStorage.setItem("bloopWindowPosition", JSON.stringify([currPosition.x, currPosition.y]));
 }, 5000);

@@ -103,8 +103,7 @@ pub fn build_scripts(
       create_dir_all(bloop_dir).unwrap();
     }
   }
-
-  window.eval("spotlight.spotlightActions.finalize()")?;
+  
   Ok(())
 }
 
@@ -129,6 +128,6 @@ pub fn script_eval(script_obj: &Script, window: &Window) -> tauri::Result<()> {
     &script_obj.string
   );
   window.eval(&js)?;
-  window.eval("spotlight.spotlightActions.Ok()")?;
+  window.eval("spotlight.Ok()")?;
   Ok(())
 }
