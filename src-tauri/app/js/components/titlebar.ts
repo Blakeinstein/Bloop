@@ -22,17 +22,10 @@ class TitleBar {
   }
 
   maximizeEvent() {
-    if (this.maximizeState) {
-      this.fullscreenSvg.classList.remove("hidden");
-      this.maximizeSvg.classList.add("hidden");
-      this.maximizeState = false;
-      appWindow.unmaximize();
-    } else {
-      this.maximizeSvg.classList.remove("hidden");
-      this.fullscreenSvg.classList.add("hidden");
-      this.maximizeState = true;
-      appWindow.maximize();
-    }
+    this.maximizeState = !this.maximizeState;
+    this.fullscreenSvg.classList.toggle("hidden");
+    this.maximizeSvg.classList.toggle("hidden");
+    this.maximizeState ? appWindow.unmaximize() : appWindow.maximize();
   }
 
   init() {
