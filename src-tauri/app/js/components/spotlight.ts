@@ -45,20 +45,14 @@ class Spotlight {
 
   init() {
     // Create event listeners
-
-    // handle open
     document.addEventListener("keydown", this.startSpotlight.bind(this), true);
-
     window.addEventListener("keypress", () => {
       if (!this.visible && !this.editor.isFocused()) {
         this.focusEditor();
       }
-    });
-    
+    });  
     document.addEventListener("click", this.hideSpotlight.bind(this), false);
-
     this.editor.on("blur", () => this.savedRange = this.editor.getCursorPosition());
-
     this.spotlight.addEventListener("keyup", (e) => {
       if (e.key == "Enter") {
         e.preventDefault();
@@ -67,7 +61,6 @@ class Spotlight {
         this.hideSpotlight();
       } else if (e.key === "Escape") this.hideSpotlight();
     });
-    
     this.spotlight.addEventListener("keydown", this.scrollScripts.bind(this));
     this.spotlight.addEventListener("input", this.search.bind(this));
     this.spotlight.addEventListener("click", (e) => e.stopPropagation());
@@ -103,23 +96,25 @@ class Spotlight {
   }
 
   startSpotlight(e: KeyboardEvent) {
-    if (e.ctrlKey) {
-      if (e.key === "b") {
+    if (!e.ctrlKey) return;
+    switch (e.key) {
+      case "b":
         e.preventDefault();
         if (e.shiftKey && this.editorObj.script)
           this.editorObj.script = this.editorObj.script;
         else {
-          if (!this.visible) this.showSpotlight();
-          else this.hideSpotlight();
+          if (this.visible) this.hideSpotlight();
+          else this.showSpotlight();
         }
-      } else if (e.key === "n") {
+        break;
+      case "n":
         this.editorObj.fullText = "";
         this.labelText[2].classList.add("labelHidden");
         this.labelText[1].classList.add("labelHidden");
         this.labelText[0].classList.remove("labelHidden");
-      } else if (e.key === "q") {
+        break;
+      case "q":
         appWindow.close();
-      }
     }
   }
 
@@ -164,21 +159,20 @@ class Spotlight {
 
   scrollScripts(e: KeyboardEvent) {
     if (!this.visibleActions) return;
-    let i = Array.prototype.indexOf.call(
-      this.visibleActions,
-      this.alSelected
-    );
+    let i = this.visibleActions.indexOf(this.alSelected);
 
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      if (i < this.visibleActions.length - 1) {
-        this.selected = this.visibleActions[i + 1];
-      }
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      if (i > 0) {
-        this.selected = this.visibleActions[i - 1];
-      }
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        if (i < this.visibleActions.length - 1) {
+          this.selected = this.visibleActions[i + 1];
+        }
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        if (i > 0) {
+          this.selected = this.visibleActions[i - 1];
+        }
     }
   }
 
