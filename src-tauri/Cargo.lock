@@ -133,7 +133,7 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 
 [[package]]
 name = "bloop"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "config",
  "glob",
