@@ -19,7 +19,11 @@ class Spotlight {
   actionList: HTMLElement;
   alSelected: HTMLElement;
   label: Element;
-  labelText: NodeListOf<HTMLElement>;
+  labels: {
+    info: Element;
+    message: Element;
+    choose: Element;
+  };
   fuse: Fuse<Action>;
   count: number;
   actionCollection: Action[];
@@ -35,7 +39,12 @@ class Spotlight {
     this.dataList = document.querySelector(".action-list").children;
     this.actionList = document.querySelector(".action-list");
     this.label = document.querySelector(".titlebar-spotlight");
-    this.labelText = document.querySelectorAll(".label");
+    const labels = document.querySelectorAll(".label");
+    this.labels = {
+      info: labels[0],
+      message: labels[1],
+      choose: labels[2],
+    }
     this.actionCollection = [];
     this.visibleActions = [];
     this.count = 0;
@@ -53,23 +62,11 @@ class Spotlight {
     });  
     document.addEventListener("click", this.hideSpotlight.bind(this), false);
     this.editor.on("blur", () => this.savedRange = this.editor.getCursorPosition());
-    this.spotlight.addEventListener("keyup", (e) => {
-      if (e.key == "Enter") {
-        e.preventDefault();
-        e.stopPropagation();
-        this.editorObj.script = this.alSelected.getAttribute("name");
-        this.hideSpotlight();
-      } else if (e.key === "Escape") this.hideSpotlight();
-    });
+    this.spotlight.addEventListener("keyup", this.handleExit.bind(this));
     this.spotlight.addEventListener("keydown", this.scrollScripts.bind(this));
     this.spotlight.addEventListener("input", this.search.bind(this));
     this.spotlight.addEventListener("click", (e) => e.stopPropagation());
-    this.label.addEventListener("click", (e) => {
-      if (!this.visible) {
-        this.showSpotlight();
-        e.stopPropagation();
-      }
-    });
+    this.label.addEventListener("click", this.showSpotlight.bind(this));
     // build action list collection
     this.setupFuse();
   }
@@ -95,12 +92,12 @@ class Spotlight {
     if (y - 56 < top || y > viewport) this.actionList.scrollTop = y - 56;
   }
 
-  startSpotlight(e: KeyboardEvent) {
-    if (!e.ctrlKey) return;
-    switch (e.key) {
+  startSpotlight(event: KeyboardEvent) {
+    if (!event.ctrlKey) return;
+    switch (event.key) {
       case "b":
-        e.preventDefault();
-        if (e.shiftKey && this.editorObj.script)
+        event.preventDefault();
+        if (event.shiftKey && this.editorObj.script)
           this.editorObj.script = this.editorObj.script;
         else {
           if (this.visible) this.hideSpotlight();
@@ -109,28 +106,30 @@ class Spotlight {
         break;
       case "n":
         this.editorObj.fullText = "";
-        this.labelText[2].classList.add("labelHidden");
-        this.labelText[1].classList.add("labelHidden");
-        this.labelText[0].classList.remove("labelHidden");
+        this.labels.choose.classList.add("labelHidden");
+        this.labels.message.classList.add("labelHidden");
+        this.labels.info.classList.remove("labelHidden");
         break;
       case "q":
         appWindow.close();
     }
   }
 
-  hideSpotlight() {
-    if (this.visible) {
-      this.spotlightWrapper.classList.add("hidden");
-      this.body.classList.remove("shaded");
-      this.visible = false;
-      this.labelText[2].classList.add("labelHidden");
-      if (this.labelText[1].classList.contains("labelHidden"))
-        this.labelText[0].classList.remove("labelHidden");
-    }
+  hideSpotlight(event?: KeyboardEvent) {
+    if (!this.visible) return;
+    if (event) event.stopPropagation();
+    this.spotlightWrapper.classList.add("hidden");
+    this.body.classList.remove("shaded");
+    this.visible = false;
+    this.labels.choose.classList.add("labelHidden");
+    if (this.labels.message.classList.contains("labelHidden"))
+      this.labels.info.classList.remove("labelHidden");
     this.focusEditor();
   }
 
-  showSpotlight() {
+  showSpotlight(event?: KeyboardEvent) {
+    if (this.visible) return;
+    if (event) event.stopPropagation();
     this.spotlightWrapper.classList.remove("hidden");
     this.body.classList.add("shaded");
     this.spotlight.value = "";
@@ -140,9 +139,9 @@ class Spotlight {
     this.visible = true;
     this.label.classList.remove("postInfo");
     this.label.classList.remove("postError");
-    this.labelText[2].classList.remove("labelHidden");
-    this.labelText[1].classList.add("labelHidden");
-    this.labelText[0].classList.add("labelHidden");
+    this.labels.choose.classList.remove("labelHidden");
+    this.labels.message.classList.add("labelHidden");
+    this.labels.info.classList.add("labelHidden");
   }
 
   focusEditor() {
@@ -157,22 +156,41 @@ class Spotlight {
       this.dataList[i].classList.add("hidden");
   }
 
-  scrollScripts(e: KeyboardEvent) {
-    if (!this.visibleActions) return;
-    let i = this.visibleActions.indexOf(this.alSelected);
+  showVisible() {
+    if (this.visibleActions.length > 0) {
+      this.selected = this.visibleActions[0];
+      this.alPlaceholder.classList.add("hidden");
+    } else {
+      this.selected = null;
+      this.alPlaceholder.classList.remove("hidden");
+    }
+  }
 
-    switch (e.key) {
+  handleExit(event: KeyboardEvent) {
+    switch (event.key) {
+      case "Enter":
+        event.preventDefault();
+        event.stopPropagation();
+        this.editorObj.script = this.alSelected.getAttribute("name");
+      case "Escape":
+        this.hideSpotlight();
+    }
+  }
+
+  scrollScripts(event: KeyboardEvent) {
+    if (!this.visibleActions) return;
+    let index = this.visibleActions.indexOf(this.alSelected);
+
+    switch (event.key) {
       case "ArrowDown":
-        e.preventDefault();
-        if (i < this.visibleActions.length - 1) {
-          this.selected = this.visibleActions[i + 1];
-        }
+        event.preventDefault();
+        if (index >= this.visibleActions.length - 1) return;
+        this.selected = this.visibleActions[index + 1];
         break;
       case "ArrowUp":
-        e.preventDefault();
-        if (i > 0) {
-          this.selected = this.visibleActions[i - 1];
-        }
+        event.preventDefault();
+        if (index <= 0) return;
+        this.selected = this.visibleActions[index - 1];
     }
   }
 
@@ -188,13 +206,7 @@ class Spotlight {
       this.visibleActions = searchResult.map(res => res.item).map(this.actionSearchMap);
     }
 
-    if (this.visibleActions.length > 0) {
-      this.selected = this.visibleActions[0];
-      this.alPlaceholder.classList.add("hidden");
-    } else {
-      this.selected = null;
-      this.alPlaceholder.classList.remove("hidden");
-    }
+    this.showVisible();
   }
 
   actionSearchMap(action: Action, i: number) {
