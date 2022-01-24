@@ -94,24 +94,20 @@ class Spotlight {
 
   startSpotlight(event: KeyboardEvent) {
     if (!event.ctrlKey) return;
-    switch (event.key) {
-      case "b":
-        event.preventDefault();
-        if (event.shiftKey && this.editorObj.script)
-          this.editorObj.script = this.editorObj.script;
-        else {
-          if (this.visible) this.hideSpotlight();
-          else this.showSpotlight();
-        }
-        break;
-      case "n":
-        this.editorObj.fullText = "";
-        this.labels.choose.classList.add("labelHidden");
-        this.labels.message.classList.add("labelHidden");
-        this.labels.info.classList.remove("labelHidden");
-        break;
-      case "q":
-        appWindow.close();
+    if (event.key === "b") {
+      event.preventDefault();
+      if (event.shiftKey && this.editorObj.script) {
+        this.editorObj.script = this.editorObj.script;
+        return;
+      }
+      this.visible? this.hideSpotlight() : this.showSpotlight();
+    } else if (event.key === "n") {
+      this.editorObj.fullText = "";
+      this.labels.choose.classList.add("labelHidden");
+      this.labels.message.classList.add("labelHidden");
+      this.labels.info.classList.remove("labelHidden");
+    } else if (event.key === "q") {
+      appWindow.close();
     }
   }
 
